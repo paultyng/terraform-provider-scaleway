@@ -236,3 +236,27 @@ func expandLbCustomCertificate(raw interface{}) *lb.CreateCertificateRequestCust
 	}
 	return config
 }
+
+func expandLbSubscriberEmailConfig(raw interface{}) *lb.SubscriberEmailConfig {
+	if raw == nil || len(raw.([]interface{})) != 1 {
+		return nil
+	}
+
+	rawMap := raw.([]interface{})[0].(map[string]interface{})
+	config := &lb.SubscriberEmailConfig{
+		Email: rawMap["email"].(string),
+	}
+	return config
+}
+
+func expandLbSubscriberWebhookConfig(raw interface{}) *lb.SubscriberWebhookConfig {
+	if raw == nil || len(raw.([]interface{})) != 1 {
+		return nil
+	}
+
+	rawMap := raw.([]interface{})[0].(map[string]interface{})
+	config := &lb.SubscriberWebhookConfig{
+		URI: rawMap["uri"].(string),
+	}
+	return config
+}
