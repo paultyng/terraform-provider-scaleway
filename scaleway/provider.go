@@ -199,6 +199,7 @@ func Provider() terraform.ResourceProvider {
 		ResourcesMap: map[string]*schema.Resource{
 			"scaleway_account_ssh_key":               resourceScalewayAccountSSKKey(),
 			"scaleway_baremetal_server":              resourceScalewayBaremetalServer(),
+			"scaleway_domain_record":                 resourceScalewayDomainRecord(),
 			"scaleway_instance_ip":                   resourceScalewayInstanceIP(),
 			"scaleway_instance_ip_reverse_dns":       resourceScalewayInstanceIPReverseDns(),
 			"scaleway_instance_volume":               resourceScalewayInstanceVolume(),
