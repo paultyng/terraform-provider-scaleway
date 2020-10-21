@@ -20,50 +20,36 @@ func init() {
 	})
 }
 
-// Test data
-var (
-	testBucketName       = fmt.Sprintf("terraform-test-%d", time.Now().Unix())
-	testBucketNameAms    = testBucketName + "ams"
-	testBucketNamePar    = testBucketName + "par"
-	testBucketACL        = "private"
-	testBucketUpdatedACL = "public-read"
-)
+func TestAccScalewayObjectBucket_Basic(t *testing.T) {
+	testBucketName := fmt.Sprintf("terraform-test-%d", time.Now().Unix())
+	testBucketNameAms := testBucketName + "ams"
+	testBucketNamePar := testBucketName + "par"
+	testBucketACL := "private"
+	testBucketUpdatedACL := "public-read"
 
-// Test configs
-var testAccCheckScalewayObjectBucket = fmt.Sprintf(`
-	resource "scaleway_object_bucket" "base" {
-		name = "%s"
-		tags = {
-			foo = "bar"
-		}
-	}
-
-	resource "scaleway_object_bucket" "ams-bucket" {
-		name = "%s"
-		region = "nl-ams"
-	}
-
-	resource "scaleway_object_bucket" "par-bucket" {
-		name = "%s"
-		region = "fr-par"
-	}
-`, testBucketName, testBucketNameAms, testBucketNamePar)
-
-var testAccCheckScalewayObjectBucketUpdate = fmt.Sprintf(`
-	resource "scaleway_object_bucket" "base" {
-		name = "%s"
-		acl = "%s"
-	}
-`, testBucketName, testBucketUpdatedACL)
-
-func TestAccScalewayObjectBucket(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckScalewayObjectBucketDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCheckScalewayObjectBucket,
+				Config: fmt.Sprintf(`
+					resource "scaleway_object_bucket" "base" {
+						name = "%s"
+						tags = {
+							foo = "bar"
+						}
+					}
+
+					resource "scaleway_object_bucket" "ams-bucket" {
+						name = "%s"
+						region = "nl-ams"
+					}
+
+					resource "scaleway_object_bucket" "par-bucket" {
+						name = "%s"
+						region = "fr-par"
+					}`, testBucketName, testBucketNameAms, testBucketNamePar),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr("scaleway_object_bucket.base", "name", testBucketName),
 					resource.TestCheckResourceAttr("scaleway_object_bucket.base", "acl", testBucketACL),
@@ -74,7 +60,11 @@ func TestAccScalewayObjectBucket(t *testing.T) {
 				),
 			},
 			{
-				Config: testAccCheckScalewayObjectBucketUpdate,
+				Config: fmt.Sprintf(`
+					resource "scaleway_object_bucket" "base" {
+						name = "%s"
+						acl = "%s"
+					}`, testBucketName, testBucketUpdatedACL),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr("scaleway_object_bucket.base", "name", testBucketName),
 					resource.TestCheckResourceAttr("scaleway_object_bucket.base", "acl", testBucketUpdatedACL),
@@ -133,10 +123,39 @@ func testSweepStorageObjectBucket(region string) error {
 				Bucket: bucket.Name,
 			})
 			if err != nil {
-				return fmt.Errorf("Error deleting bucket in Sweeper: %s", err)
+				return fmt.Errorf("error deleting bucket in Sweeper: %s", err)
 			}
 		}
 	}
 
 	return nil
+}
+
+func TestAccScalewayObjectBucket_ACL(t *testing.T) {
+	testBucketName := fmt.Sprintf("terraform-test-%d", time.Now().Unix())
+	testBucketACL := "private"
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckScalewayObjectBucketDestroy,
+		Steps: []resource.TestStep{
+			{
+				Config: fmt.Sprintf(`
+					resource "scaleway_object_bucket" "base" {
+						name = "%s"
+						acl = "private"
+					}`, testBucketName),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("scaleway_object_bucket.base", "name", testBucketName),
+					resource.TestCheckResourceAttr("scaleway_object_bucket.base", "acl", testBucketACL),
+				),
+			},
+			{
+				ResourceName:      "scaleway_object_bucket.base",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
 }
