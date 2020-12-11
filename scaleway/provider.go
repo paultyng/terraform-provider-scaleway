@@ -108,6 +108,12 @@ func Provider(config *ProviderConfig) plugin.ProviderFunc {
 			},
 		}
 
+		backup := p.ResourcesMap["scaleway_instance_server"].ReadContext
+		p.ResourcesMap["scaleway_instance_server"].ReadContext = func(ctx context.Context, data *schema.ResourceData, i interface{}) diag.Diagnostics {
+			defer RecoverPanicAndSendReport()
+			return backup(ctx, data, i)
+		}
+
 		p.ConfigureContextFunc = func(ctx context.Context, data *schema.ResourceData) (interface{}, diag.Diagnostics) {
 			terraformVersion := p.TerraformVersion
 
@@ -173,7 +179,7 @@ func buildMeta(config *MetaConfig) (*Meta, error) {
 	// Create scaleway SDK client
 	////
 	opts := []scw.ClientOption{
-		scw.WithUserAgent(fmt.Sprintf("terraform-provider/%s terraform/%s", version, config.terraformVersion)),
+		scw.WithUserAgent(fmt.Sprintf("terraform-provider/%s terraform/%s", Version, config.terraformVersion)),
 		scw.WithProfile(profile),
 	}
 

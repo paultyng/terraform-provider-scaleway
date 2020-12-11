@@ -31,7 +31,7 @@ var (
 func init() {
 	p := Provider(DefaultProviderConfig())()
 	testAccProvider = p
-	version += "-tftest"
+	Version += "-tftest"
 	testAccProviders = map[string]*schema.Provider{
 		"scaleway": p,
 	}

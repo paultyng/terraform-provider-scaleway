@@ -24,6 +24,11 @@ func main() {
 			log.Println(err.Error())
 		}
 	} else {
+		// Catch every panic after this line. This will send an anonymous report on Scaleway's sentry.
+		if scaleway.Version != "develop" {
+			defer scaleway.RecoverPanicAndSendReport()
+		}
+
 		plugin.Serve(&plugin.ServeOpts{
 			ProviderFunc: scaleway.Provider(scaleway.DefaultProviderConfig()),
 		})

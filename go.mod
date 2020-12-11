@@ -2,8 +2,10 @@ module github.com/terraform-providers/terraform-provider-scaleway
 
 require (
 	github.com/aws/aws-sdk-go v1.34.32
+	github.com/certifi/gocertifi v0.0.0-20200922220541-2c3bb06c6054 // indirect
 	github.com/dnaeon/go-vcr v1.0.1
 	github.com/dustin/go-humanize v1.0.0
+	github.com/getsentry/raven-go v0.2.0
 	github.com/google/go-cmp v0.5.2
 	github.com/hashicorp/go-retryablehttp v0.6.7
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.2.0
