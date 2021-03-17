@@ -57,13 +57,20 @@ func resourceScalewayRegistryNamespaceCreate(ctx context.Context, d *schema.Reso
 		return diag.FromErr(err)
 	}
 
-	ns, err := api.CreateNamespace(&registry.CreateNamespaceRequest{
+	createReq := &registry.CreateNamespaceRequest{
 		Region:      region,
 		ProjectID:   expandStringPtr(d.Get("project_id")),
 		Name:        d.Get("name").(string),
 		Description: d.Get("description").(string),
 		IsPublic:    d.Get("is_public").(bool),
-	}, scw.WithContext(ctx))
+	}
+
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		createReq.Region = region
+	}
+
+	ns, err := api.CreateNamespace(createReq, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)
 	}

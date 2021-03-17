@@ -188,6 +188,11 @@ func resourceScalewayIotDeviceCreate(ctx context.Context, d *schema.ResourceData
 		Name:   expandOrGenerateString(d.Get("name"), "device"),
 	}
 
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		req.Region = region
+	}
+
 	if allowInsecure, ok := d.GetOk("allow_insecure"); ok {
 		req.AllowInsecure = allowInsecure.(bool)
 	}

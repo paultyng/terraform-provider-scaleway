@@ -258,6 +258,11 @@ func resourceScalewayK8SClusterCreate(ctx context.Context, d *schema.ResourceDat
 		ApiserverCertSans: expandStrings(d.Get("apiserver_cert_sans")),
 	}
 
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		req.Region = region
+	}
+
 	if dashboard, ok := d.GetOk("enable_dashboard"); ok {
 		req.EnableDashboard = dashboard.(bool)
 	}

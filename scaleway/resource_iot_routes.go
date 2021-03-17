@@ -203,6 +203,11 @@ func resourceScalewayIotRouteCreate(ctx context.Context, d *schema.ResourceData,
 		Topic:  d.Get("topic").(string),
 	}
 
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		req.Region = region
+	}
+
 	if _, ok := d.GetOk(iot.RouteRouteTypeS3.String()); ok {
 		prefixKey := fmt.Sprintf("%s.0", iot.RouteRouteTypeS3.String())
 		req.S3Config = &iot.CreateRouteRequestS3Config{

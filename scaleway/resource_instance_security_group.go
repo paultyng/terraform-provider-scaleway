@@ -101,7 +101,7 @@ func resourceScalewayInstanceSecurityGroupCreate(ctx context.Context, d *schema.
 		return diag.FromErr(err)
 	}
 
-	res, err := instanceAPI.CreateSecurityGroup(&instance.CreateSecurityGroupRequest{
+	req := &instance.CreateSecurityGroupRequest{
 		Name:                  expandOrGenerateString(d.Get("name"), "sg"),
 		Zone:                  zone,
 		Project:               expandStringPtr(d.Get("project_id")),
@@ -110,7 +110,14 @@ func resourceScalewayInstanceSecurityGroupCreate(ctx context.Context, d *schema.
 		InboundDefaultPolicy:  instance.SecurityGroupPolicy(d.Get("inbound_default_policy").(string)),
 		OutboundDefaultPolicy: instance.SecurityGroupPolicy(d.Get("outbound_default_policy").(string)),
 		EnableDefaultSecurity: expandBoolPtr(d.Get("enable_default_security")),
-	}, scw.WithContext(ctx))
+	}
+
+	if definedZone, ok := d.GetOk("zone"); ok {
+		zone = scw.Zone(definedZone.(string))
+		req.Zone = zone
+	}
+
+	res, err := instanceAPI.CreateSecurityGroup(req, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)
 	}

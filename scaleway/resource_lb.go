@@ -78,6 +78,11 @@ func resourceScalewayLbCreate(ctx context.Context, d *schema.ResourceData, meta 
 		Type:      d.Get("type").(string),
 	}
 
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		createReq.Region = region
+	}
+
 	if raw, ok := d.GetOk("tags"); ok {
 		for _, tag := range raw.([]interface{}) {
 			createReq.Tags = append(createReq.Tags, tag.(string))

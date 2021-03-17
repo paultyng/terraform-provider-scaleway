@@ -152,6 +152,11 @@ func resourceScalewayRdbInstanceCreate(ctx context.Context, d *schema.ResourceDa
 		Tags:          expandStrings(d.Get("tags")),
 	}
 
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		createReq.Region = region
+	}
+
 	res, err := rdbAPI.CreateInstance(createReq, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)

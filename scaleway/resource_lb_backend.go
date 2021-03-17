@@ -276,6 +276,11 @@ func resourceScalewayLbBackendCreate(ctx context.Context, d *schema.ResourceData
 		OnMarkedDownAction: expandLbBackendMarkdownAction(d.Get("on_marked_down_action")),
 	}
 
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		createReq.Region = region
+	}
+
 	res, err := lbAPI.CreateBackend(createReq, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)

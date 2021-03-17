@@ -80,9 +80,15 @@ func resourceScalewayAppleSiliconServerCreate(ctx context.Context, d *schema.Res
 	}
 
 	createReq := &applesilicon.CreateServerRequest{
+		Zone:      zone,
 		Name:      expandOrGenerateString(d.Get("name"), "m1"),
 		Type:      d.Get("type").(string),
 		ProjectID: d.Get("project_id").(string),
+	}
+
+	if definedZone, ok := d.GetOk("zone"); ok {
+		zone = scw.Zone(definedZone.(string))
+		createReq.Zone = zone
 	}
 
 	res, err := asAPI.CreateServer(createReq, scw.WithContext(ctx))

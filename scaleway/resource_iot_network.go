@@ -87,6 +87,11 @@ func resourceScalewayIotNetworkCreate(ctx context.Context, d *schema.ResourceDat
 		HubID:  expandID(d.Get("hub_id")),
 	}
 
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		req.Region = region
+	}
+
 	if topicPrefix, ok := d.GetOk("topic_prefix"); ok {
 		req.TopicPrefix = topicPrefix.(string)
 	}

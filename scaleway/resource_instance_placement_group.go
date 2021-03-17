@@ -68,13 +68,20 @@ func resourceScalewayInstancePlacementGroupCreate(ctx context.Context, d *schema
 		return diag.FromErr(err)
 	}
 
-	res, err := instanceAPI.CreatePlacementGroup(&instance.CreatePlacementGroupRequest{
+	req := &instance.CreatePlacementGroupRequest{
 		Zone:       zone,
 		Name:       expandOrGenerateString(d.Get("name"), "pg"),
 		Project:    expandStringPtr(d.Get("project_id")),
 		PolicyMode: instance.PlacementGroupPolicyMode(d.Get("policy_mode").(string)),
 		PolicyType: instance.PlacementGroupPolicyType(d.Get("policy_type").(string)),
-	}, scw.WithContext(ctx))
+	}
+
+	if definedZone, ok := d.GetOk("zone"); ok {
+		zone = scw.Zone(definedZone.(string))
+		req.Zone = zone
+	}
+
+	res, err := instanceAPI.CreatePlacementGroup(req, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)
 	}

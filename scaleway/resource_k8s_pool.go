@@ -219,6 +219,11 @@ func resourceScalewayK8SPoolCreate(ctx context.Context, d *schema.ResourceData, 
 		KubeletArgs: expandKubeletArgs(d.Get("kubelet_args")),
 	}
 
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		req.Region = region
+	}
+
 	if placementGroupID, ok := d.GetOk("placement_group_id"); ok {
 		req.PlacementGroupID = expandStringPtr(expandID(placementGroupID))
 	}

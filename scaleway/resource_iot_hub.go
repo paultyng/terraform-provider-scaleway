@@ -125,6 +125,11 @@ func resourceScalewayIotHubCreate(ctx context.Context, d *schema.ResourceData, m
 		ProductPlan: iot.HubProductPlan(d.Get("product_plan").(string)),
 	}
 
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		req.Region = region
+	}
+
 	if projectID, ok := d.GetOk("project_id"); ok {
 		req.ProjectID = projectID.(string)
 	}

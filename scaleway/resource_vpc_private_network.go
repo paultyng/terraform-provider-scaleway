@@ -58,12 +58,19 @@ func resourceScalewayVPCPrivateNetworkCreate(ctx context.Context, d *schema.Reso
 		return diag.FromErr(err)
 	}
 
-	res, err := vpcAPI.CreatePrivateNetwork(&vpc.CreatePrivateNetworkRequest{
+	createReq := &vpc.CreatePrivateNetworkRequest{
 		Name:      expandOrGenerateString(d.Get("name"), "pn"),
 		Tags:      expandStrings(d.Get("tags")),
 		ProjectID: d.Get("project_id").(string),
 		Zone:      zone,
-	}, scw.WithContext(ctx))
+	}
+
+	if definedZone, ok := d.GetOk("zone"); ok {
+		zone = scw.Zone(definedZone.(string))
+		createReq.Zone = zone
+	}
+
+	res, err := vpcAPI.CreatePrivateNetwork(createReq, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)
 	}

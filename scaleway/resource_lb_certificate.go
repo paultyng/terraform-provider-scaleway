@@ -128,6 +128,12 @@ func resourceScalewayLbCertificateCreate(ctx context.Context, d *schema.Resource
 		Letsencrypt:       expandLbLetsEncrypt(d.Get("letsencrypt")),
 		CustomCertificate: expandLbCustomCertificate(d.Get("custom_certificate")),
 	}
+
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		createReq.Region = region
+	}
+
 	if createReq.Letsencrypt == nil && createReq.CustomCertificate == nil {
 		return diag.FromErr(errors.New("you need to define either letsencrypt or custom_certificate configuration"))
 	}

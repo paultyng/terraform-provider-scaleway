@@ -258,3 +258,42 @@ func testAccCheckScalewayInstanceVolumeDestroy(tt *TestTools) resource.TestCheck
 		return nil
 	}
 }
+
+func TestAccScalewayInstanceVolume_ZoneDiffersProviderZone(t *testing.T) {
+	tt := NewTestTools(t)
+	defer tt.Cleanup()
+	resource.Test(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: tt.ProviderFactories,
+		CheckDestroy:      testAccCheckScalewayInstanceVolumeDestroy(tt),
+		Steps: []resource.TestStep{
+			{
+				Config: `
+					provider "scaleway" {
+						zone = "fr-par-1"
+						region = "fr-par"
+					}
+
+					resource "scaleway_instance_volume" "extended_disk" {
+						type             = "b_ssd"
+						name             = "test-instance-disk-1"
+						size_in_gb       = 1
+						zone             = "pl-waw-1"
+					}
+
+					resource "scaleway_instance_server" "main" {
+						name  = "test-instance"
+						type  = "DEV1-M"
+						image = "ubuntu_focal"
+						zone  = "pl-waw-1"
+					
+						root_volume {
+							size_in_gb            = 40
+							delete_on_termination = true
+						}
+						additional_volume_ids   = scaleway_instance_volume.extended_disk.*.id 
+					}`,
+			},
+		},
+	})
+}

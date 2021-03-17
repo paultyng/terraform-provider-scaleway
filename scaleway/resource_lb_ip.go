@@ -59,6 +59,11 @@ func resourceScalewayLbIPCreate(ctx context.Context, d *schema.ResourceData, met
 		Reverse:   expandStringPtr(d.Get("reverse")),
 	}
 
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		createReq.Region = region
+	}
+
 	res, err := lbAPI.CreateIP(createReq, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)

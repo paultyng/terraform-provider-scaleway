@@ -88,6 +88,11 @@ func resourceScalewayInstanceVolumeCreate(ctx context.Context, d *schema.Resourc
 		Project:    expandStringPtr(d.Get("project_id")),
 	}
 
+	if definedZone, ok := d.GetOk("zone"); ok {
+		zone = scw.Zone(definedZone.(string))
+		createVolumeRequest.Zone = zone
+	}
+
 	if size, ok := d.GetOk("size_in_gb"); ok {
 		volumeSizeInBytes := scw.Size(uint64(size.(int)) * gb)
 		createVolumeRequest.Size = &volumeSizeInBytes

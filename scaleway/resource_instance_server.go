@@ -246,6 +246,11 @@ func resourceScalewayInstanceServerCreate(ctx context.Context, d *schema.Resourc
 		Tags:              expandStrings(d.Get("tags")),
 	}
 
+	if definedZone, ok := d.GetOk("zone"); ok {
+		zone = scw.Zone(definedZone.(string))
+		req.Zone = zone
+	}
+
 	if bootScriptID, ok := d.GetOk("bootscript_id"); ok {
 		req.Bootscript = expandStringPtr(bootScriptID)
 	}
@@ -287,6 +292,7 @@ func resourceScalewayInstanceServerCreate(ctx context.Context, d *schema.Resourc
 		for i, volumeID := range raw.([]interface{}) {
 			// We have to get the volume to know whether it is a local or a block volume
 			vol, err := instanceAPI.GetVolume(&instance.GetVolumeRequest{
+				Zone:     zone,
 				VolumeID: expandZonedID(volumeID).ID,
 			})
 			if err != nil {

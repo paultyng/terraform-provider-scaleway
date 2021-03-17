@@ -69,6 +69,11 @@ func resourceScalewayRdbUserCreate(ctx context.Context, d *schema.ResourceData, 
 		IsAdmin:    d.Get("is_admin").(bool),
 	}
 
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		createReq.Region = region
+	}
+
 	res, err := rdbAPI.CreateUser(createReq, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)

@@ -159,7 +159,7 @@ func resourceScalewayLbFrontendCreate(ctx context.Context, d *schema.ResourceDat
 		return diag.FromErr(err)
 	}
 
-	res, err := lbAPI.CreateFrontend(&lb.CreateFrontendRequest{
+	createReq := &lb.CreateFrontendRequest{
 		Region:        region,
 		LBID:          LbID,
 		Name:          expandOrGenerateString(d.Get("name"), "lb-frt"),
@@ -167,7 +167,14 @@ func resourceScalewayLbFrontendCreate(ctx context.Context, d *schema.ResourceDat
 		BackendID:     expandID(d.Get("backend_id")),
 		TimeoutClient: expandDuration(d.Get("timeout_client")),
 		CertificateID: expandStringPtr(expandID(d.Get("certificate_id"))),
-	}, scw.WithContext(ctx))
+	}
+
+	if definedRegion, ok := d.GetOk("region"); ok {
+		region = scw.Region(definedRegion.(string))
+		createReq.Region = region
+	}
+
+	res, err := lbAPI.CreateFrontend(createReq, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)
 	}

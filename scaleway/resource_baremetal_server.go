@@ -138,14 +138,21 @@ func resourceScalewayBaremetalServerCreate(ctx context.Context, d *schema.Resour
 		offerID = newZonedID(zone, o.ID)
 	}
 
-	server, err := baremetalAPI.CreateServer(&baremetal.CreateServerRequest{
+	req := &baremetal.CreateServerRequest{
 		Zone:        zone,
 		Name:        expandOrGenerateString(d.Get("name"), "bm"),
 		ProjectID:   expandStringPtr(d.Get("project_id")),
 		Description: d.Get("description").(string),
 		OfferID:     offerID.ID,
 		Tags:        expandStrings(d.Get("tags")),
-	}, scw.WithContext(ctx))
+	}
+
+	if definedZone, ok := d.GetOk("zone"); ok {
+		zone = scw.Zone(definedZone.(string))
+		req.Zone = zone
+	}
+
+	server, err := baremetalAPI.CreateServer(req, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)
 	}

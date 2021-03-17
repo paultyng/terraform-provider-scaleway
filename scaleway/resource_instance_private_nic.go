@@ -52,6 +52,11 @@ func resourceScalewayInstancePrivateNICCreate(ctx context.Context, d *schema.Res
 		PrivateNetworkID: expandZonedID(d.Get("private_network_id").(string)).ID,
 	}
 
+	if definedZone, ok := d.GetOk("zone"); ok {
+		zone = scw.Zone(definedZone.(string))
+		createPrivateNICRequest.Zone = zone
+	}
+
 	res, err := instanceAPI.CreatePrivateNIC(
 		createPrivateNICRequest,
 		scw.WithContext(ctx),
