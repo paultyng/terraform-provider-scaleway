@@ -91,6 +91,7 @@ func Provider(config *ProviderConfig) plugin.ProviderFunc {
 				"scaleway_instance_image":          dataSourceScalewayInstanceImage(),
 				"scaleway_instance_volume":         dataSourceScalewayInstanceVolume(),
 				"scaleway_baremetal_offer":         dataSourceScalewayBaremetalOffer(),
+				"scaleway_baremetal_server":        dataSourceScalewayBaremetalServer(),
 				"scaleway_rdb_instance":            dataSourceScalewayRDBInstance(),
 				"scaleway_k8s_cluster":             dataSourceScalewayK8SCluster(),
 				"scaleway_k8s_pool":                dataSourceScalewayK8SPool(),
