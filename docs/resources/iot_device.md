@@ -1,11 +1,11 @@
 ---
 layout: "scaleway"
-page_title: "Scaleway: scaleway_iot_hub_device"
+page_title: "Scaleway: scaleway_iot_device"
 description: |-
   Manages Scaleway IoT Hub device.
 ---
 
-# scaleway_iot_hub_device
+# scaleway_iot_device
 
 -> **Note:** This terraform resource is currently in beta and might include breaking change in future releases.
 
@@ -21,7 +21,7 @@ resource scaleway_iot_hub main {
     product_plan = "plan_shared"
 }
 
-resource scaleway_iot_hub_device main {
+resource scaleway_iot_device main {
     hub_id = scaleway_iot_hub.main.id
     name   = "test-iot"
 }
