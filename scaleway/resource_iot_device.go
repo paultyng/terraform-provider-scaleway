@@ -119,6 +119,30 @@ func resourceScalewayIotDevice() *schema.Resource {
 					},
 				},
 			},
+			// Provided or computed elements
+			"certificate": {
+				Type:        schema.TypeList,
+				MaxItems:    1,
+				Optional:    true,
+				Computed:    true,
+				Description: "Certificate section of the device",
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"crt": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Computed:    true,
+							Description: "X509 PEM encoded certificate of the device",
+						},
+						"key": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Sensitive:   true,
+							Description: "X509 PEM encoded key of the device",
+						},
+					},
+				},
+			},
 			// Computed elements
 			"region": regionSchema(),
 			"created_at": {
@@ -130,28 +154,6 @@ func resourceScalewayIotDevice() *schema.Resource {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "The date and time of the last update of the device",
-			},
-			"certificate": {
-				Type:        schema.TypeList,
-				MaxItems:    1,
-				Optional:    true,
-				Computed:    true,
-				Description: "Certificate section of the device",
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"crt": {
-							Type:        schema.TypeString,
-							Computed:    true,
-							Description: "X509 PEM encoded certificate of the device",
-						},
-						"key": {
-							Type:        schema.TypeString,
-							Computed:    true,
-							Description: "X509 PEM encoded key of the device",
-							Sensitive:   true,
-						},
-					},
-				},
 			},
 			"status": {
 				Type:        schema.TypeString,
@@ -242,12 +244,26 @@ func resourceScalewayIotDeviceCreate(ctx context.Context, d *schema.ResourceData
 
 	d.SetId(newRegionalIDString(region, res.Device.ID))
 
-	// Certificate and Key cannot be retreived later
-	cert := map[string]interface{}{
-		"crt": res.Certificate.Crt,
-		"key": res.Certificate.Key,
+	// If user certifcate is provided.
+	if devCrt, ok := d.GetOk("certificate.0.crt"); ok {
+		// Set user certificate to device.
+		// It cannot currently be added in the create device request.
+		_, err := iotAPI.SetDeviceCertificate(&iot.SetDeviceCertificateRequest{
+			Region:         region,
+			DeviceID:       res.Device.ID,
+			CertificatePem: devCrt.(string),
+		}, scw.WithContext(ctx))
+		if err != nil {
+			return diag.FromErr(err)
+		}
+	} else {
+		// Update certificate and key as they cannot be retreived later.
+		cert := map[string]interface{}{
+			"crt": res.Certificate.Crt,
+			"key": res.Certificate.Key,
+		}
+		_ = d.Set("certificate", []map[string]interface{}{cert})
 	}
-	_ = d.Set("certificate", []map[string]interface{}{cert})
 
 	return resourceScalewayIotDeviceRead(ctx, d, meta)
 }
@@ -319,11 +335,32 @@ func resourceScalewayIotDeviceRead(ctx context.Context, d *schema.ResourceData, 
 		_ = d.Set("message_filters", []map[string]interface{}{mf})
 	}
 
+	////
+	// Read Device certificate
+	////
+
+	// As we cannot read the key, we get back it from cache and do not change it.
+	if devCrtKey, ok := d.GetOk("certificate.0.key"); ok {
+		devCrt, err := iotAPI.GetDeviceCertificate(&iot.GetDeviceCertificateRequest{
+			Region:   region,
+			DeviceID: deviceID,
+		}, scw.WithContext(ctx))
+		if err != nil {
+			return diag.FromErr(err)
+		}
+		// Set device certificate.
+		cert := map[string]interface{}{
+			"crt": devCrt.CertificatePem,
+			"key": devCrtKey.(string),
+		}
+		_ = d.Set("certificate", []map[string]interface{}{cert})
+	}
+
 	return nil
 }
 
 func resourceScalewayIotDeviceUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	iotAPI, region, hubID, err := iotAPIWithRegionAndID(meta, d.Id())
+	iotAPI, region, deviceID, err := iotAPIWithRegionAndID(meta, d.Id())
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -333,7 +370,7 @@ func resourceScalewayIotDeviceUpdate(ctx context.Context, d *schema.ResourceData
 	////
 	updateRequest := &iot.UpdateDeviceRequest{
 		Region:   region,
-		DeviceID: hubID,
+		DeviceID: deviceID,
 	}
 
 	if d.HasChange("allow_insecure") {
@@ -385,6 +422,20 @@ func resourceScalewayIotDeviceUpdate(ctx context.Context, d *schema.ResourceData
 	_, err = iotAPI.UpdateDevice(updateRequest, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)
+	}
+
+	////
+	// Set the device certificate if changed
+	////
+	if d.HasChange("certificate.0.crt") {
+		_, err := iotAPI.SetDeviceCertificate(&iot.SetDeviceCertificateRequest{
+			Region:         region,
+			DeviceID:       deviceID,
+			CertificatePem: d.Get("certificate.0.crt").(string),
+		}, scw.WithContext(ctx))
+		if err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	return resourceScalewayIotDeviceRead(ctx, d, meta)
