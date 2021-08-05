@@ -23,6 +23,7 @@ func resourceScalewayVPCPublicGateway() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Type:        schema.TypeString,
+				Computed:    true,
 				Optional:    true,
 				Description: "name of the gateway",
 			},

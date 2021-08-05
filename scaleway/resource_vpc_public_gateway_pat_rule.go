@@ -12,12 +12,12 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
-func resourceScalewayVPCPublicGatewayPATRules() *schema.Resource {
+func resourceScalewayVPCPublicGatewayPATRule() *schema.Resource {
 	return &schema.Resource{
-		CreateContext: resourceScalewayVPCPublicGatewayPATRulesCreate,
-		ReadContext:   resourceScalewayVPCPublicGatewayPATRulesRead,
-		UpdateContext: resourceScalewayVPCPublicGatewayPATRulesUpdate,
-		DeleteContext: resourceScalewayVPCPublicGatewayPATRulesDelete,
+		CreateContext: resourceScalewayVPCPublicGatewayPATRuleCreate,
+		ReadContext:   resourceScalewayVPCPublicGatewayPATRuleRead,
+		UpdateContext: resourceScalewayVPCPublicGatewayPATRuleUpdate,
+		DeleteContext: resourceScalewayVPCPublicGatewayPATRuleDelete,
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
 		},
@@ -74,7 +74,7 @@ func resourceScalewayVPCPublicGatewayPATRules() *schema.Resource {
 	}
 }
 
-func resourceScalewayVPCPublicGatewayPATRulesCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceScalewayVPCPublicGatewayPATRuleCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	vpcgwAPI, zone, err := vpcgwAPIWithZone(d, meta)
 	if err != nil {
 		return diag.FromErr(err)
@@ -82,7 +82,7 @@ func resourceScalewayVPCPublicGatewayPATRulesCreate(ctx context.Context, d *sche
 
 	req := &vpcgw.CreatePATRuleRequest{
 		Zone:        zone,
-		GatewayID:   d.Get("gateway_id").(string),
+		GatewayID:   expandZonedID(d.Get("gateway_id").(string)).ID,
 		PublicPort:  uint32(d.Get("public_port").(int)),
 		PrivateIP:   net.ParseIP(d.Get("private_ip").(string)),
 		PrivatePort: uint32(d.Get("private_port").(int)),
@@ -96,10 +96,10 @@ func resourceScalewayVPCPublicGatewayPATRulesCreate(ctx context.Context, d *sche
 
 	d.SetId(newZonedIDString(zone, res.ID))
 
-	return resourceScalewayVPCPublicGatewayPATRulesRead(ctx, d, meta)
+	return resourceScalewayVPCPublicGatewayPATRuleRead(ctx, d, meta)
 }
 
-func resourceScalewayVPCPublicGatewayPATRulesRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceScalewayVPCPublicGatewayPATRuleRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	vpcgwAPI, zone, ID, err := vpcgwAPIWithZoneAndID(meta, d.Id())
 	if err != nil {
 		return diag.FromErr(err)
@@ -129,16 +129,16 @@ func resourceScalewayVPCPublicGatewayPATRulesRead(ctx context.Context, d *schema
 	return nil
 }
 
-func resourceScalewayVPCPublicGatewayPATRulesUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceScalewayVPCPublicGatewayPATRuleUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	_, _, _, err := vpcgwAPIWithZoneAndID(meta, d.Id())
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
-	return resourceScalewayVPCPublicGatewayPATRulesRead(ctx, d, meta)
+	return resourceScalewayVPCPublicGatewayPATRuleRead(ctx, d, meta)
 }
 
-func resourceScalewayVPCPublicGatewayPATRulesDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceScalewayVPCPublicGatewayPATRuleDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	vpcgwAPI, zone, ID, err := vpcgwAPIWithZoneAndID(meta, d.Id())
 	if err != nil {
 		return diag.FromErr(err)

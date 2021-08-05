@@ -10,39 +10,45 @@ import (
 )
 
 func init() {
-	resource.AddTestSweepers("scaleway_vpc_public_gateway_pat_rules", &resource.Sweeper{
-		Name: "scaleway_vpc_public_gateway_pat_rules",
+	resource.AddTestSweepers("scaleway_vpc_public_gateway_pat_rule", &resource.Sweeper{
+		Name: "scaleway_vpc_public_gateway_pat_rule",
 		F:    testSweepVPCPublicGateway,
 	})
 }
 
-func TestAccScalewayVPCPublicGatewayPATRules_Basic(t *testing.T) {
+func TestAccScalewayVPCPublicGatewayPATRule_Basic(t *testing.T) {
 	tt := NewTestTools(t)
 	defer tt.Cleanup()
 
 	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: tt.ProviderFactories,
-		CheckDestroy:      testAccCheckScalewayVPCPublicGatewayPATRulesDestroy(tt),
+		CheckDestroy:      testAccCheckScalewayVPCPublicGatewayPATRuleDestroy(tt),
 		Steps: []resource.TestStep{
 			{
-				Config: fmt.Sprintf(`
+				Config: `
+					resource scaleway_vpc_public_gateway main {
+						type = "VPC-GW-S"
+					}`,
+			},
+			{
+				Config: `
 					resource scaleway_vpc_public_gateway main {
 						type = "VPC-GW-S"
 					}
 					
-					resource scaleway_vpc_public_gateway_pat_rules main {
+					resource scaleway_vpc_public_gateway_pat_rule main {
 						gateway_id = scaleway_vpc_public_gateway.main.id
 						private_ip = "192.168.0.1"
 						private_port = 8080
 						public_port = 8080
 						protocol = "both"
 					}
-				`),
+				`,
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckScalewayVPCPublicGatewayIPExists(
+					testAccCheckScalewayVPCPublicGatewayPATRuleExists(
 						tt,
-						"scaleway_vpc_public_gateway_pat_rules.main",
+						"scaleway_vpc_public_gateway_pat_rule.main",
 					),
 				),
 			},
@@ -50,7 +56,7 @@ func TestAccScalewayVPCPublicGatewayPATRules_Basic(t *testing.T) {
 	})
 }
 
-func testAccCheckScalewayVPCPublicGatewayPATRulesExists(tt *TestTools, n string) resource.TestCheckFunc {
+func testAccCheckScalewayVPCPublicGatewayPATRuleExists(tt *TestTools, n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
@@ -75,7 +81,7 @@ func testAccCheckScalewayVPCPublicGatewayPATRulesExists(tt *TestTools, n string)
 	}
 }
 
-func testAccCheckScalewayVPCPublicGatewayPATRulesDestroy(tt *TestTools) resource.TestCheckFunc {
+func testAccCheckScalewayVPCPublicGatewayPATRuleDestroy(tt *TestTools) resource.TestCheckFunc {
 	return func(state *terraform.State) error {
 		for _, rs := range state.RootModule().Resources {
 			if rs.Type != "scaleway_vpc_public_gateway_pat_rules" {
