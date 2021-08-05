@@ -368,6 +368,17 @@ func expandStrings(data interface{}) []string {
 	return stringSlice
 }
 
+func expandStringsPtr(data interface{}) *[]string {
+	var stringSlice []string
+	if data == nil {
+		return &stringSlice
+	}
+	for _, s := range data.([]interface{}) {
+		stringSlice = append(stringSlice, s.(string))
+	}
+	return &stringSlice
+}
+
 func expandStringsOrEmpty(data interface{}) []string {
 	if data == nil {
 		return []string{}
