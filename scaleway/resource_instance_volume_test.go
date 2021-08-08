@@ -231,6 +231,65 @@ func TestAccScalewayInstanceVolume_CannotResizeBlockDown(t *testing.T) {
 	})
 }
 
+func TestAccScalewayInstanceVolume_ManualAttach(t *testing.T) {
+	tt := NewTestTools(t)
+	defer tt.Cleanup()
+	resource.Test(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: tt.ProviderFactories,
+		ExternalProviders: map[string]resource.ExternalProvider{
+			"null": {},
+		},
+		CheckDestroy: testAccCheckScalewayInstanceVolumeDestroy(tt),
+		Steps: []resource.TestStep{
+			{
+				Config: `
+					variable "zone" {
+						type    = string
+						default = "fr-par-1"
+					}
+
+					resource "scaleway_instance_volume" "main" {
+  						type       = "b_ssd"
+  						name       = "foobar"
+  						size_in_gb = 1
+					}
+
+					resource "scaleway_instance_server" "main" {
+						type  = "DEV1-S"
+  						image = "ubuntu_focal"
+  						name  = "foobar"
+
+						enable_dynamic_ip = true
+
+						root_volume {
+							delete_on_termination = true
+						}
+					}
+
+					resource "null_resource" "setup-block" {
+						connection {
+							host = scaleway_instance_server.main.public_ip
+							user = "root"
+							type = "ssh"
+						}
+
+						depends_on = [scaleway_instance_server.main, scaleway_instance_volume.main]
+
+						provisioner "local-exec" {
+							command = "scw instance server attach-volume server-id=$SERV_ID volume-id=$VOL_ID"
+							environment = {
+								SERV_ID = trimprefix(scaleway_instance_server.main.id, "${var.zone}/")
+								VOL_ID  = trimprefix(scaleway_instance_volume.main.id, "${var.zone}/")
+							}
+						}
+					}
+				`,
+			},
+		},
+	})
+}
+
 func testAccCheckScalewayInstanceVolumeExists(tt *TestTools, n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[n]
