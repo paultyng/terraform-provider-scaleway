@@ -103,6 +103,7 @@ func Provider(config *ProviderConfig) plugin.ProviderFunc {
 				"scaleway_rdb_privilege":           dataSourceScalewayRDBPrivilege(),
 				"scaleway_k8s_cluster":             dataSourceScalewayK8SCluster(),
 				"scaleway_k8s_pool":                dataSourceScalewayK8SPool(),
+				"scaleway_lb":                      dataSourceScalewayLb(),
 				"scaleway_lb_ip":                   dataSourceScalewayLbIP(),
 				"scaleway_marketplace_image":       dataSourceScalewayMarketplaceImage(),
 				"scaleway_registry_namespace":      dataSourceScalewayRegistryNamespace(),
