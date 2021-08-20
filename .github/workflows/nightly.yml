@@ -3,7 +3,7 @@ name: Nightly Acceptance Tests
 on:
   schedule:
     # Will run at 00:00 every day
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
 
 jobs:
   nightly:
@@ -14,6 +14,7 @@ jobs:
           - Account
           - AppleSilicon
           - Baremetal
+          - DomainRecord
           - Instance
           - Iot
           - K8S
@@ -39,6 +40,7 @@ jobs:
           TF_ACC: 1
           # Enable recording with the cassette system. By doing so, we ensure that real HTTPS requests are made.
           TF_UPDATE_CASSETTES: true
+          TF_TEST_DOMAIN: scaleway-terraform.com
           SCW_DEBUG: 1
           SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
           SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}

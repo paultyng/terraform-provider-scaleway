@@ -30,12 +30,20 @@ export TF_UPDATE_CASSETTES=true
 make testacc
 ```
 
-It's also required to have Scaleway environment vars available :
+It's also required to have Scaleway environment vars available:
 
 ```sh
 export SCW_ACCESS_KEY=SCWXXXXXXXXXXXXXXXXX
 export SCW_SECRET_KEY=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 export SCW_DEFAULT_PROJECT_ID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+```
+
+For testing the domain API, it will use the first available domain in your domains list. You need to have a valid domain.
+
+You can force the test domain with an environment var:
+
+```sh
+export TF_TEST_DOMAIN=your-domain.tld
 ```
 
 To ease debugging you can also set:
@@ -46,5 +54,5 @@ export SCW_DEBUG=1
 
 Running a single test:
 ```sh
-TF_UPDATE_CASSETTES=true;TF_LOG=DEBUG;SCW_DEBUG=1;TF_ACC=1 go test ./scaleway -v -run=TestAccScalewayDataSourceRDBInstance_Basic -timeout=120m -parallel=10
+TF_UPDATE_CASSETTES=true TF_LOG=DEBUG SCW_DEBUG=1 TF_ACC=1 go test ./scaleway -v -run=TestAccScalewayDataSourceRDBInstance_Basic -timeout=120m -parallel=10
 ```
