@@ -78,6 +78,8 @@ func Provider(config *ProviderConfig) plugin.ProviderFunc {
 				"scaleway_lb_backend":                    resourceScalewayLbBackend(),
 				"scaleway_lb_certificate":                resourceScalewayLbCertificate(),
 				"scaleway_lb_frontend":                   resourceScalewayLbFrontend(),
+				"scaleway_lb_private_network":            resourceScalewayLbPrivateNetwork(),
+				"scaleway_lb_route":                      resourceScalewayLbRoute(),
 				"scaleway_registry_namespace":            resourceScalewayRegistryNamespace(),
 				"scaleway_rdb_acl":                       resourceScalewayRdbACL(),
 				"scaleway_rdb_database":                  resourceScalewayRdbDatabase(),
