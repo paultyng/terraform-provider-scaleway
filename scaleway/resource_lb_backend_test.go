@@ -105,6 +105,140 @@ func TestAccScalewayLbBackend_Basic(t *testing.T) {
 	})
 }
 
+func TestAccScalewayLbBackend_HealthCheck_Basic(t *testing.T) {
+	tt := NewTestTools(t)
+	defer tt.Cleanup()
+	resource.ParallelTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: tt.ProviderFactories,
+		CheckDestroy:      testAccCheckScalewayLbBackendDestroy(tt),
+		Steps: []resource.TestStep{
+			{
+				Config: `
+				resource "scaleway_lb_ip" "ip01" {}
+
+				resource "scaleway_lb" "lb01" {
+				  ip_id = scaleway_lb_ip.ip01.id
+				  name  = "test-lb"
+				  type  = "lb-s"
+				}
+
+				resource "scaleway_lb_backend" "bkd01" {
+				  lb_id            = scaleway_lb.lb01.id
+				  name             = "bkd01"
+				  forward_protocol = "tcp"
+				  forward_port     = 80
+				}
+				`,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check_tcp.#", "1"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check_http.#", "0"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check_https.#", "0"),
+				),
+			},
+			{
+				Config: `
+						resource scaleway_lb_ip ip01 {}
+
+						resource scaleway_lb lb01 {
+							ip_id = scaleway_lb_ip.ip01.id
+							name = "test-lb"
+							type = "lb-s"
+						}
+
+						resource scaleway_lb_backend bkd01 {
+							lb_id = scaleway_lb.lb01.id
+							name = "bkd01"
+							forward_protocol = "tcp"
+							forward_port = 80
+
+							health_check {
+								protocol = "http"
+								uri = "http://test.com/health"
+								method = "POST"
+								code = 404
+								host_header = "test.com"
+							}
+						}
+					`,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check_tcp.#", "0"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.#", "1"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.0.uri", "http://test.com/health"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.0.method", "POST"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.0.code", "404"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.0.host_header", "test.com"),
+				),
+			},
+			{
+				Config: `
+					resource "scaleway_lb_ip" "ip01" {}
+
+					resource "scaleway_lb" "lb01" {
+					  ip_id = scaleway_lb_ip.ip01.id
+					  name  = "test-lb"
+					  type  = "lb-s"
+					}
+
+					resource "scaleway_lb_backend" "bkd01" {
+					  lb_id            = scaleway_lb.lb01.id
+					  name             = "bkd01"
+					  forward_protocol = "tcp"
+					  forward_port     = 80
+
+					  health_check {
+						protocol    = "https"
+						uri         = "http://test.com/health"
+						method      = "POST"
+						code        = 404
+						host_header = "test.com"
+						sni         = "sni.test.com"
+					  }
+					}
+					`,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check_tcp.#", "0"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.#", "1"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.0.uri", "http://test.com/health"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.0.method", "POST"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.0.protocol", "https"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.0.code", "404"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.0.host_header", "test.com"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.0.sni", "sni.test.com"),
+				),
+			},
+			{
+				Config: `
+					resource "scaleway_lb_ip" "ip01" {}
+					
+					resource "scaleway_lb" "lb01" {
+					  ip_id = scaleway_lb_ip.ip01.id
+					  name  = "test-lb"
+					  type  = "lb-s"
+					}
+					
+					resource "scaleway_lb_backend" "bkd01" {
+					  lb_id            = scaleway_lb.lb01.id
+					  name             = "bkd01"
+					  forward_protocol = "tcp"
+					  forward_port     = 80
+					
+					  health_check {
+						protocol      = "mysql"
+						database_user = "devtools"
+					  }
+					}
+					`,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.#", "1"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.0.protocol", "mysql"),
+					resource.TestCheckResourceAttr("scaleway_lb_backend.bkd01", "health_check.0.code", "0"),
+				),
+			},
+		},
+	})
+}
+
 func TestAccScalewayLbBackend_HealthCheck(t *testing.T) {
 	tt := NewTestTools(t)
 	defer tt.Cleanup()

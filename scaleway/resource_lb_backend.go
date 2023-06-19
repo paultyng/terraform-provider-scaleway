@@ -152,25 +152,29 @@ func resourceScalewayLbBackend() *schema.Resource {
 				ValidateFunc:     validateDuration(),
 				Default:          "60s",
 				Description:      "Interval between two HC requests",
+				Deprecated:       "Please use the `health_check` block instead",
 			},
 			"health_check_port": {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Computed:    true,
 				Description: "Port the HC requests will be send to. Default to `forward_port`",
+				Deprecated:  "Please use the `health_check` block instead",
 			},
 			"health_check_max_retries": {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Default:     2,
 				Description: "Number of allowed failed HC requests before the backend server is marked down",
+				Deprecated:  "Please use the `health_check` block instead",
 			},
 			"health_check_tcp": {
 				Type:          schema.TypeList,
 				MaxItems:      1,
-				ConflictsWith: []string{"health_check_http", "health_check_https"},
+				ConflictsWith: []string{"health_check_http", "health_check_https", "health_check"},
 				Optional:      true,
 				Computed:      true,
+				Deprecated:    "Health check TCP is block is deprecated. Please use the health_check block",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{},
 				},
@@ -178,8 +182,9 @@ func resourceScalewayLbBackend() *schema.Resource {
 			"health_check_http": {
 				Type:          schema.TypeList,
 				MaxItems:      1,
-				ConflictsWith: []string{"health_check_tcp", "health_check_https"},
+				ConflictsWith: []string{"health_check_tcp", "health_check_https", "health_check"},
 				Optional:      true,
+				Deprecated:    "Health check HTTP is block is deprecated. Please use the health_check block",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"uri": {
@@ -210,8 +215,9 @@ func resourceScalewayLbBackend() *schema.Resource {
 			"health_check_https": {
 				Type:          schema.TypeList,
 				MaxItems:      1,
-				ConflictsWith: []string{"health_check_tcp", "health_check_http"},
+				ConflictsWith: []string{"health_check_tcp", "health_check_http", "health_check"},
 				Optional:      true,
+				Deprecated:    "Health check HTTPS is block is deprecated. Please use the health_check block",
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"uri": {
@@ -228,6 +234,100 @@ func resourceScalewayLbBackend() *schema.Resource {
 						"code": {
 							Type:        schema.TypeInt,
 							Default:     200,
+							Optional:    true,
+							Description: "The expected HTTP status code",
+						},
+						"host_header": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "The HTTP host header to use for HC requests",
+						},
+						"sni": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "The SNI to use for HC requests over SSL",
+						},
+					},
+				},
+			},
+			"health_check": {
+				Type:          schema.TypeList,
+				MaxItems:      1,
+				ConflictsWith: []string{"health_check_tcp", "health_check_http", "health_check_https"},
+				Optional:      true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"protocol": {
+							Type:             schema.TypeString,
+							Required:         true,
+							DiffSuppressFunc: diffSuppressFuncIgnoreCase,
+							Description:      "Protocol the load balancer uses when performing health checks. Must be either LDAP, MySQL, PgSQL, HTTP, or HTTPS. Defaults to TCP.",
+							ValidateFunc: validation.StringInSlice([]string{
+								lbSDK.ProtocolTCP.String(),
+								lbSDK.ProtocolHTTP.String(),
+								"mysql",
+								"pgsql",
+								"https",
+								"ldap",
+							}, false),
+						},
+						"database_user": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "The user to use for the health check on protocol mysql or pgsql",
+						},
+						"check_timeout": {
+							Type:             schema.TypeString,
+							Optional:         true,
+							DiffSuppressFunc: diffSuppressFuncDuration,
+							ValidateFunc:     validateDuration(),
+							Default:          "30s",
+							Description:      "Timeout before we consider a HC request failed",
+						},
+						"check_delay": {
+							Type:             schema.TypeString,
+							Optional:         true,
+							DiffSuppressFunc: diffSuppressFuncDuration,
+							ValidateFunc:     validateDuration(),
+							Default:          "60s",
+							Description:      "The time to wait between two consecutive health checks",
+						},
+						"transient_check_delay": {
+							Type:        schema.TypeInt,
+							Optional:    true,
+							Default:     "10",
+							Description: "The time to wait between two consecutive health checks when a backend server is in a transient state",
+						},
+						"port": {
+							Type:        schema.TypeInt,
+							Optional:    true,
+							Computed:    true,
+							Description: "The Port the HC requests will be send to. Default to `forward_port`",
+						},
+						"check_send_proxy": {
+							Type:        schema.TypeBool,
+							Description: "It defines whether proxy protocol should be activated for the health check",
+							Optional:    true,
+							Default:     false,
+						},
+						"max_retries": {
+							Type:        schema.TypeInt,
+							Optional:    true,
+							Default:     2,
+							Description: "Number of allowed failed HC requests before the backend server is marked down",
+						},
+						"uri": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "The HTTPS endpoint URL to call for HC requests",
+						},
+						"method": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "The HTTP method to use for HC requests",
+						},
+						"code": {
+							Type:        schema.TypeInt,
 							Optional:    true,
 							Description: "The expected HTTP status code",
 						},
@@ -323,6 +423,7 @@ func resourceScalewayLbBackendCreate(ctx context.Context, d *schema.ResourceData
 	if err != nil {
 		return diag.FromErr(err)
 	}
+
 	createReq := &lbSDK.ZonedAPICreateBackendRequest{
 		Zone:                     zone,
 		LBID:                     lbID,
@@ -332,7 +433,28 @@ func resourceScalewayLbBackendCreate(ctx context.Context, d *schema.ResourceData
 		ForwardPortAlgorithm:     expandLbForwardPortAlgorithm(d.Get("forward_port_algorithm")),
 		StickySessions:           expandLbStickySessionsType(d.Get("sticky_sessions")),
 		StickySessionsCookieName: d.Get("sticky_sessions_cookie_name").(string),
-		HealthCheck: &lbSDK.HealthCheck{
+		ServerIP:                 expandStrings(d.Get("server_ips")),
+		ProxyProtocol:            expandLbProxyProtocol(d.Get("proxy_protocol")),
+		TimeoutServer:            timeoutServer,
+		TimeoutConnect:           timeoutConnect,
+		TimeoutTunnel:            timeoutTunnel,
+		OnMarkedDownAction:       expandLbBackendMarkdownAction(d.Get("on_marked_down_action")),
+		FailoverHost:             expandStringPtr(d.Get("failover_host")),
+		SslBridging:              expandBoolPtr(getBool(d, "ssl_bridging")),
+		IgnoreSslServerVerify:    expandBoolPtr(getBool(d, "ignore_ssl_server_verify")),
+	}
+
+	if hc, exist := d.GetOk("health_check"); exist {
+		createReq.HealthCheck, err = expandLbHealthCheck(hc)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		if createReq.HealthCheck.Port == 0 {
+			createReq.HealthCheck.Port = int32(healthCheckPort)
+		}
+	} else {
+		createReq.HealthCheck = &lbSDK.HealthCheck{
 			Port:            int32(healthCheckPort),
 			CheckMaxRetries: int32(d.Get("health_check_max_retries").(int)),
 			CheckTimeout:    healthCheckoutTimeout,
@@ -340,16 +462,7 @@ func resourceScalewayLbBackendCreate(ctx context.Context, d *schema.ResourceData
 			TCPConfig:       expandLbHCTCP(d.Get("health_check_tcp")),
 			HTTPConfig:      expandLbHCHTTP(d.Get("health_check_http")),
 			HTTPSConfig:     expandLbHCHTTPS(d.Get("health_check_https")),
-		},
-		ServerIP:              expandStrings(d.Get("server_ips")),
-		ProxyProtocol:         expandLbProxyProtocol(d.Get("proxy_protocol")),
-		TimeoutServer:         timeoutServer,
-		TimeoutConnect:        timeoutConnect,
-		TimeoutTunnel:         timeoutTunnel,
-		OnMarkedDownAction:    expandLbBackendMarkdownAction(d.Get("on_marked_down_action")),
-		FailoverHost:          expandStringPtr(d.Get("failover_host")),
-		SslBridging:           expandBoolPtr(getBool(d, "ssl_bridging")),
-		IgnoreSslServerVerify: expandBoolPtr(getBool(d, "ignore_ssl_server_verify")),
+		}
 	}
 
 	// deprecated attribute
@@ -409,9 +522,18 @@ func resourceScalewayLbBackendRead(ctx context.Context, d *schema.ResourceData, 
 	_ = d.Set("health_check_timeout", flattenDuration(backend.HealthCheck.CheckTimeout))
 	_ = d.Set("health_check_delay", flattenDuration(backend.HealthCheck.CheckDelay))
 	_ = d.Set("on_marked_down_action", flattenLbBackendMarkdownAction(backend.OnMarkedDownAction))
-	_ = d.Set("health_check_tcp", flattenLbHCTCP(backend.HealthCheck.TCPConfig))
-	_ = d.Set("health_check_http", flattenLbHCHTTP(backend.HealthCheck.HTTPConfig))
-	_ = d.Set("health_check_https", flattenLbHCHTTPS(backend.HealthCheck.HTTPSConfig))
+
+	if _, ok := d.GetOk("health_check"); ok {
+		_ = d.Set("health_check", flattenLbHealthCheck(backend.HealthCheck))
+		_ = d.Set("health_check_tcp", nil)
+		_ = d.Set("health_check_http", nil)
+		_ = d.Set("health_check_https", nil)
+	} else {
+		_ = d.Set("health_check_tcp", flattenLbHCTCP(backend.HealthCheck.TCPConfig))
+		_ = d.Set("health_check_http", flattenLbHCHTTP(backend.HealthCheck.HTTPConfig))
+		_ = d.Set("health_check_https", flattenLbHCHTTPS(backend.HealthCheck.HTTPSConfig))
+	}
+
 	_ = d.Set("send_proxy_v2", flattenBoolPtr(backend.SendProxyV2))
 	_ = d.Set("failover_host", backend.FailoverHost)
 	_ = d.Set("ssl_bridging", flattenBoolPtr(backend.SslBridging))
@@ -508,6 +630,19 @@ func resourceScalewayLbBackendUpdate(ctx context.Context, d *schema.ResourceData
 		CheckDelay:      healthCheckDelay,
 		HTTPConfig:      expandLbHCHTTP(d.Get("health_check_http")),
 		HTTPSConfig:     expandLbHCHTTPS(d.Get("health_check_https")),
+	}
+
+	if d.HasChanges("health_check") {
+		hc, err := expandLbHealthCheck(d.Get("health_check"))
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		if hc.Port == 0 {
+			hc.Port = int32(d.Get("forward_port").(int))
+		}
+
+		updateHealthCheckChanges(hc, updateHCRequest)
 	}
 
 	// As this is the default behaviour if no other HC type are present we enable TCP

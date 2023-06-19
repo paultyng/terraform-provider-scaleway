@@ -350,6 +350,161 @@ func expandLbHCHTTPS(raw interface{}) *lbSDK.HealthCheckHTTPSConfig {
 	}
 }
 
+func expandLbHCMySQL(raw interface{}) *lbSDK.HealthCheckMysqlConfig {
+	if raw == nil || len(raw.([]interface{})) != 1 {
+		return nil
+	}
+
+	rawMap := raw.([]interface{})[0].(map[string]interface{})
+	return &lbSDK.HealthCheckMysqlConfig{
+		User: rawMap["database_user"].(string),
+	}
+}
+
+func expandLbHCPgSQL(raw interface{}) *lbSDK.HealthCheckPgsqlConfig {
+	if raw == nil || len(raw.([]interface{})) != 1 {
+		return nil
+	}
+
+	rawMap := raw.([]interface{})[0].(map[string]interface{})
+	return &lbSDK.HealthCheckPgsqlConfig{
+		User: rawMap["database_user"].(string),
+	}
+}
+
+func expandLbHCLDAP(raw interface{}) *lbSDK.HealthCheckLdapConfig {
+	if raw == nil || len(raw.([]interface{})) != 1 {
+		return nil
+	}
+
+	return &lbSDK.HealthCheckLdapConfig{}
+}
+
+func expandLbHealthCheck(raw interface{}) (*lbSDK.HealthCheck, error) {
+	if raw == nil || len(raw.([]interface{})) != 1 {
+		return nil, nil
+	}
+
+	var err error
+
+	rawMap := raw.([]interface{})[0].(map[string]interface{})
+
+	protocol := rawMap["protocol"]
+	hc := &lbSDK.HealthCheck{}
+	hc.CheckMaxRetries = int32(rawMap["max_retries"].(int))
+	hc.Port = int32(rawMap["port"].(int))
+	hc.CheckDelay, err = expandDuration(rawMap["check_delay"])
+	if err != nil {
+		return nil, err
+	}
+	hc.CheckTimeout, err = expandDuration(rawMap["check_timeout"])
+	if err != nil {
+		return nil, err
+	}
+	hc.CheckSendProxy = rawMap["check_send_proxy"].(bool)
+	hc.TransientCheckDelay = &scw.Duration{Seconds: int64(rawMap["transient_check_delay"].(int))}
+
+	switch protocol {
+	case "tcp":
+		hc.TCPConfig = &lbSDK.HealthCheckTCPConfig{}
+	case "http":
+		hc.HTTPConfig = expandLbHCHTTP(raw)
+	case "https":
+		hc.HTTPSConfig = expandLbHCHTTPS(raw)
+	case "mysql":
+		hc.MysqlConfig = expandLbHCMySQL(raw)
+	case "pgsql":
+		hc.PgsqlConfig = expandLbHCPgSQL(raw)
+	case "ldap":
+		hc.LdapConfig = expandLbHCLDAP(raw)
+	}
+
+	return hc, err
+}
+
+func updateHealthCheckChanges(hc *lbSDK.HealthCheck, updateHCRequest *lbSDK.ZonedAPIUpdateHealthCheckRequest) {
+	updateHCRequest.TransientCheckDelay = hc.TransientCheckDelay
+	updateHCRequest.CheckSendProxy = hc.CheckSendProxy
+	updateHCRequest.CheckTimeout = hc.CheckTimeout
+	updateHCRequest.CheckMaxRetries = hc.CheckMaxRetries
+	updateHCRequest.CheckDelay = hc.CheckDelay
+	updateHCRequest.Port = hc.Port
+
+	switch {
+	case hc.TCPConfig != nil:
+		updateHCRequest.TCPConfig = hc.TCPConfig
+
+	case hc.PgsqlConfig != nil:
+		updateHCRequest.PgsqlConfig = hc.PgsqlConfig
+
+	case hc.MysqlConfig != nil:
+		updateHCRequest.MysqlConfig = hc.MysqlConfig
+
+	case hc.HTTPConfig != nil:
+		updateHCRequest.HTTPConfig = hc.HTTPConfig
+
+	case hc.HTTPSConfig != nil:
+		updateHCRequest.HTTPSConfig = hc.HTTPSConfig
+
+	case hc.LdapConfig != nil:
+		updateHCRequest.LdapConfig = hc.LdapConfig
+
+	case hc.RedisConfig != nil:
+		updateHCRequest.RedisConfig = hc.RedisConfig
+	}
+}
+
+func flattenLbHealthCheck(hc *lbSDK.HealthCheck) interface{} {
+	if hc == nil {
+		return nil
+	}
+
+	raw := make(map[string]interface{})
+	raw["port"] = hc.Port
+	raw["check_timeout"] = flattenDuration(hc.CheckTimeout)
+	raw["check_delay"] = flattenDuration(hc.CheckDelay)
+	raw["transient_check_delay"] = hc.TransientCheckDelay.Seconds
+	raw["check_send_proxy"] = flattenBoolPtr(&hc.CheckSendProxy)
+	raw["max_retries"] = hc.CheckMaxRetries
+
+	if hc.HTTPConfig != nil {
+		raw["protocol"] = "http"
+		raw["uri"] = hc.HTTPConfig.URI
+		raw["method"] = hc.HTTPConfig.Method
+		raw["code"] = flattenInt32Ptr(hc.HTTPConfig.Code)
+		raw["host_header"] = hc.HTTPConfig.HostHeader
+	}
+
+	if hc.HTTPSConfig != nil {
+		raw["protocol"] = "https"
+		raw["uri"] = hc.HTTPSConfig.URI
+		raw["method"] = hc.HTTPSConfig.Method
+		raw["code"] = flattenInt32Ptr(hc.HTTPSConfig.Code)
+		raw["host_header"] = hc.HTTPSConfig.HostHeader
+		raw["sni"] = hc.HTTPSConfig.Sni
+	}
+
+	if hc.LdapConfig != nil {
+		raw["protocol"] = "ldap"
+	}
+	if hc.TCPConfig != nil {
+		raw["protocol"] = "tcp"
+	}
+	if hc.MysqlConfig != nil {
+		raw["protocol"] = "mysql"
+		raw["database_user"] = hc.MysqlConfig.User
+	}
+	if hc.PgsqlConfig != nil {
+		raw["protocol"] = "pgsql"
+		raw["database_user"] = hc.PgsqlConfig.User
+	}
+	if hc.RedisConfig != nil {
+		raw["protocol"] = "redis"
+	}
+
+	return []map[string]interface{}{raw}
+}
+
 func expandLbLetsEncrypt(raw interface{}) *lbSDK.CreateCertificateRequestLetsencryptConfig {
 	if raw == nil || len(raw.([]interface{})) != 1 {
 		return nil
