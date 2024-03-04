@@ -3,6 +3,7 @@ package scaleway
 import (
 	"context"
 
+	"github.com/alexedwards/argon2id"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
@@ -61,6 +62,10 @@ func resourceScalewayContainerNamespace() *schema.Resource {
 					ValidateFunc: validation.StringLenBetween(0, 1000),
 				},
 				ValidateDiagFunc: validation.MapKeyLenBetween(0, 100),
+				DiffSuppressFunc: func(k, oldValue, newValue string, d *schema.ResourceData) bool {
+					match, _ := argon2id.ComparePasswordAndHash(oldValue, newValue)
+					return match
+				},
 			},
 			"registry_endpoint": {
 				Type:        schema.TypeString,
@@ -131,6 +136,7 @@ func resourceScalewayContainerNamespaceRead(ctx context.Context, d *schema.Resou
 
 	_ = d.Set("description", flattenStringPtr(ns.Description))
 	_ = d.Set("environment_variables", ns.EnvironmentVariables)
+	_ = d.Set("secret_environment_variables", flattenContainerSecretEnvironmentVariables(ns.SecretEnvironmentVariables))
 	_ = d.Set("name", ns.Name)
 	_ = d.Set("organization_id", ns.OrganizationID)
 	_ = d.Set("project_id", ns.ProjectID)

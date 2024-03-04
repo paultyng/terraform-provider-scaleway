@@ -190,6 +190,78 @@ func TestAccScalewayContainerNamespace_DestroyRegistry(t *testing.T) {
 	})
 }
 
+func TestAccScalewayContainerNamespace_ImportWithSecrets(t *testing.T) {
+	tt := NewTestTools(t)
+	defer tt.Cleanup()
+
+	resource.ParallelTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: tt.ProviderFactories,
+		CheckDestroy: resource.ComposeTestCheckFunc(
+			testAccCheckScalewayContainerNamespaceDestroy(tt),
+			testAccCheckScalewayContainerRegistryDestroy(tt),
+		),
+		Steps: []resource.TestStep{
+			{
+				Config: `
+					resource scaleway_container_namespace main {
+						name = "test-cr-ns-import-01"
+						secret_environment_variables = {
+							foo = "bar"
+						}
+					}
+				`,
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckScalewayContainerNamespaceExists(tt, "scaleway_container_namespace.main"),
+					testCheckResourceAttrUUID("scaleway_container_namespace.main", "id"),
+					resource.TestCheckResourceAttr("scaleway_container_namespace.main", "secret_environment_variables.foo", "bar"),
+				),
+			},
+			{
+				Config: `
+					resource scaleway_container_namespace main {
+						name = "test-cr-ns-import-01"
+						secret_environment_variables = {
+							foo = "bar"
+						}
+					}
+
+					resource scaleway_container_namespace import {
+						name = "test-cr-ns-import-01"
+						secret_environment_variables = {
+							foo = "bar"
+						}
+					}
+				`,
+				ResourceName:       "scaleway_container_namespace.import",
+				ImportState:        true,
+				ImportStatePersist: true,
+				ImportStateIdFunc: func(state *terraform.State) (string, error) {
+					return state.RootModule().Resources["scaleway_container_namespace.main"].Primary.ID, nil
+				},
+			},
+			{
+				Config: `
+					resource scaleway_container_namespace main {
+						name = "test-cr-ns-import-01"
+						secret_environment_variables = {
+							foo = "bar"
+						}
+					}
+
+					resource scaleway_container_namespace import {
+						name = "test-cr-ns-import-01"
+						secret_environment_variables = {
+							foo = "bar"
+						}
+					}
+				`,
+				PlanOnly: true,
+			},
+		},
+	})
+}
+
 func testAccCheckScalewayContainerNamespaceExists(tt *TestTools, n string) resource.TestCheckFunc {
 	return func(state *terraform.State) error {
 		rs, ok := state.RootModule().Resources[n]
