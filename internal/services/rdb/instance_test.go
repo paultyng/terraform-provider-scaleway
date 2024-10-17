@@ -1152,6 +1152,8 @@ func TestAccInstance_Endpoints(t *testing.T) {
 					resource.TestCheckResourceAttr("scaleway_rdb_instance.test_endpoints", "load_balancer.#", "0"),
 					resource.TestCheckResourceAttr("scaleway_rdb_instance.test_endpoints", "endpoint_ip", ""),    // Deprecated attribute, might be deleted later
 					resource.TestCheckResourceAttr("scaleway_rdb_instance.test_endpoints", "endpoint_port", "0"), // Deprecated attribute, might be deleted later
+					resource.TestCheckResourceAttrSet("scaleway_rdb_instance.test_endpoints", "private_ip.0.id"),
+					resource.TestCheckResourceAttrSet("scaleway_rdb_instance.test_endpoints", "private_ip.0.address"),
 				),
 			},
 			{

@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	ipamAPI "github.com/scaleway/scaleway-sdk-go/api/ipam/v1"
 	"github.com/scaleway/scaleway-sdk-go/api/vpcgw/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/cdf"
@@ -15,6 +16,7 @@ import (
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/httperrors"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/locality/regional"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/locality/zonal"
+	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/ipam"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/transport"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/types"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/verify"
@@ -115,6 +117,25 @@ func ResourceNetwork() *schema.Resource {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "The mac address on this network",
+			},
+			"private_ip": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Description: "List of private IP addresses associated with the resource.",
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"id": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The ID of the IP address resource.",
+						},
+						"address": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The private IP address.",
+						},
+					},
+				},
 			},
 			"created_at": {
 				Type:        schema.TypeString,
@@ -265,6 +286,27 @@ func ResourceVPCGatewayNetworkRead(ctx context.Context, d *schema.ResourceData, 
 	_ = d.Set("updated_at", gatewayNetwork.UpdatedAt.Format(time.RFC3339))
 	_ = d.Set("zone", zone.String())
 	_ = d.Set("status", gatewayNetwork.Status.String())
+
+	var privateIP []map[string]interface{}
+	if gatewayNetwork.PrivateNetworkID != "" {
+		resourceID := gatewayNetwork.ID
+		region, err := zone.Region()
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		resourceType := ipamAPI.ResourceTypeVpcGatewayNetwork
+		opts := &ipam.GetResourcePrivateIPsOptions{
+			ResourceID:       &resourceID,
+			ResourceType:     &resourceType,
+			PrivateNetworkID: &gatewayNetwork.PrivateNetworkID,
+		}
+		privateIP, err = ipam.GetResourcePrivateIPs(ctx, m, region, opts)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+	}
+	_ = d.Set("private_ip", privateIP)
 
 	return nil
 }

@@ -189,6 +189,10 @@ the form `{zone}/{id}`, e.g. `fr-par-1/11111111-1111-1111-1111-111111111111`
     - `endpoint_id` - The ID of the endpoint.
     - `zone` - The zone of the Private Network.
 
+- `private_ip` - The list of private IP addresses associated with the resource.
+    - `id` - The ID of the IP address resource.
+    - `address` - The private IP address.
+
 - `created_at` - The date and time of creation of the Redis™ cluster.
 - `updated_at` - The date and time of the last update of the Redis™ cluster.
 - `certificate` - The PEM of the certificate used by redis, only when `tls_enabled` is true

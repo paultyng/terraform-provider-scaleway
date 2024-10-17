@@ -81,6 +81,7 @@ func convertNodes(res *k8s.ListNodesResponse) []map[string]interface{} {
 	result := make([]map[string]interface{}, 0, len(res.Nodes))
 	for _, node := range res.Nodes {
 		n := make(map[string]interface{})
+		n["id"] = node.ID
 		n["name"] = node.Name
 		n["status"] = node.Status.String()
 		if node.PublicIPV4 != nil && node.PublicIPV4.String() != types.NetIPNil { //nolint:staticcheck

@@ -248,6 +248,10 @@ resource "scaleway_lb" "main" {
 
 - `static_config` - (Deprecated) Please use `ipam_ids`. Define a local ip address of your choice for the load balancer instance.
 
+- `private_ip` - The list of private IP addresses associated with the resource.
+    - `id` - The ID of the IP address resource.
+    - `address` - The private IP address.
+
 - `zone` - (Defaults to [provider](../index.md#zone) `zone`) The [zone](../guides/regions_and_zones.md#zones) in which the Private Network was created.
 
 

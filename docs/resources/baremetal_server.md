@@ -177,6 +177,9 @@ In addition to all arguments above, the following attributes are exported:
     - `status` - The private network status.
     - `created_at` - The date and time of the creation of the private network.
     - `updated_at` - The date and time of the last update of the private network.
+- `private_ip` - The list of private IP addresses associated with the resource.
+    - `id` - The ID of the IP address resource.
+    - `address` - The private IP address.
 - `ips` - (List of) The IPs of the server.
     - `id` - The ID of the IP.
     - `address` - The address of the IP.

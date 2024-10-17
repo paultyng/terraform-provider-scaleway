@@ -252,6 +252,10 @@ attached to the server. Updates to this field will trigger a stop/start of the s
 - `private_network` - (Optional) The private network associated with the server.
    Use the `pn_id` key to attach a [private_network](https://www.scaleway.com/en/developers/api/instance/#path-private-nics-list-all-private-nics) on your instance.
 
+- `private_ip` - The list of private IP addresses associated with the resource.
+    - `id` - The ID of the IP address resource.
+    - `address` - The private IP address.
+
 - `boot_type` - The boot Type of the server. Possible values are: `local`, `bootscript` or `rescue`.
 
 - `replace_on_type_change` - (Defaults to false) If true, the server will be replaced if `type` is changed. Otherwise, the server will migrate.

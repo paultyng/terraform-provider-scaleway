@@ -50,6 +50,8 @@ func TestAccPool_Basic(t *testing.T) {
 					resource.TestCheckResourceAttr("scaleway_k8s_pool.default", "tags.1", "scaleway_k8s_cluster"),
 					resource.TestCheckResourceAttr("scaleway_k8s_pool.default", "tags.2", "default"),
 					testAccCheckK8SPoolServersAreInPrivateNetwork(tt, "scaleway_k8s_cluster.minimal", "scaleway_k8s_pool.default", "scaleway_vpc_private_network.minimal"),
+					resource.TestCheckResourceAttrSet("scaleway_k8s_pool.default", "private_ip.0.id"),
+					resource.TestCheckResourceAttrSet("scaleway_k8s_pool.default", "private_ip.0.address"),
 				),
 			},
 			{
@@ -69,6 +71,10 @@ func TestAccPool_Basic(t *testing.T) {
 					resource.TestCheckResourceAttrSet("scaleway_k8s_pool.minimal", "nodes.0.public_ip"), // Deprecated attributes
 					testAccCheckK8SPoolServersAreInPrivateNetwork(tt, "scaleway_k8s_cluster.minimal", "scaleway_k8s_pool.default", "scaleway_vpc_private_network.minimal"),
 					testAccCheckK8SPoolServersAreInPrivateNetwork(tt, "scaleway_k8s_cluster.minimal", "scaleway_k8s_pool.minimal", "scaleway_vpc_private_network.minimal"),
+					resource.TestCheckResourceAttrSet("scaleway_k8s_pool.default", "private_ip.0.id"),
+					resource.TestCheckResourceAttrSet("scaleway_k8s_pool.default", "private_ip.0.address"),
+					resource.TestCheckResourceAttrSet("scaleway_k8s_pool.default", "private_ip.1.id"),
+					resource.TestCheckResourceAttrSet("scaleway_k8s_pool.default", "private_ip.1.address"),
 				),
 			},
 			{

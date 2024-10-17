@@ -41,6 +41,8 @@ func TestAccPrivateNIC_Basic(t *testing.T) {
 					resource.TestCheckResourceAttrSet("scaleway_instance_private_nic.nic01", "mac_address"),
 					resource.TestCheckResourceAttrSet("scaleway_instance_private_nic.nic01", "private_network_id"),
 					resource.TestCheckResourceAttrSet("scaleway_instance_private_nic.nic01", "server_id"),
+					resource.TestCheckResourceAttrSet("scaleway_instance_private_nic.nic01", "private_ip.0.id"),
+					resource.TestCheckResourceAttrSet("scaleway_instance_private_nic.nic01", "private_ip.0.address"),
 				),
 			},
 		},

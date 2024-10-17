@@ -13,6 +13,7 @@ import (
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/locality"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/locality/regional"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/locality/zonal"
+	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/ipam"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/types"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/verify"
 )
@@ -192,6 +193,11 @@ func ResourcePool() *schema.Resource {
 				Computed: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
+						"id": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The ID of the node",
+						},
 						"name": {
 							Type:        schema.TypeString,
 							Computed:    true,
@@ -221,6 +227,25 @@ func ResourcePool() *schema.Resource {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "The status of the pool",
+			},
+			"private_ip": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Description: "List of private IP addresses associated with the resource",
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"id": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The ID of the IP address resource",
+						},
+						"address": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The private IP address",
+						},
+					},
+				},
 			},
 		},
 	}
@@ -394,6 +419,30 @@ func ResourceK8SPoolRead(ctx context.Context, d *schema.ResourceData, m interfac
 	if pool.PlacementGroupID != nil {
 		_ = d.Set("placement_group_id", zonal.NewID(pool.Zone, *pool.PlacementGroupID).String())
 	}
+
+	var allPrivateIPs []map[string]interface{}
+	for _, nodeMap := range nodes {
+		nodeNameInterface, ok := nodeMap["name"]
+		if !ok {
+			continue
+		}
+		nodeName, ok := nodeNameInterface.(string)
+		if !ok {
+			continue
+		}
+
+		opts := &ipam.GetResourcePrivateIPsOptions{
+			ResourceName: &nodeName,
+		}
+		privateIPs, err := ipam.GetResourcePrivateIPs(ctx, m, region, opts)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+		if privateIPs != nil {
+			allPrivateIPs = append(allPrivateIPs, privateIPs...)
+		}
+	}
+	_ = d.Set("private_ip", allPrivateIPs)
 
 	return nil
 }

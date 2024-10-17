@@ -236,6 +236,9 @@ are of the form `{region}/{id}`, e.g. `fr-par/11111111-1111-1111-1111-1111111111
     - `port` - Port in the Private Network.
     - `name` - Name of the endpoint.
     - `hostname` - Hostname of the endpoint.
+- `private_ip` - The list of private IP addresses associated with the resource.
+    - `id` - The ID of the IP address resource.
+    - `address` - The private IP address.
 - `certificate` - Certificate of the Database Instance.
 - `organization_id` - The organization ID the Database Instance is associated with.
 

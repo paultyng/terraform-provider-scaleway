@@ -19,6 +19,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	block "github.com/scaleway/scaleway-sdk-go/api/block/v1alpha1"
 	instanceSDK "github.com/scaleway/scaleway-sdk-go/api/instance/v1"
+	ipamAPI "github.com/scaleway/scaleway-sdk-go/api/ipam/v1"
 	"github.com/scaleway/scaleway-sdk-go/api/marketplace/v2"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 	scwvalidation "github.com/scaleway/scaleway-sdk-go/validation"
@@ -30,6 +31,7 @@ import (
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/locality/zonal"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/meta"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/account"
+	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/ipam"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/vpc"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/types"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/verify"
@@ -333,6 +335,25 @@ func ResourceServer() *schema.Resource {
 							Type:        schema.TypeString,
 							Computed:    true,
 							Description: "IP Address",
+						},
+					},
+				},
+			},
+			"private_ips": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Description: "List of private IP addresses associated with the resource",
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"id": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The ID of the IP address resource",
+						},
+						"address": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The private IP address",
 						},
 					},
 				},
@@ -761,6 +782,32 @@ func ResourceInstanceServerRead(ctx context.Context, d *schema.ResourceData, m i
 		if err != nil {
 			return diag.FromErr(err)
 		}
+
+		var privateNICIDs []string
+		for _, nic := range ph.privateNICsMap {
+			privateNICIDs = append(privateNICIDs, nic.ID)
+		}
+
+		var allPrivateIPs []map[string]interface{}
+		resourceType := ipamAPI.ResourceTypeInstancePrivateNic
+		region, err := zone.Region()
+		if err != nil {
+			return diag.FromErr(err)
+		}
+		for _, nicID := range privateNICIDs {
+			opts := &ipam.GetResourcePrivateIPsOptions{
+				ResourceType: &resourceType,
+				ResourceID:   &nicID,
+			}
+			privateIPs, err := ipam.GetResourcePrivateIPs(ctx, m, region, opts)
+			if err != nil {
+				return diag.FromErr(err)
+			}
+			if privateIPs != nil {
+				allPrivateIPs = append(allPrivateIPs, privateIPs...)
+			}
+		}
+		_ = d.Set("private_ips", allPrivateIPs)
 
 		return nil
 	}

@@ -1121,6 +1121,8 @@ func TestAccServer_PrivateNetwork(t *testing.T) {
 					resource.TestCheckResourceAttrSet("scaleway_instance_server.base", "private_network.0.zone"),
 					resource.TestCheckResourceAttrPair("scaleway_instance_server.base", "private_network.0.pn_id",
 						"scaleway_vpc_private_network.internal", "id"),
+					resource.TestCheckResourceAttrSet("scaleway_instance_server.base", "private_ips.0.id"),
+					resource.TestCheckResourceAttrSet("scaleway_instance_server.base", "private_ips.0.address"),
 				),
 			},
 			{

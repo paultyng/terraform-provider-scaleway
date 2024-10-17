@@ -77,6 +77,8 @@ func TestAccVPCGatewayNetwork_Basic(t *testing.T) {
 					resource.TestCheckResourceAttr("scaleway_vpc_gateway_network.main", "enable_dhcp", "true"),
 					resource.TestCheckResourceAttr("scaleway_vpc_gateway_network.main", "cleanup_dhcp", "true"),
 					resource.TestCheckResourceAttr("scaleway_vpc_gateway_network.main", "enable_masquerade", "true"),
+					resource.TestCheckResourceAttrSet("scaleway_vpc_gateway_network.main", "private_ip.0.id"),
+					resource.TestCheckResourceAttrSet("scaleway_vpc_gateway_network.main", "private_ip.0.address"),
 				),
 			},
 			{
