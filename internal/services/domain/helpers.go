@@ -14,6 +14,10 @@ func NewDomainAPI(m interface{}) *domain.API {
 	return domain.NewAPI(meta.ExtractScwClient(m))
 }
 
+func NewRegistrarDomainAPI(m interface{}) *domain.RegistrarAPI {
+	return domain.NewRegistrarAPI(meta.ExtractScwClient(m))
+}
+
 func getRecordFromTypeAndData(dnsType domain.RecordType, data string, records []*domain.Record) (*domain.Record, error) {
 	var currentRecord *domain.Record
 	for _, r := range records {
