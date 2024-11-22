@@ -150,22 +150,6 @@ func contactSchema() map[string]*schema.Schema {
 			Type:     schema.TypeBool,
 			Optional: true,
 		},
-		"questions": {
-			Type:     schema.TypeList,
-			Optional: true,
-			Elem: &schema.Resource{
-				Schema: map[string]*schema.Schema{
-					"question": {
-						Type:     schema.TypeString,
-						Required: true,
-					},
-					"answer": {
-						Type:     schema.TypeString,
-						Required: true,
-					},
-				},
-			},
-		},
 		"extension_fr": {
 			Type:     schema.TypeMap,
 			Optional: true,
@@ -220,21 +204,21 @@ func resourceDomainCreate(ctx context.Context, d *schema.ResourceData, m interfa
 
 		buyDomainsRequest.OwnerContactID = &ownerContactID
 	} else if ownerContact, ok := d.GetOk("owner_contact"); ok {
-		buyDomainsRequest.OwnerContact = expandContact(ownerContact.(map[string]interface{}))
+		buyDomainsRequest.OwnerContact = ExpandNewContact(ownerContact.(map[string]interface{}))
 	}
 
 	adminContactID := d.Get("administrative_contact_id").(string)
 	if adminContactID != "" {
 		buyDomainsRequest.AdministrativeContactID = &adminContactID
 	} else if adminContact, ok := d.GetOk("administrative_contact"); ok {
-		buyDomainsRequest.AdministrativeContact = expandContact(adminContact.(map[string]interface{}))
+		buyDomainsRequest.AdministrativeContact = ExpandNewContact(adminContact.(map[string]interface{}))
 	}
 
 	techContactID := d.Get("technical_contact_id").(string)
 	if adminContactID != "" {
 		buyDomainsRequest.TechnicalContactID = &techContactID
 	} else if techContact, ok := d.GetOk("technical_contact"); ok {
-		buyDomainsRequest.TechnicalContact = expandContact(techContact.(map[string]interface{}))
+		buyDomainsRequest.TechnicalContact = ExpandNewContact(techContact.(map[string]interface{}))
 	}
 
 	resp, err := registrarAPI.BuyDomains(buyDomainsRequest, scw.WithContext(ctx))
@@ -248,8 +232,7 @@ func resourceDomainCreate(ctx context.Context, d *schema.ResourceData, m interfa
 }
 
 func resourceDomainsRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	registrarAPI := NewRegistrarDomainAPI(m)
-
+	return nil
 }
 
 func contactToMap(contact *domain.Contact) map[string]interface{} {
