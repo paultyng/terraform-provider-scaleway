@@ -136,6 +136,7 @@ func Provider(config *Config) plugin.ProviderFunc {
 				"scaleway_container_token":                     container.ResourceToken(),
 				"scaleway_container_trigger":                   container.ResourceTrigger(),
 				"scaleway_domain_record":                       domain.ResourceRecord(),
+				"scaleway_domain_order_domain":                 domain.ResourceOrderDomain(),
 				"scaleway_domain_zone":                         domain.ResourceZone(),
 				"scaleway_flexible_ip":                         flexibleip.ResourceIP(),
 				"scaleway_flexible_ip_mac_address":             flexibleip.ResourceMACAddress(),

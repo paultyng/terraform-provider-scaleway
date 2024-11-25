@@ -1,15 +1,22 @@
 package domain
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"strings"
 	"time"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/retry"
 	domain "github.com/scaleway/scaleway-sdk-go/api/domain/v2beta1"
 	"github.com/scaleway/scaleway-sdk-go/api/std"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/meta"
+	"github.com/scaleway/terraform-provider-scaleway/v2/internal/transport"
+)
+
+const (
+	defaultWaitDomainOrderDomainRetryInterval = 10 * time.Minute
 )
 
 // NewDomainAPI returns a new domain API.
@@ -100,19 +107,30 @@ func ExpandContact(contactMap map[string]interface{}) *domain.Contact {
 	}
 
 	if extFr, ok := contactMap["extension_fr"].(map[string]interface{}); ok && len(extFr) > 0 {
-		contact.ExtensionFr = expandContactExtension(extFr, "fr").(*domain.ContactExtensionFR)
+		extension := expandContactExtension(extFr, "fr")
+		if extension != nil {
+			contact.ExtensionFr = extension.(*domain.ContactExtensionFR)
+		}
 	}
 	if extEu, ok := contactMap["extension_eu"].(map[string]interface{}); ok && len(extEu) > 0 {
-		contact.ExtensionEu = expandContactExtension(extEu, "eu").(*domain.ContactExtensionEU)
+		extension := expandContactExtension(extEu, "eu")
+		if extension != nil {
+			contact.ExtensionEu = extension.(*domain.ContactExtensionEU)
+		}
 	}
+
 	if extNl, ok := contactMap["extension_nl"].(map[string]interface{}); ok && len(extNl) > 0 {
-		contact.ExtensionNl = expandContactExtension(extNl, "nl").(*domain.ContactExtensionNL)
+		extension := expandContactExtension(extNl, "nl")
+		if extension != nil {
+			contact.ExtensionNl = extension.(*domain.ContactExtensionNL)
+		}
 	}
 
 	return contact
 }
 
 func expandContactExtension(extensionMap map[string]interface{}, extensionType string) interface{} {
+
 	if extensionMap == nil || len(extensionMap) == 0 {
 		return nil
 	}
@@ -205,14 +223,24 @@ func ExpandNewContact(contactMap map[string]interface{}) *domain.NewContact {
 		contact.State = scw.StringPtr(v)
 	}
 
-	if extFr, ok := contactMap["extension_fr"].(map[string]interface{}); ok {
-		contact.ExtensionFr = expandContactExtension(extFr, "fr").(*domain.ContactExtensionFR)
+	if extFr, ok := contactMap["extension_fr"].(map[string]interface{}); ok && len(extFr) > 0 {
+		extension := expandContactExtension(extFr, "fr")
+		if extension != nil {
+			contact.ExtensionFr = extension.(*domain.ContactExtensionFR)
+		}
 	}
-	if extEu, ok := contactMap["extension_eu"].(map[string]interface{}); ok {
-		contact.ExtensionEu = expandContactExtension(extEu, "eu").(*domain.ContactExtensionEU)
+	if extEu, ok := contactMap["extension_eu"].(map[string]interface{}); ok && len(extEu) > 0 {
+		extension := expandContactExtension(extEu, "eu")
+		if extension != nil {
+			contact.ExtensionEu = extension.(*domain.ContactExtensionEU)
+		}
 	}
-	if extNl, ok := contactMap["extension_nl"].(map[string]interface{}); ok {
-		contact.ExtensionNl = expandContactExtension(extNl, "nl").(*domain.ContactExtensionNL)
+
+	if extNl, ok := contactMap["extension_nl"].(map[string]interface{}); ok && len(extNl) > 0 {
+		extension := expandContactExtension(extNl, "nl")
+		if extension != nil {
+			contact.ExtensionNl = extension.(*domain.ContactExtensionNL)
+		}
 	}
 
 	return contact
@@ -265,4 +293,298 @@ func mapToStruct(data map[string]interface{}, target interface{}) {
 			t.CodeAuthAfnic = v
 		}
 	}
+}
+
+func extractDomainFromID(id string) (string, error) {
+	parts := strings.Split(id, "/")
+	if len(parts) != 2 {
+		return "", fmt.Errorf("invalid ID format, expected 'projectID/domainName', got: %s", id)
+	}
+	return parts[1], nil
+}
+
+func flattenContact(contact *domain.Contact) []map[string]interface{} {
+	if contact == nil {
+		return nil
+	}
+
+	flattened := map[string]interface{}{
+		"phone_number":                contact.PhoneNumber,
+		"legal_form":                  string(contact.LegalForm),
+		"firstname":                   contact.Firstname,
+		"lastname":                    contact.Lastname,
+		"email":                       contact.Email,
+		"address_line_1":              contact.AddressLine1,
+		"zip":                         contact.Zip,
+		"city":                        contact.City,
+		"country":                     contact.Country,
+		"company_name":                contact.CompanyName,
+		"email_alt":                   contact.EmailAlt,
+		"fax_number":                  contact.FaxNumber,
+		"address_line_2":              contact.AddressLine2,
+		"vat_identification_code":     contact.VatIDentificationCode,
+		"company_identification_code": contact.CompanyIDentificationCode,
+		"lang":                        string(contact.Lang),
+		"resale":                      contact.Resale,
+		"state":                       contact.State,
+		"whois_opt_in":                contact.WhoisOptIn,
+	}
+
+	if contact.ExtensionFr != nil {
+		flattened["extension_fr"] = flattenContactExtensionFR(contact.ExtensionFr)
+	}
+	if contact.ExtensionEu != nil {
+		flattened["extension_eu"] = flattenContactExtensionEU(contact.ExtensionEu)
+	}
+	if contact.ExtensionNl != nil {
+		flattened["extension_nl"] = flattenContactExtensionNL(contact.ExtensionNl)
+	}
+
+	return []map[string]interface{}{flattened}
+}
+
+func flattenContactExtensionFR(ext *domain.ContactExtensionFR) []map[string]interface{} {
+	if ext == nil {
+		return nil
+	}
+
+	return []map[string]interface{}{
+		{
+			"mode":                 string(ext.Mode),
+			"individual_info":      flattenContactExtensionFRIndividualInfo(ext.IndividualInfo),
+			"duns_info":            flattenContactExtensionFRDunsInfo(ext.DunsInfo),
+			"association_info":     flattenContactExtensionFRAssociationInfo(ext.AssociationInfo),
+			"trademark_info":       flattenContactExtensionFRTrademarkInfo(ext.TrademarkInfo),
+			"code_auth_afnic_info": flattenContactExtensionFRCodeAuthAfnicInfo(ext.CodeAuthAfnicInfo),
+		},
+	}
+}
+
+func flattenContactExtensionFRIndividualInfo(info *domain.ContactExtensionFRIndividualInfo) []map[string]interface{} {
+	if info == nil {
+		return nil
+	}
+	return []map[string]interface{}{
+		{
+			"whois_opt_in": info.WhoisOptIn,
+		},
+	}
+}
+
+func flattenContactExtensionFRDunsInfo(info *domain.ContactExtensionFRDunsInfo) []map[string]interface{} {
+	if info == nil {
+		return nil
+	}
+	return []map[string]interface{}{
+		{
+			"duns_id":  info.DunsID,
+			"local_id": info.LocalID,
+		},
+	}
+}
+
+func flattenContactExtensionFRAssociationInfo(info *domain.ContactExtensionFRAssociationInfo) []map[string]interface{} {
+	if info == nil {
+		return nil
+	}
+	return []map[string]interface{}{
+		{
+			"publication_jo":      info.PublicationJo.Format(time.RFC3339),
+			"publication_jo_page": info.PublicationJoPage,
+		},
+	}
+}
+
+func flattenContactExtensionFRTrademarkInfo(info *domain.ContactExtensionFRTrademarkInfo) []map[string]interface{} {
+	if info == nil {
+		return nil
+	}
+	return []map[string]interface{}{
+		{
+			"trademark_inpi": info.TrademarkInpi,
+		},
+	}
+}
+
+func flattenContactExtensionFRCodeAuthAfnicInfo(info *domain.ContactExtensionFRCodeAuthAfnicInfo) []map[string]interface{} {
+	if info == nil {
+		return nil
+	}
+	return []map[string]interface{}{
+		{
+			"code_auth_afnic": info.CodeAuthAfnic,
+		},
+	}
+}
+
+func flattenContactExtensionEU(ext *domain.ContactExtensionEU) []map[string]interface{} {
+	if ext == nil {
+		return nil
+	}
+
+	return []map[string]interface{}{
+		{
+			"european_citizenship": ext.EuropeanCitizenship,
+		},
+	}
+}
+
+func flattenContactExtensionNL(ext *domain.ContactExtensionNL) []map[string]interface{} {
+	if ext == nil {
+		return nil
+	}
+
+	return []map[string]interface{}{
+		{
+			"legal_form":                     string(ext.LegalForm),
+			"legal_form_registration_number": ext.LegalFormRegistrationNumber,
+		},
+	}
+}
+
+func flattenTLD(tld *domain.Tld) map[string]interface{} {
+	if tld == nil {
+		return nil
+	}
+
+	return map[string]interface{}{
+		"name":                  tld.Name,
+		"dnssec_support":        tld.DnssecSupport,
+		"duration_in_years_min": tld.DurationInYearsMin,
+		"duration_in_years_max": tld.DurationInYearsMax,
+		"idn_support":           tld.IDnSupport,
+		"offers":                flattenTldOffers(tld.Offers),
+		"specifications":        tld.Specifications,
+	}
+}
+
+func flattenTldOffers(offers map[string]*domain.TldOffer) map[string]interface{} {
+	if offers == nil {
+		return nil
+	}
+
+	flattenedOffers := make(map[string]interface{})
+	for key, offer := range offers {
+		flattenedOffers[key] = map[string]interface{}{
+			"action":         offer.Action,
+			"operation_path": offer.OperationPath,
+			"price": map[string]interface{}{
+				"currency_code": offer.Price.CurrencyCode,
+				"units":         offer.Price.Units,
+				"nanos":         offer.Price.Nanos,
+			},
+		}
+	}
+
+	return flattenedOffers
+}
+
+func flattenExternalDomainRegistrationStatus(status *domain.DomainRegistrationStatusExternalDomain) map[string]interface{} {
+	if status == nil {
+		return nil
+	}
+
+	return map[string]interface{}{
+		"validation_token": status.ValidationToken,
+	}
+}
+
+func flattenDNSZones(dnsZones []*domain.DNSZone) []map[string]interface{} {
+	if dnsZones == nil {
+		return nil
+	}
+
+	var zones []map[string]interface{}
+	for _, zone := range dnsZones {
+		zones = append(zones, map[string]interface{}{
+			"domain":     zone.Domain,
+			"subdomain":  zone.Subdomain,
+			"ns":         zone.Ns,
+			"ns_default": zone.NsDefault,
+			"ns_master":  zone.NsMaster,
+			"status":     zone.Status,
+			"message":    zone.Message,
+			"updated_at": zone.UpdatedAt.Format(time.RFC3339),
+			"project_id": zone.ProjectID,
+		})
+	}
+
+	return zones
+}
+
+func flattenDomainRegistrationStatusTransfer(transferStatus *domain.DomainRegistrationStatusTransfer) map[string]interface{} {
+	if transferStatus == nil {
+		return nil
+	}
+
+	return map[string]interface{}{
+		"status":             string(transferStatus.Status),
+		"vote_current_owner": transferStatus.VoteCurrentOwner,
+		"vote_new_owner":     transferStatus.VoteNewOwner,
+	}
+}
+
+func waitForOrderDomain(ctx context.Context, api *domain.RegistrarAPI, domainName string, timeout time.Duration) (*domain.Domain, error) {
+	retryInterval := defaultWaitDomainOrderDomainRetryInterval
+	if transport.DefaultWaitRetryInterval != nil {
+		retryInterval = *transport.DefaultWaitRetryInterval
+	}
+	return api.WaitForOrderDomain(&domain.WaitForOrderDomainRequest{
+		Domain:        domainName,
+		Timeout:       scw.TimeDurationPtr(timeout),
+		RetryInterval: &retryInterval,
+	}, scw.WithContext(ctx))
+}
+
+func getStatusTasks(ctx context.Context, api *domain.RegistrarAPI, taskID string) (domain.TaskStatus, error) {
+	var page int32 = 1
+	var pageSize uint32 = 1000
+	for {
+		listTasksResponse, err := api.ListTasks(&domain.RegistrarAPIListTasksRequest{
+			Page:     &page,
+			PageSize: &pageSize,
+		}, scw.WithContext(ctx))
+
+		if err != nil {
+			return "", fmt.Errorf("error retrieving tasks: %w", err)
+		}
+
+		for _, task := range listTasksResponse.Tasks {
+			if task.ID == taskID {
+				return task.Status, nil
+			}
+		}
+
+		if len(listTasksResponse.Tasks) == 0 || uint32(len(listTasksResponse.Tasks)) < pageSize {
+			break
+		}
+
+		page++
+	}
+
+	return "", fmt.Errorf("task with ID '%s' not found", taskID)
+}
+
+func waitForTaskCompletion(ctx context.Context, registrarAPI *domain.RegistrarAPI, taskID string, duration int) error {
+	timeout := time.Duration(duration) * time.Second
+	return retry.RetryContext(ctx, timeout, func() *retry.RetryError {
+		status, err := getStatusTasks(ctx, registrarAPI, taskID)
+		if err != nil {
+			return retry.NonRetryableError(fmt.Errorf("failed to retrieve task status: %w", err))
+		}
+
+		if status == domain.TaskStatusPending || status == domain.TaskStatusWaitingPayment || status == domain.TaskStatusNew {
+			return retry.RetryableError(errors.New("task is not yet complete, retrying"))
+		}
+
+		if status == domain.TaskStatusSuccess {
+			return nil
+		}
+
+		if status == domain.TaskStatusError {
+			return retry.NonRetryableError(fmt.Errorf("task failed for domain: %s", taskID)) // Échec
+		}
+
+		return retry.NonRetryableError(fmt.Errorf("unexpected task status: %v", status))
+	})
 }
