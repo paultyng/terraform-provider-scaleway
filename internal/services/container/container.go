@@ -352,7 +352,7 @@ func ResourceContainerUpdate(ctx context.Context, d *schema.ResourceData, m inte
 	}
 
 	if d.HasChanges("max_concurrency") {
-		req.MaxConcurrency = scw.Uint32Ptr(uint32(d.Get("max_concurrency").(int)))
+		req.ScalingOption = &container.ContainerScalingOption{ConcurrentRequestsThreshold: scw.Uint32Ptr(uint32(d.Get("max_concurrency").(int)))}
 	}
 
 	if d.HasChanges("protocol") {
