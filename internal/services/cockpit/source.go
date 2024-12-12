@@ -5,6 +5,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"github.com/scaleway/scaleway-sdk-go/api/cockpit/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/httperrors"
@@ -18,6 +19,7 @@ func ResourceCockpitSource() *schema.Resource {
 	return &schema.Resource{
 		CreateContext: ResourceCockpitSourceCreate,
 		ReadContext:   ResourceCockpitSourceRead,
+		UpdateContext: ResourceCockpitSourceUpdate,
 		DeleteContext: ResourceCockpitSourceDelete,
 		Timeouts: &schema.ResourceTimeout{
 			Create:  schema.DefaultTimeout(DefaultCockpitTimeout),
@@ -41,6 +43,12 @@ func ResourceCockpitSource() *schema.Resource {
 				ForceNew:         true,
 				Description:      "The type of the datasource",
 				ValidateDiagFunc: verify.ValidateEnum[cockpit.DataSourceType](),
+			},
+			"retention_days": {
+				Type:         schema.TypeInt,
+				Required:     true,
+				ValidateFunc: validation.IntBetween(1, 365),
+				Description:  "The number of days to retain data, must be between 1 and 365.",
 			},
 			// computed
 			"url": {
@@ -85,11 +93,13 @@ func ResourceCockpitSourceCreate(ctx context.Context, d *schema.ResourceData, me
 		return diag.FromErr(err)
 	}
 
+	retentionDays := uint32(d.Get("retention_days").(int))
 	res, err := api.CreateDataSource(&cockpit.RegionalAPICreateDataSourceRequest{
-		Region:    region,
-		ProjectID: d.Get("project_id").(string),
-		Name:      d.Get("name").(string),
-		Type:      cockpit.DataSourceType(d.Get("type").(string)),
+		Region:        region,
+		ProjectID:     d.Get("project_id").(string),
+		Name:          d.Get("name").(string),
+		Type:          cockpit.DataSourceType(d.Get("type").(string)),
+		RetentionDays: &retentionDays,
 	}, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)
@@ -132,6 +142,38 @@ func ResourceCockpitSourceRead(ctx context.Context, d *schema.ResourceData, meta
 	_ = d.Set("updated_at", types.FlattenTime(res.UpdatedAt))
 	_ = d.Set("project_id", res.ProjectID)
 	_ = d.Set("push_url", pushURL)
+	_ = d.Set("retention_days", int(res.RetentionDays))
+
+	return nil
+}
+
+func ResourceCockpitSourceUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	api, region, id, err := NewAPIWithRegionAndID(meta, d.Id())
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	updateRequest := &cockpit.RegionalAPIUpdateDataSourceRequest{
+		DataSourceID: id,
+		Region:       region,
+	}
+
+	if d.HasChange("name") {
+		name := d.Get("name").(string)
+		updateRequest.Name = &name
+	}
+
+	if d.HasChange("retention_days") {
+		retentionDays := uint32(d.Get("retention_days").(int))
+		updateRequest.RetentionDays = &retentionDays
+	}
+
+	if d.HasChanges("retention_days", "name") {
+		_, err = api.UpdateDataSource(updateRequest, scw.WithContext(ctx))
+		if err != nil {
+			return diag.FromErr(err)
+		}
+	}
 
 	return nil
 }

@@ -24,6 +24,7 @@ resource "scaleway_cockpit_source" "main" {
     project_id = scaleway_account_project.project.id
     name       = "my-data-source"
     type       = "metrics"
+    retention_days = 6
 }
 ```
 
@@ -35,6 +36,7 @@ This section lists the arguments that are supported:
 - `type` - (Required) The [type](https://www.scaleway.com/en/docs/observability/cockpit/concepts/#data-types) of data source. Possible values are: `metrics`, `logs`, or `traces`.
 - `region` - (Defaults to the region specified in the [provider configuration](../index.md#region)) The [region](../guides/regions_and_zones.md#regions) where the data source is located.
 - `project_id` - (Defaults to the Project ID specified in the [provider configuration](../index.md#project_id)) The ID of the Project the data source is associated with.
+- `retention_days` - (Optional, Defaults to 6) The number of days to retain data in the data source. Must be a value between 1 and 365. Changes to this field will force the creation of a new resource.
 
 ## Attributes Reference
 

@@ -25,18 +25,21 @@ func TestAccDataSourceCockpit_Basic(t *testing.T) {
 						project_id = scaleway_account_project.project.id
 						name       = "my-data-source-metrics"
 						type       = "metrics"
+						retention_days = 31
 					}
 					
 					resource "scaleway_cockpit_source" "logs" {
 						project_id = scaleway_account_project.project.id
 						name       = "my-data-source-logs"
 						type       = "logs"
+						retention_days = 7
 					}
 					
 					resource "scaleway_cockpit_source" "traces" {
 						project_id = scaleway_account_project.project.id
 						name       = "my-data-source-traces"
 						type       = "traces"
+						retention_days = 7
 					}
 					
 					resource "scaleway_cockpit_alert_manager" "alert_manager" {
