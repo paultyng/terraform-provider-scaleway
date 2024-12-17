@@ -189,6 +189,7 @@ func ResourceServer() *schema.Resource {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "The Scaleway internal IP address of the server",
+				Deprecated:  "Use ipam_ip datasource instead to fetch your server's IP in your private network.",
 			},
 			"public_ip": {
 				Type:        schema.TypeString,

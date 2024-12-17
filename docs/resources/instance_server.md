@@ -286,8 +286,8 @@ In addition to all arguments above, the following attributes are exported:
 - `placement_group_policy_respected` - True when the placement group policy is respected.
 - `root_volume`
     - `volume_id` - The volume ID of the root volume of the server.
-- `private_ip` - The Scaleway internal IP address of the server.
-- `public_ip` - The public IP address of the server (Deprecated use `public_ips` instead).
+- `private_ip` - The Scaleway internal IP address of the server (Deprecated use [ipam_ip datasource](../data-sources/ipam_ip.md#instance-private-network-ip) instead).
+- `public_ip` -  The public IP address of the server (Deprecated use `public_ips` instead).
 - `public_ips` - The list of public IPs of the server.
     - `id` - The ID of the IP
     - `address` - The address of the IP
