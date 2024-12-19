@@ -9,6 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	domain "github.com/scaleway/scaleway-sdk-go/api/domain/v2beta1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
+	"github.com/scaleway/terraform-provider-scaleway/v2/internal/dsf"
+	"github.com/scaleway/terraform-provider-scaleway/v2/internal/httperrors"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/account"
 )
 
@@ -36,6 +38,7 @@ func ResourceOrderDomain() *schema.Resource {
 				Required:    true,
 				Description: "The domain name to be managed",
 			},
+
 			"duration_in_years": {
 				Type:     schema.TypeInt,
 				Optional: true,
@@ -46,12 +49,14 @@ func ResourceOrderDomain() *schema.Resource {
 			"owner_contact_id": {
 				Type:        schema.TypeString,
 				Optional:    true,
+				Computed:    true,
 				Description: "ID of the owner contact. Either `owner_contact_id` or `owner_contact` must be provided.",
 			},
 
 			"owner_contact": {
 				Type:     schema.TypeList,
 				Optional: true,
+				Computed: true,
 				MaxItems: 1,
 				Elem: &schema.Resource{
 					Schema: contactSchema(),
@@ -66,6 +71,7 @@ func ResourceOrderDomain() *schema.Resource {
 			"administrative_contact": {
 				Type:     schema.TypeList,
 				Optional: true,
+				Computed: true,
 				MaxItems: 1,
 				Elem: &schema.Resource{
 					Schema: contactSchema(),
@@ -79,11 +85,95 @@ func ResourceOrderDomain() *schema.Resource {
 			"technical_contact": {
 				Type:     schema.TypeList,
 				Optional: true,
+				Computed: true,
 				MaxItems: 1,
 				Elem: &schema.Resource{
 					Schema: contactSchema(),
 				},
 				Description: "Details of the technical contact.",
+			},
+			"auto_renew": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Default:     false,
+				Description: "Enable or disable auto-renewal of the domain.",
+			},
+			"DNSSEC": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Default:     false,
+				Description: "Enable or disable auto-renewal of the domain.",
+			},
+			"DS_record": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Computed: true,
+				MaxItems: 1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"key_id": {
+							Type:        schema.TypeInt,
+							Required:    true,
+							Description: "The identifier for the DNSSEC key.",
+						},
+						"algorithm": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "The algorithm used for DNSSEC (e.g., rsasha256, ecdsap256sha256).",
+						},
+						"digest": {
+							Type:     schema.TypeList,
+							Optional: true,
+							MaxItems: 1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"type": {
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: "The type of digest (e.g., sha_1, sha_256).",
+									},
+									"digest": {
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: "The digest value.",
+									},
+									"public_key": {
+										Type:     schema.TypeList,
+										Optional: true,
+										MaxItems: 1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"key": {
+													Type:        schema.TypeString,
+													Required:    true,
+													Description: "The public key value.",
+												},
+											},
+										},
+										Description: "The public key associated with the digest.",
+									},
+								},
+							},
+							Description: "Details about the digest.",
+						},
+						"public_key": {
+							Type:     schema.TypeList,
+							Optional: true,
+							MaxItems: 1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"key": {
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: "The public key value.",
+									},
+								},
+							},
+							Description: "Public key associated with the DNSSEC record.",
+						},
+					},
+				},
+				Description: "DNSSEC DS record configuration.",
 			},
 			//computed
 			"auto_renew_status": {
@@ -230,20 +320,72 @@ func ResourceOrderDomain() *schema.Resource {
 			},
 
 			"dns_zones": {
-				Type:        schema.TypeList,
-				Computed:    true,
-				Elem:        &schema.Schema{Type: schema.TypeMap},
-				Description: "List of DNS zones associated with the domain.",
+				Type:     schema.TypeList,
+				Computed: true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"domain": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The domain name of the DNS zone.",
+						},
+						"subdomain": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The subdomain of the DNS zone.",
+						},
+						"ns": {
+							Type:        schema.TypeList,
+							Computed:    true,
+							Elem:        &schema.Schema{Type: schema.TypeString},
+							Description: "List of name servers (NS) of the DNS zone.",
+						},
+						"ns_default": {
+							Type:        schema.TypeList,
+							Computed:    true,
+							Elem:        &schema.Schema{Type: schema.TypeString},
+							Description: "List of default name servers of the DNS zone.",
+						},
+						"ns_master": {
+							Type:        schema.TypeList,
+							Computed:    true,
+							Elem:        &schema.Schema{Type: schema.TypeString},
+							Description: "List of master name servers of the DNS zone.",
+						},
+						"status": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The status of the DNS zone.",
+						},
+						"message": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "Additional message for the DNS zone.",
+						},
+						"updated_at": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The last updated timestamp of the DNS zone.",
+						},
+						"project_id": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The project ID associated with the DNS zone.",
+						},
+					},
+				},
+				Description: "List of DNS zones with detailed information.",
 			},
 		},
 		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
-			hasOwnerContactID := d.HasChange("owner_contact_id") && d.Get("owner_contact_id").(string) != ""
-			hasOwnerContact := d.HasChange("owner_contact") && len(d.Get("owner_contact").([]interface{})) > 0
+			hasOwnerContactID := d.Get("owner_contact_id").(string) != ""
+
+			ownerContact := d.Get("owner_contact").([]interface{})
+			hasOwnerContact := len(ownerContact) > 0
 
 			if !hasOwnerContactID && !hasOwnerContact {
 				return fmt.Errorf("either `owner_contact_id` or `owner_contact` must be provided")
 			}
-
 			if hasOwnerContactID && hasOwnerContact {
 				return fmt.Errorf("only one of `owner_contact_id` or `owner_contact` can be provided")
 			}
@@ -253,6 +395,8 @@ func ResourceOrderDomain() *schema.Resource {
 	}
 }
 
+// doc = https://developer.hashicorp.com/terraform/language/expressions/dynamic-blocks
+// add description
 func contactSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"legal_form": {
@@ -261,16 +405,19 @@ func contactSchema() map[string]*schema.Schema {
 			Description: "Legal form of the contact (e.g., 'individual' or 'organization').",
 		},
 		"firstname": {
-			Type:     schema.TypeString,
-			Required: true,
+			Type:             schema.TypeString,
+			Required:         true,
+			DiffSuppressFunc: dsf.IgnoreCase,
 		},
 		"lastname": {
-			Type:     schema.TypeString,
-			Required: true,
+			Type:             schema.TypeString,
+			Required:         true,
+			DiffSuppressFunc: dsf.IgnoreCase,
 		},
 		"company_name": {
-			Type:     schema.TypeString,
-			Optional: true,
+			Type:             schema.TypeString,
+			Optional:         true,
+			DiffSuppressFunc: dsf.IgnoreCase,
 		},
 		"email": {
 			Type:     schema.TypeString,
@@ -289,24 +436,28 @@ func contactSchema() map[string]*schema.Schema {
 			Optional: true,
 		},
 		"address_line_1": {
-			Type:     schema.TypeString,
-			Required: true,
+			Type:             schema.TypeString,
+			Required:         true,
+			DiffSuppressFunc: dsf.IgnoreCase,
 		},
 		"address_line_2": {
-			Type:     schema.TypeString,
-			Optional: true,
+			Type:             schema.TypeString,
+			Optional:         true,
+			DiffSuppressFunc: dsf.IgnoreCase,
 		},
 		"zip": {
 			Type:     schema.TypeString,
 			Required: true,
 		},
 		"city": {
-			Type:     schema.TypeString,
-			Required: true,
+			Type:             schema.TypeString,
+			Required:         true,
+			DiffSuppressFunc: dsf.IgnoreCase,
 		},
 		"country": {
-			Type:     schema.TypeString,
-			Required: true,
+			Type:             schema.TypeString,
+			Required:         true,
+			DiffSuppressFunc: dsf.IgnoreCase,
 		},
 		"vat_identification_code": {
 			Type:     schema.TypeString,
@@ -317,8 +468,10 @@ func contactSchema() map[string]*schema.Schema {
 			Required: true,
 		},
 		"lang": {
-			Type:     schema.TypeString,
-			Optional: true,
+			Type:             schema.TypeString,
+			Optional:         true,
+			Computed:         true,
+			DiffSuppressFunc: dsf.IgnoreCase,
 		},
 		"resale": {
 			Type:     schema.TypeBool,
@@ -327,6 +480,7 @@ func contactSchema() map[string]*schema.Schema {
 		"extension_fr": {
 			Type:     schema.TypeList,
 			Optional: true,
+			Computed: true,
 			MaxItems: 1, // Ensure it's a single-item list if needed
 			Elem: &schema.Resource{
 				Schema: map[string]*schema.Schema{
@@ -425,11 +579,20 @@ func contactSchema() map[string]*schema.Schema {
 			Description: "Details specific to French domain extensions.",
 		},
 		"extension_eu": {
-			Type:     schema.TypeMap,
+			Type:     schema.TypeList,
 			Optional: true,
-			Elem: &schema.Schema{
-				Type: schema.TypeString,
+			Computed: true,
+			MaxItems: 1,
+			Elem: &schema.Resource{
+				Schema: map[string]*schema.Schema{
+					"european_citizenship": {
+						Type:        schema.TypeString,
+						Optional:    true,
+						Description: "Indicates the European citizenship of the contact.",
+					},
+				},
 			},
+			Description: "Details specific to European domain extensions.",
 		},
 		"whois_opt_in": {
 			Type:     schema.TypeBool,
@@ -440,8 +603,9 @@ func contactSchema() map[string]*schema.Schema {
 			Optional: true,
 		},
 		"extension_nl": {
-			Type:     schema.TypeMap,
+			Type:     schema.TypeList,
 			Optional: true,
+			Computed: true,
 			Elem: &schema.Schema{
 				Type: schema.TypeString,
 			},
@@ -461,6 +625,8 @@ func resourceOrderDomainCreate(ctx context.Context, d *schema.ResourceData, m in
 		DurationInYears: durationInYears,
 		ProjectID:       projectID,
 	}
+
+	//auto renew https://github.com/scaleway/scaleway-sdk-go/blob/master/api/domain/v2beta1/domain_sdk.go#L4419
 
 	ownerContactID := d.Get("owner_contact_id").(string)
 	if ownerContactID != "" {
@@ -503,6 +669,26 @@ func resourceOrderDomainCreate(ctx context.Context, d *schema.ResourceData, m in
 		return diag.FromErr(err)
 	}
 
+	if autoRenew, ok := d.GetOk("auto_renew"); ok && autoRenew.(bool) {
+		_, err = registrarAPI.EnableDomainAutoRenew(&domain.RegistrarAPIEnableDomainAutoRenewRequest{
+			Domain: domainName,
+		})
+		if err != nil {
+			return diag.FromErr(fmt.Errorf("failed to enable auto-renew: %s", err))
+		}
+	}
+
+	if dnssec, ok := d.GetOk("DNSSEC"); ok && dnssec.(bool) {
+		dsRecord := ExpandDSRecord(d.Get("DS_record").([]interface{}))
+		_, err = registrarAPI.EnableDomainDNSSEC(&domain.RegistrarAPIEnableDomainDNSSECRequest{
+			Domain:   domainName,
+			DsRecord: dsRecord,
+		})
+		if err != nil {
+			return diag.FromErr(fmt.Errorf("failed to enable auto-renew: %s", err))
+		}
+	}
+
 	d.SetId(resp.ProjectID + "/" + domainName)
 
 	return resourceOrderDomainsRead(ctx, d, m)
@@ -512,13 +698,17 @@ func resourceOrderDomainsRead(ctx context.Context, d *schema.ResourceData, m int
 	registrarAPI := NewRegistrarDomainAPI(m)
 	id := d.Id()
 
-	domainName, err := extractDomainFromID(id)
+	domainName, err := ExtractDomainFromID(id)
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
 	res, err := waitForOrderDomain(ctx, registrarAPI, domainName, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
+		if httperrors.Is404(err) {
+			d.SetId("")
+			return nil
+		}
 		return diag.FromErr(err)
 	}
 
@@ -554,7 +744,8 @@ func resourceOrderDomainsRead(ctx context.Context, d *schema.ResourceData, m int
 	}
 
 	if res.OwnerContact != nil {
-		if err := d.Set("owner_contact", flattenContact(res.OwnerContact)); err != nil {
+		ownerContact := flattenContact(res.OwnerContact)
+		if err := d.Set("owner_contact", ownerContact); err != nil {
 			return diag.FromErr(err)
 		}
 	}
@@ -586,14 +777,39 @@ func resourceOrderDomainsRead(ctx context.Context, d *schema.ResourceData, m int
 		if err := d.Set("transfer_registration_status", flattenDomainRegistrationStatusTransfer(res.TransferRegistrationStatus)); err != nil {
 			return diag.FromErr(err)
 		}
+	} else {
+		if err := d.Set("transfer_registration_status", map[string]string{}); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 	if res.ExternalDomainRegistrationStatus != nil {
 		if err := d.Set("external_domain_registration_status", flattenExternalDomainRegistrationStatus(res.ExternalDomainRegistrationStatus)); err != nil {
 			return diag.FromErr(err)
 		}
+	} else {
+		if err := d.Set("external_domain_registration_status", map[string]string{}); err != nil {
+			return diag.FromErr(err)
+		}
 	}
-	if err := d.Set("linked_products", res.LinkedProducts); err != nil {
-		return diag.FromErr(err)
+	if res.Dnssec.DsRecords != nil {
+		if err := d.Set("DS_record", FlattenDSRecord(res.DSRecord)); err != nil {
+			return diag.FromErr(err)
+		}
+	} else {
+		// Set to an empty structure when DSRecord is nil
+		if err := d.Set("DS_record", []map[string]interface{}{}); err != nil {
+			return diag.FromErr(err)
+		}
+	}
+
+	if res.LinkedProducts == nil || len(res.LinkedProducts) == 0 {
+		if err := d.Set("linked_products", []string{}); err != nil {
+			return diag.FromErr(err)
+		}
+	} else {
+		if err := d.Set("linked_products", res.LinkedProducts); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 	if err := d.Set("dns_zones", flattenDNSZones(res.DNSZones)); err != nil {
 		return diag.FromErr(err)
@@ -606,7 +822,7 @@ func resourceOrderDomainUpdate(ctx context.Context, d *schema.ResourceData, m in
 	registrarAPI := NewRegistrarDomainAPI(m)
 
 	id := d.Id()
-	domainName, err := extractDomainFromID(id)
+	domainName, err := ExtractDomainFromID(id)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -642,7 +858,6 @@ func resourceOrderDomainUpdate(ctx context.Context, d *schema.ResourceData, m in
 			}
 		}
 	}
-
 	_, err = registrarAPI.UpdateDomain(updateRequest, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)
@@ -651,26 +866,31 @@ func resourceOrderDomainUpdate(ctx context.Context, d *schema.ResourceData, m in
 	return resourceOrderDomainsRead(ctx, d, m)
 }
 
-func resourceOrderDomainDelete(_ context.Context, d *schema.ResourceData, _ interface{}) diag.Diagnostics {
-	//registrarAPI := NewRegistrarDomainAPI(m)
-	//
-	//id := d.Id()
-	//domainName, err := extractDomainFromID(id)
-	//if err != nil {
-	//	return diag.FromErr(err)
-	//}
-	//
-	//deleteRequest := &domain.RegistrarAPIDeleteDomainHostRequest{
-	//
-	//}
-	//}
-	//
-	//err = registrarAPI.DeleteDomain(deleteRequest, scw.WithContext(ctx))
-	//if err != nil {
-	//	return diag.FromErr(err)
-	//}
+func resourceOrderDomainDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	registrarAPI := NewRegistrarDomainAPI(m)
+	id := d.Id()
+	domainName, err := ExtractDomainFromID(id)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	domainResp, err := registrarAPI.GetDomain(&domain.RegistrarAPIGetDomainRequest{
+		Domain: domainName,
+	}, scw.WithContext(ctx))
+	if err != nil {
+		return diag.FromErr(fmt.Errorf("failed to get domain details: %s", err))
+	}
+
+	if domainResp.AutoRenewStatus == domain.DomainFeatureStatusEnabled ||
+		domainResp.AutoRenewStatus == domain.DomainFeatureStatusEnabling {
+		_, err = registrarAPI.DisableDomainAutoRenew(&domain.RegistrarAPIDisableDomainAutoRenewRequest{
+			Domain: domainName,
+		})
+		if err != nil {
+			return diag.FromErr(fmt.Errorf("failed to disable auto-renew: %s", err))
+		}
+	}
 
 	d.SetId("")
-
 	return nil
 }

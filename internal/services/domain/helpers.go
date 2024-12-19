@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -295,7 +296,7 @@ func mapToStruct(data map[string]interface{}, target interface{}) {
 	}
 }
 
-func extractDomainFromID(id string) (string, error) {
+func ExtractDomainFromID(id string) (string, error) {
 	parts := strings.Split(id, "/")
 	if len(parts) != 2 {
 		return "", fmt.Errorf("invalid ID format, expected 'projectID/domainName', got: %s", id)
@@ -442,43 +443,44 @@ func flattenContactExtensionNL(ext *domain.ContactExtensionNL) []map[string]inte
 	}
 }
 
-func flattenTLD(tld *domain.Tld) map[string]interface{} {
+func flattenTLD(tld *domain.Tld) []map[string]interface{} {
 	if tld == nil {
 		return nil
 	}
 
-	return map[string]interface{}{
-		"name":                  tld.Name,
-		"dnssec_support":        tld.DnssecSupport,
-		"duration_in_years_min": tld.DurationInYearsMin,
-		"duration_in_years_max": tld.DurationInYearsMax,
-		"idn_support":           tld.IDnSupport,
-		"offers":                flattenTldOffers(tld.Offers),
-		"specifications":        tld.Specifications,
+	return []map[string]interface{}{
+		{
+			"name":                  tld.Name,
+			"dnssec_support":        tld.DnssecSupport,
+			"duration_in_years_min": tld.DurationInYearsMin,
+			"duration_in_years_max": tld.DurationInYearsMax,
+			"idn_support":           tld.IDnSupport,
+			"offers":                flattenTldOffers(tld.Offers),
+			"specifications":        tld.Specifications,
+		},
 	}
 }
 
-func flattenTldOffers(offers map[string]*domain.TldOffer) map[string]interface{} {
+func flattenTldOffers(offers map[string]*domain.TldOffer) []map[string]interface{} {
 	if offers == nil {
 		return nil
 	}
 
-	flattenedOffers := make(map[string]interface{})
-	for key, offer := range offers {
-		flattenedOffers[key] = map[string]interface{}{
+	flattenedOffers := []map[string]interface{}{}
+	for _, offer := range offers {
+		flattenedOffers = append(flattenedOffers, map[string]interface{}{
 			"action":         offer.Action,
 			"operation_path": offer.OperationPath,
 			"price": map[string]interface{}{
 				"currency_code": offer.Price.CurrencyCode,
-				"units":         offer.Price.Units,
-				"nanos":         offer.Price.Nanos,
+				"units":         strconv.Itoa(int(offer.Price.Units)),
+				"nanos":         strconv.Itoa(int(offer.Price.Nanos)),
 			},
-		}
+		})
 	}
 
 	return flattenedOffers
 }
-
 func flattenExternalDomainRegistrationStatus(status *domain.DomainRegistrationStatusExternalDomain) map[string]interface{} {
 	if status == nil {
 		return nil
@@ -587,4 +589,78 @@ func waitForTaskCompletion(ctx context.Context, registrarAPI *domain.RegistrarAP
 
 		return retry.NonRetryableError(fmt.Errorf("unexpected task status: %v", status))
 	})
+}
+
+func ExpandDSRecord(dsRecordList []interface{}) *domain.DSRecord {
+	if len(dsRecordList) == 0 || dsRecordList[0] == nil {
+		return nil
+	}
+
+	dsRecordMap := dsRecordList[0].(map[string]interface{})
+	dsRecord := &domain.DSRecord{
+		KeyID:     uint32(dsRecordMap["key_id"].(int)),
+		Algorithm: domain.DSRecordAlgorithm(dsRecordMap["algorithm"].(string)),
+	}
+
+	if digestList, ok := dsRecordMap["digest"].([]interface{}); ok && len(digestList) > 0 {
+		digestMap := digestList[0].(map[string]interface{})
+		dsRecord.Digest = &domain.DSRecordDigest{
+			Type:   domain.DSRecordDigestType(digestMap["type"].(string)),
+			Digest: digestMap["digest"].(string),
+		}
+
+		if publicKeyList, ok := digestMap["public_key"].([]interface{}); ok && len(publicKeyList) > 0 {
+			publicKeyMap := publicKeyList[0].(map[string]interface{})
+			dsRecord.Digest.PublicKey = &domain.DSRecordPublicKey{
+				Key: publicKeyMap["key"].(string),
+			}
+		}
+	}
+
+	if publicKeyList, ok := dsRecordMap["public_key"].([]interface{}); ok && len(publicKeyList) > 0 {
+		publicKeyMap := publicKeyList[0].(map[string]interface{})
+		dsRecord.PublicKey = &domain.DSRecordPublicKey{
+			Key: publicKeyMap["key"].(string),
+		}
+	}
+
+	return dsRecord
+}
+
+func FlattenDSRecord(dsRecord *domain.DSRecord) []map[string]interface{} {
+	if dsRecord == nil {
+		return nil
+	}
+
+	result := map[string]interface{}{
+		"key_id":    dsRecord.KeyID,
+		"algorithm": string(dsRecord.Algorithm),
+	}
+
+	if dsRecord.Digest != nil {
+		digest := map[string]interface{}{
+			"type":   string(dsRecord.Digest.Type),
+			"digest": dsRecord.Digest.Digest,
+		}
+
+		if dsRecord.Digest.PublicKey != nil {
+			digest["public_key"] = []map[string]interface{}{
+				{
+					"key": dsRecord.Digest.PublicKey.Key,
+				},
+			}
+		}
+
+		result["digest"] = []map[string]interface{}{digest}
+	}
+
+	if dsRecord.PublicKey != nil {
+		result["public_key"] = []map[string]interface{}{
+			{
+				"key": dsRecord.PublicKey.Key,
+			},
+		}
+	}
+
+	return []map[string]interface{}{result}
 }
