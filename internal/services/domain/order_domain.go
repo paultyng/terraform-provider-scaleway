@@ -47,9 +47,13 @@ func ResourceOrderDomain() *schema.Resource {
 			"project_id": account.ProjectIDSchema(),
 
 			"owner_contact_id": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Computed:    true,
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ExactlyOneOf: []string{
+					"owner_contact_id",
+					"owner_contact",
+				},
 				Description: "ID of the owner contact. Either `owner_contact_id` or `owner_contact` must be provided.",
 			},
 
@@ -58,6 +62,10 @@ func ResourceOrderDomain() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				MaxItems: 1,
+				ExactlyOneOf: []string{
+					"owner_contact_id",
+					"owner_contact",
+				},
 				Elem: &schema.Resource{
 					Schema: contactSchema(),
 				},
@@ -98,13 +106,13 @@ func ResourceOrderDomain() *schema.Resource {
 				Default:     false,
 				Description: "Enable or disable auto-renewal of the domain.",
 			},
-			"DNSSEC": {
+			"dnssec": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
 				Description: "Enable or disable auto-renewal of the domain.",
 			},
-			"DS_record": {
+			"ds_record": {
 				Type:     schema.TypeList,
 				Optional: true,
 				Computed: true,
@@ -114,12 +122,12 @@ func ResourceOrderDomain() *schema.Resource {
 						"key_id": {
 							Type:        schema.TypeInt,
 							Required:    true,
-							Description: "The identifier for the DNSSEC key.",
+							Description: "The identifier for the dnssec key.",
 						},
 						"algorithm": {
 							Type:        schema.TypeString,
 							Required:    true,
-							Description: "The algorithm used for DNSSEC (e.g., rsasha256, ecdsap256sha256).",
+							Description: "The algorithm used for dnssec (e.g., rsasha256, ecdsap256sha256).",
 						},
 						"digest": {
 							Type:     schema.TypeList,
@@ -169,11 +177,17 @@ func ResourceOrderDomain() *schema.Resource {
 									},
 								},
 							},
-							Description: "Public key associated with the DNSSEC record.",
+							Description: "Public key associated with the dnssec record.",
 						},
 					},
 				},
-				Description: "DNSSEC DS record configuration.",
+				Description: "dnssec DS record configuration.",
+			},
+			"is_external": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Computed:    true,
+				Description: "Indicates whether Scaleway is the domain's registrar.",
 			},
 			//computed
 			"auto_renew_status": {
@@ -184,7 +198,7 @@ func ResourceOrderDomain() *schema.Resource {
 			"dnssec_status": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: "Status of the DNSSEC configuration of the domain.",
+				Description: "Status of the dnssec configuration of the domain.",
 			},
 			"epp_code": {
 				Type:        schema.TypeList,
@@ -206,11 +220,6 @@ func ResourceOrderDomain() *schema.Resource {
 				Type:        schema.TypeString,
 				Computed:    true,
 				Description: "The registrar managing the domain.",
-			},
-			"is_external": {
-				Type:        schema.TypeBool,
-				Computed:    true,
-				Description: "Indicates whether Scaleway is the domain's registrar.",
 			},
 			"status": {
 				Type:        schema.TypeString,
@@ -262,7 +271,7 @@ func ResourceOrderDomain() *schema.Resource {
 						"dnssec_support": {
 							Type:        schema.TypeBool,
 							Computed:    true,
-							Description: "Indicates whether DNSSEC is supported for this TLD.",
+							Description: "Indicates whether dnssec is supported for this TLD.",
 						},
 						"duration_in_years_min": {
 							Type:        schema.TypeInt,
@@ -376,21 +385,6 @@ func ResourceOrderDomain() *schema.Resource {
 				},
 				Description: "List of DNS zones with detailed information.",
 			},
-		},
-		CustomizeDiff: func(ctx context.Context, d *schema.ResourceDiff, meta interface{}) error {
-			hasOwnerContactID := d.Get("owner_contact_id").(string) != ""
-
-			ownerContact := d.Get("owner_contact").([]interface{})
-			hasOwnerContact := len(ownerContact) > 0
-
-			if !hasOwnerContactID && !hasOwnerContact {
-				return fmt.Errorf("either `owner_contact_id` or `owner_contact` must be provided")
-			}
-			if hasOwnerContactID && hasOwnerContact {
-				return fmt.Errorf("only one of `owner_contact_id` or `owner_contact` can be provided")
-			}
-
-			return nil
 		},
 	}
 }
@@ -626,8 +620,6 @@ func resourceOrderDomainCreate(ctx context.Context, d *schema.ResourceData, m in
 		ProjectID:       projectID,
 	}
 
-	//auto renew https://github.com/scaleway/scaleway-sdk-go/blob/master/api/domain/v2beta1/domain_sdk.go#L4419
-
 	ownerContactID := d.Get("owner_contact_id").(string)
 	if ownerContactID != "" {
 		buyDomainsRequest.OwnerContactID = &ownerContactID
@@ -664,6 +656,9 @@ func resourceOrderDomainCreate(ctx context.Context, d *schema.ResourceData, m in
 	}
 
 	err = waitForTaskCompletion(ctx, registrarAPI, resp.TaskID, 3600)
+	if err != nil {
+		return diag.FromErr(err)
+	}
 	_, err = waitForOrderDomain(ctx, registrarAPI, domainName, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return diag.FromErr(err)
@@ -678,8 +673,8 @@ func resourceOrderDomainCreate(ctx context.Context, d *schema.ResourceData, m in
 		}
 	}
 
-	if dnssec, ok := d.GetOk("DNSSEC"); ok && dnssec.(bool) {
-		dsRecord := ExpandDSRecord(d.Get("DS_record").([]interface{}))
+	if dnssec, ok := d.GetOk("dnssec"); ok && dnssec.(bool) {
+		dsRecord := ExpandDSRecord(d.Get("ds_record").([]interface{}))
 		_, err = registrarAPI.EnableDomainDNSSEC(&domain.RegistrarAPIEnableDomainDNSSECRequest{
 			Domain:   domainName,
 			DsRecord: dsRecord,
@@ -689,21 +684,22 @@ func resourceOrderDomainCreate(ctx context.Context, d *schema.ResourceData, m in
 		}
 	}
 
-	d.SetId(resp.ProjectID + "/" + domainName)
-
+	d.SetId(projectID + "/" + domainName)
 	return resourceOrderDomainsRead(ctx, d, m)
 }
 
 func resourceOrderDomainsRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	registrarAPI := NewRegistrarDomainAPI(m)
 	id := d.Id()
-
 	domainName, err := ExtractDomainFromID(id)
 	if err != nil {
 		return diag.FromErr(err)
 	}
+	domainResp := &domain.Domain{}
 
-	res, err := waitForOrderDomain(ctx, registrarAPI, domainName, d.Timeout(schema.TimeoutCreate))
+	domainResp, err = registrarAPI.GetDomain(&domain.RegistrarAPIGetDomainRequest{
+		Domain: domainName,
+	}, scw.WithContext(ctx))
 	if err != nil {
 		if httperrors.Is404(err) {
 			d.SetId("")
@@ -712,121 +708,79 @@ func resourceOrderDomainsRead(ctx context.Context, d *schema.ResourceData, m int
 		return diag.FromErr(err)
 	}
 
-	if err := d.Set("domain_name", res.Domain); err != nil {
-		return diag.FromErr(err)
+	_ = d.Set("domain_name", domainResp.Domain)
+	_ = d.Set("organization_id", domainResp.OrganizationID)
+	_ = d.Set("project_id", domainResp.ProjectID)
+	_ = d.Set("auto_renew_status", string(domainResp.AutoRenewStatus))
+	if domainResp.ExpiredAt != nil {
+		_ = d.Set("expired_at", domainResp.ExpiredAt.Format(time.RFC3339))
 	}
-	if err := d.Set("organization_id", res.OrganizationID); err != nil {
-		return diag.FromErr(err)
+	if domainResp.UpdatedAt != nil {
+		_ = d.Set("updated_at", domainResp.UpdatedAt.Format(time.RFC3339))
 	}
-	if err := d.Set("project_id", res.ProjectID); err != nil {
-		return diag.FromErr(err)
+	_ = d.Set("registrar", domainResp.Registrar)
+	_ = d.Set("is_external", domainResp.IsExternal)
+	_ = d.Set("status", string(domainResp.Status))
+	_ = d.Set("pending_trade", domainResp.PendingTrade)
+
+	if domainResp.OwnerContact != nil {
+		ownerContact := flattenContact(domainResp.OwnerContact)
+		_ = d.Set("owner_contact", ownerContact)
+		_ = d.Set("owner_contact_id", domainResp.OwnerContact.ID)
 	}
-	if err := d.Set("auto_renew_status", string(res.AutoRenewStatus)); err != nil {
-		return diag.FromErr(err)
+	if domainResp.TechnicalContact != nil {
+		_ = d.Set("technical_contact", flattenContact(domainResp.TechnicalContact))
 	}
-	if err := d.Set("expired_at", res.ExpiredAt.Format(time.RFC3339)); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("updated_at", res.UpdatedAt.Format(time.RFC3339)); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("registrar", res.Registrar); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("is_external", res.IsExternal); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("status", string(res.Status)); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("pending_trade", res.PendingTrade); err != nil {
-		return diag.FromErr(err)
+	if domainResp.AdministrativeContact != nil {
+		_ = d.Set("administrative_contact", flattenContact(domainResp.AdministrativeContact))
 	}
 
-	if res.OwnerContact != nil {
-		ownerContact := flattenContact(res.OwnerContact)
-		if err := d.Set("owner_contact", ownerContact); err != nil {
-			return diag.FromErr(err)
-		}
+	if domainResp.Dnssec != nil {
+		_ = d.Set("dnssec_status", string(domainResp.Dnssec.Status))
 	}
-	if res.TechnicalContact != nil {
-		if err := d.Set("technical_contact", flattenContact(res.TechnicalContact)); err != nil {
-			return diag.FromErr(err)
-		}
+	_ = d.Set("epp_code", domainResp.EppCode)
+
+	if domainResp.Tld != nil {
+		_ = d.Set("tld", flattenTLD(domainResp.Tld))
 	}
-	if res.AdministrativeContact != nil {
-		if err := d.Set("administrative_contact", flattenContact(res.AdministrativeContact)); err != nil {
-			return diag.FromErr(err)
-		}
+	if domainResp.TransferRegistrationStatus != nil {
+		_ = d.Set("transfer_registration_status", flattenDomainRegistrationStatusTransfer(domainResp.TransferRegistrationStatus))
+	} else {
+		_ = d.Set("transfer_registration_status", map[string]string{})
+	}
+	if domainResp.ExternalDomainRegistrationStatus != nil {
+		_ = d.Set("external_domain_registration_status", flattenExternalDomainRegistrationStatus(domainResp.ExternalDomainRegistrationStatus))
+	} else {
+		_ = d.Set("external_domain_registration_status", map[string]string{})
+	}
+	if domainResp.Dnssec.DsRecords != nil && len(domainResp.Dnssec.DsRecords) > 0 {
+		_ = d.Set("ds_record", FlattenDSRecord(domainResp.Dnssec.DsRecords[0]))
+	} else {
+		_ = d.Set("ds_record", []map[string]interface{}{})
 	}
 
-	if res.Dnssec != nil {
-		if err := d.Set("dnssec_status", string(res.Dnssec.Status)); err != nil {
-			return diag.FromErr(err)
-		}
-	}
-	if err := d.Set("epp_code", res.EppCode); err != nil {
-		return diag.FromErr(err)
-	}
-	if res.Tld != nil {
-		if err := d.Set("tld", flattenTLD(res.Tld)); err != nil {
-			return diag.FromErr(err)
-		}
-	}
-	if res.TransferRegistrationStatus != nil {
-		if err := d.Set("transfer_registration_status", flattenDomainRegistrationStatusTransfer(res.TransferRegistrationStatus)); err != nil {
-			return diag.FromErr(err)
-		}
+	if domainResp.LinkedProducts == nil || len(domainResp.LinkedProducts) == 0 {
+		_ = d.Set("linked_products", []string{})
 	} else {
-		if err := d.Set("transfer_registration_status", map[string]string{}); err != nil {
-			return diag.FromErr(err)
-		}
+		_ = d.Set("linked_products", domainResp.LinkedProducts)
 	}
-	if res.ExternalDomainRegistrationStatus != nil {
-		if err := d.Set("external_domain_registration_status", flattenExternalDomainRegistrationStatus(res.ExternalDomainRegistrationStatus)); err != nil {
-			return diag.FromErr(err)
-		}
-	} else {
-		if err := d.Set("external_domain_registration_status", map[string]string{}); err != nil {
-			return diag.FromErr(err)
-		}
-	}
-	if res.Dnssec.DsRecords != nil {
-		if err := d.Set("DS_record", FlattenDSRecord(res.DSRecord)); err != nil {
-			return diag.FromErr(err)
-		}
-	} else {
-		// Set to an empty structure when DSRecord is nil
-		if err := d.Set("DS_record", []map[string]interface{}{}); err != nil {
-			return diag.FromErr(err)
-		}
-	}
-
-	if res.LinkedProducts == nil || len(res.LinkedProducts) == 0 {
-		if err := d.Set("linked_products", []string{}); err != nil {
-			return diag.FromErr(err)
-		}
-	} else {
-		if err := d.Set("linked_products", res.LinkedProducts); err != nil {
-			return diag.FromErr(err)
-		}
-	}
-	if err := d.Set("dns_zones", flattenDNSZones(res.DNSZones)); err != nil {
-		return diag.FromErr(err)
-	}
+	_ = d.Set("dns_zones", flattenDNSZones(domainResp.DNSZones))
 
 	return nil
 }
 
 func resourceOrderDomainUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	registrarAPI := NewRegistrarDomainAPI(m)
-
 	id := d.Id()
 	domainName, err := ExtractDomainFromID(id)
 	if err != nil {
 		return diag.FromErr(err)
 	}
+	if d.HasChange("owner_contact_id") || d.HasChange("owner_contact") {
+		return diag.FromErr(fmt.Errorf("the domain ownership transfer feature is not implemented in this provider because it requires manual validation through email notifications. This action can only be performed via the Scaleway Console"))
+	}
 
+	hasChanges := false
 	updateRequest := &domain.RegistrarAPIUpdateDomainRequest{
 		Domain: domainName,
 	}
@@ -834,11 +788,13 @@ func resourceOrderDomainUpdate(ctx context.Context, d *schema.ResourceData, m in
 	if d.HasChange("administrative_contact_id") {
 		administrativeContactID := d.Get("administrative_contact_id").(string)
 		updateRequest.AdministrativeContactID = &administrativeContactID
+		hasChanges = true
 	}
 
 	if d.HasChange("technical_contact_id") {
 		technicalContactID := d.Get("technical_contact_id").(string)
 		updateRequest.TechnicalContactID = &technicalContactID
+		hasChanges = true
 	}
 
 	if d.HasChange("administrative_contact") {
@@ -846,6 +802,7 @@ func resourceOrderDomainUpdate(ctx context.Context, d *schema.ResourceData, m in
 			contacts := adminContacts.([]interface{})
 			if len(contacts) > 0 {
 				updateRequest.AdministrativeContact = ExpandNewContact(contacts[0].(map[string]interface{}))
+				hasChanges = true
 			}
 		}
 	}
@@ -855,12 +812,22 @@ func resourceOrderDomainUpdate(ctx context.Context, d *schema.ResourceData, m in
 			contacts := techContacts.([]interface{})
 			if len(contacts) > 0 {
 				updateRequest.TechnicalContact = ExpandNewContact(contacts[0].(map[string]interface{}))
+				hasChanges = true
 			}
 		}
 	}
-	_, err = registrarAPI.UpdateDomain(updateRequest, scw.WithContext(ctx))
-	if err != nil {
-		return diag.FromErr(err)
+
+	if hasChanges {
+		_, err = registrarAPI.UpdateDomain(updateRequest, scw.WithContext(ctx))
+		if err != nil {
+			return diag.FromErr(err)
+		}
+		tasks, err := waitForUpdateDomainTaskCompletion(ctx, registrarAPI, domainName, 3600)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+		fmt.Printf("coucou")
+		_ = tasks
 	}
 
 	return resourceOrderDomainsRead(ctx, d, m)
@@ -892,5 +859,6 @@ func resourceOrderDomainDelete(ctx context.Context, d *schema.ResourceData, m in
 	}
 
 	d.SetId("")
+
 	return nil
 }

@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"strconv"
 	"strings"
 	"time"
 
@@ -481,6 +480,7 @@ func flattenTldOffers(offers map[string]*domain.TldOffer) []map[string]interface
 
 	return flattenedOffers
 }
+
 func flattenExternalDomainRegistrationStatus(status *domain.DomainRegistrationStatusExternalDomain) map[string]interface{} {
 	if status == nil {
 		return nil
@@ -589,6 +589,118 @@ func waitForTaskCompletion(ctx context.Context, registrarAPI *domain.RegistrarAP
 
 		return retry.NonRetryableError(fmt.Errorf("unexpected task status: %v", status))
 	})
+}
+func waitForUpdateDomainTaskCompletion(ctx context.Context, registrarAPI *domain.RegistrarAPI, domainName string, duration int) ([]*domain.Task, error) {
+	timeout := time.Duration(duration) * time.Second
+	var completedTasks []*domain.Task
+
+	err := retry.RetryContext(ctx, timeout, func() *retry.RetryError {
+		tasks, err := registrarAPI.ListTasks(&domain.RegistrarAPIListTasksRequest{
+			Domain: &domainName,
+		}, scw.WithContext(ctx), scw.WithAllPages())
+		if err != nil {
+			return retry.NonRetryableError(fmt.Errorf("failed to list tasks: %w", err))
+		}
+
+		allSuccess := true
+		completedTasks = tasks.Tasks
+		for _, task := range tasks.Tasks {
+			if task.Type == domain.TaskTypeUpdateDomain {
+				if task.Status != domain.TaskStatusSuccess {
+					allSuccess = false
+					if task.Status == domain.TaskStatusPending {
+						return retry.RetryableError(errors.New("update_domain task is still pending, retrying"))
+					}
+				}
+			}
+		}
+
+		if allSuccess {
+			return nil
+		}
+
+		return retry.RetryableError(errors.New("not all update_domain tasks are successful, retrying"))
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return completedTasks, nil
+}
+
+func ExpandDSRecord(dsRecordList []interface{}) *domain.DSRecord {
+	if len(dsRecordList) == 0 || dsRecordList[0] == nil {
+		return nil
+	}
+
+	dsRecordMap := dsRecordList[0].(map[string]interface{})
+	dsRecord := &domain.DSRecord{
+		KeyID:     uint32(dsRecordMap["key_id"].(int)),
+		Algorithm: domain.DSRecordAlgorithm(dsRecordMap["algorithm"].(string)),
+	}
+
+	if digestList, ok := dsRecordMap["digest"].([]interface{}); ok && len(digestList) > 0 {
+		digestMap := digestList[0].(map[string]interface{})
+		dsRecord.Digest = &domain.DSRecordDigest{
+			Type:   domain.DSRecordDigestType(digestMap["type"].(string)),
+			Digest: digestMap["digest"].(string),
+		}
+
+		if publicKeyList, ok := digestMap["public_key"].([]interface{}); ok && len(publicKeyList) > 0 {
+			publicKeyMap := publicKeyList[0].(map[string]interface{})
+			dsRecord.Digest.PublicKey = &domain.DSRecordPublicKey{
+				Key: publicKeyMap["key"].(string),
+			}
+		}
+	}
+
+	if publicKeyList, ok := dsRecordMap["public_key"].([]interface{}); ok && len(publicKeyList) > 0 {
+		publicKeyMap := publicKeyList[0].(map[string]interface{})
+		dsRecord.PublicKey = &domain.DSRecordPublicKey{
+			Key: publicKeyMap["key"].(string),
+		}
+	}
+
+	return dsRecord
+}
+
+func FlattenDSRecord(dsRecord *domain.DSRecord) []map[string]interface{} {
+	if dsRecord == nil {
+		return nil
+	}
+
+	result := map[string]interface{}{
+		"key_id":    dsRecord.KeyID,
+		"algorithm": string(dsRecord.Algorithm),
+	}
+
+	if dsRecord.Digest != nil {
+		digest := map[string]interface{}{
+			"type":   string(dsRecord.Digest.Type),
+			"digest": dsRecord.Digest.Digest,
+		}
+
+		if dsRecord.Digest.PublicKey != nil {
+			digest["public_key"] = []map[string]interface{}{
+				{
+					"key": dsRecord.Digest.PublicKey.Key,
+				},
+			}
+		}
+
+		result["digest"] = []map[string]interface{}{digest}
+	}
+
+	if dsRecord.PublicKey != nil {
+		result["public_key"] = []map[string]interface{}{
+			{
+				"key": dsRecord.PublicKey.Key,
+			},
+		}
+	}
+
+	return []map[string]interface{}{result}
 }
 
 func ExpandDSRecord(dsRecordList []interface{}) *domain.DSRecord {
