@@ -1129,7 +1129,7 @@ func ResourceInstanceServerDelete(ctx context.Context, d *schema.ResourceData, m
 		if !volumeExist {
 			return diag.Errorf("volume ID not found")
 		}
-		err = api.DeleteVolume(&instanceSDK.DeleteVolumeRequest{
+		err = api.DeleteUnknownVolume(&DeleteUnknownVolumeRequest{
 			Zone:     zone,
 			VolumeID: locality.ExpandID(volumeID),
 		})

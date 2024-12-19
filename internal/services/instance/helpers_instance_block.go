@@ -28,6 +28,11 @@ type ResizeUnknownVolumeRequest struct {
 	Size     *scw.Size
 }
 
+type DeleteUnknownVolumeRequest struct {
+	VolumeID string
+	Zone     scw.Zone
+}
+
 type UnknownVolume struct {
 	Zone     scw.Zone
 	ID       string
@@ -168,6 +173,30 @@ func (api *BlockAndInstanceAPI) ResizeUnknownVolume(req *ResizeUnknownVolumeRequ
 	return err
 }
 
+func (api *BlockAndInstanceAPI) DeleteUnknownVolume(req *DeleteUnknownVolumeRequest, opts ...scw.RequestOption) error {
+	unknownVolume, err := api.GetUnknownVolume(&GetUnknownVolumeRequest{
+		VolumeID: req.VolumeID,
+		Zone:     req.Zone,
+	}, opts...)
+	if err != nil {
+		return err
+	}
+
+	if unknownVolume.IsBlockVolume() {
+		err = api.blockAPI.DeleteVolume(&block.DeleteVolumeRequest{
+			Zone:     req.Zone,
+			VolumeID: req.VolumeID,
+		}, opts...)
+	} else {
+		err = api.API.DeleteVolume(&instance.DeleteVolumeRequest{
+			Zone:     req.Zone,
+			VolumeID: req.VolumeID,
+		}, opts...)
+	}
+
+	return err
+}
+
 type GetUnknownSnapshotRequest struct {
 	Zone       scw.Zone
 	SnapshotID string
@@ -212,36 +241,34 @@ func (api *BlockAndInstanceAPI) GetUnknownSnapshot(req *GetUnknownSnapshotReques
 	return snap, nil
 }
 
+func NewBlockAndInstanceAPI(client *scw.Client) *BlockAndInstanceAPI {
+	instanceAPI := instance.NewAPI(client)
+	blockAPI := block.NewAPI(client)
+
+	return &BlockAndInstanceAPI{
+		API:      instanceAPI,
+		blockAPI: blockAPI,
+	}
+}
+
 // newAPIWithZone returns a new instance API and the zone for a Create request
 func instanceAndBlockAPIWithZone(d *schema.ResourceData, m interface{}) (*BlockAndInstanceAPI, scw.Zone, error) {
-	instanceAPI := instance.NewAPI(meta.ExtractScwClient(m))
-	blockAPI := block.NewAPI(meta.ExtractScwClient(m))
-
 	zone, err := meta.ExtractZone(d, m)
 	if err != nil {
 		return nil, "", err
 	}
 
-	return &BlockAndInstanceAPI{
-		API:      instanceAPI,
-		blockAPI: blockAPI,
-	}, zone, nil
+	return NewBlockAndInstanceAPI(meta.ExtractScwClient(m)), zone, nil
 }
 
 // NewAPIWithZoneAndID returns an instance API with zone and ID extracted from the state
 func instanceAndBlockAPIWithZoneAndID(m interface{}, zonedID string) (*BlockAndInstanceAPI, scw.Zone, string, error) {
-	instanceAPI := instance.NewAPI(meta.ExtractScwClient(m))
-	blockAPI := block.NewAPI(meta.ExtractScwClient(m))
-
 	zone, ID, err := zonal.ParseID(zonedID)
 	if err != nil {
 		return nil, "", "", err
 	}
 
-	return &BlockAndInstanceAPI{
-		API:      instanceAPI,
-		blockAPI: blockAPI,
-	}, zone, ID, nil
+	return NewBlockAndInstanceAPI(meta.ExtractScwClient(m)), zone, ID, nil
 }
 
 func volumeTypeToMarketplaceFilter(volumeType instance.VolumeVolumeType) marketplace.LocalImageType {

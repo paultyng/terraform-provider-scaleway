@@ -6,9 +6,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	instanceSDK "github.com/scaleway/scaleway-sdk-go/api/instance/v1"
+	"github.com/scaleway/scaleway-sdk-go/scw"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/acctest"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/httperrors"
+	"github.com/scaleway/terraform-provider-scaleway/v2/internal/locality"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/locality/zonal"
+	"github.com/scaleway/terraform-provider-scaleway/v2/internal/meta"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/instance"
 )
 
@@ -56,6 +59,46 @@ func IsServerDestroyed(tt *acctest.TestTools) resource.TestCheckFunc {
 			// If no error resource still exist
 			if err == nil {
 				return fmt.Errorf("server (%s) still exists", rs.Primary.ID)
+			}
+
+			// Unexpected api error we return it
+			if !httperrors.Is404(err) {
+				return err
+			}
+		}
+
+		return nil
+	}
+}
+
+func IsServerRootVolumeDestroyed(tt *acctest.TestTools) resource.TestCheckFunc {
+	return func(state *terraform.State) error {
+		for _, rs := range state.RootModule().Resources {
+			if rs.Type != "scaleway_instance_server" {
+				continue
+			}
+
+			localizedRootVolumeID, exists := rs.Primary.Attributes["root_volume.0.volume_id"]
+			if !exists {
+				return fmt.Errorf("root_volume ID not found in resource %s", rs.Primary.ID)
+			}
+
+			zone, _, err := locality.ParseLocalizedID(rs.Primary.ID)
+			if err != nil {
+				return err
+			}
+			rootVolumeID := locality.ExpandID(localizedRootVolumeID)
+
+			api := instance.NewBlockAndInstanceAPI(meta.ExtractScwClient(tt.Meta))
+
+			_, err = api.GetUnknownVolume(&instance.GetUnknownVolumeRequest{
+				VolumeID: rootVolumeID,
+				Zone:     scw.Zone(zone),
+			})
+
+			// If no error resource still exist
+			if err == nil {
+				return fmt.Errorf("server's root volume (%s) still exists", rootVolumeID)
 			}
 
 			// Unexpected api error we return it

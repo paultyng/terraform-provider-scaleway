@@ -205,6 +205,10 @@ func ResourceBlockVolumeDelete(ctx context.Context, d *schema.ResourceData, m in
 
 	_, err = waitForBlockVolume(ctx, api, zone, id, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
+		if httperrors.Is404(err) {
+			d.SetId("")
+			return nil
+		}
 		return diag.FromErr(err)
 	}
 

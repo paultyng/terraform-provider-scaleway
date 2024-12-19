@@ -1713,7 +1713,10 @@ func TestAccServer_BlockExternalRootVolume(t *testing.T) {
 	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { acctest.PreCheck(t) },
 		ProviderFactories: tt.ProviderFactories,
-		CheckDestroy:      instancechecks.IsServerDestroyed(tt),
+		CheckDestroy: resource.ComposeTestCheckFunc(
+			instancechecks.IsServerDestroyed(tt),
+			instancechecks.IsServerRootVolumeDestroyed(tt),
+		),
 		Steps: []resource.TestStep{
 			{
 				Config: `
