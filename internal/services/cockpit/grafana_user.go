@@ -50,6 +50,12 @@ func ResourceCockpitGrafanaUser() *schema.Resource {
 				Description:      "The role of the Grafana user",
 				ValidateDiagFunc: verify.ValidateEnum[cockpit.GrafanaUserRole](),
 			},
+			"grafana_url": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The grafana URL",
+			},
+
 			"project_id": account.ProjectIDSchema(),
 		},
 	}
@@ -109,9 +115,21 @@ func ResourceCockpitGrafanaUserRead(ctx context.Context, d *schema.ResourceData,
 		return nil
 	}
 
+	grafana, err := api.GetGrafana(&cockpit.GlobalAPIGetGrafanaRequest{
+		ProjectID: projectID,
+	}, scw.WithContext(ctx))
+	if err != nil {
+		if httperrors.Is404(err) {
+			d.SetId("")
+			return nil
+		}
+		return diag.FromErr(err)
+	}
+
 	_ = d.Set("login", grafanaUser.Login)
 	_ = d.Set("role", grafanaUser.Role)
 	_ = d.Set("project_id", projectID)
+	_ = d.Set("grafana_url", grafana.GrafanaURL)
 
 	return nil
 }

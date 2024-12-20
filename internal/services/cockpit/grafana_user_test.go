@@ -43,6 +43,7 @@ func TestAccGrafanaUser_Basic(t *testing.T) {
 					resource.TestCheckResourceAttr("scaleway_cockpit_grafana_user.main", "login", grafanaTestUsername),
 					resource.TestCheckResourceAttr("scaleway_cockpit_grafana_user.main", "role", "editor"),
 					resource.TestCheckResourceAttrSet("scaleway_cockpit_grafana_user.main", "password"),
+					resource.TestCheckResourceAttrSet("scaleway_cockpit_grafana_user.main", "grafana_url"),
 				),
 			},
 			{
@@ -86,6 +87,7 @@ func TestAccGrafanaUser_Update(t *testing.T) {
 					resource.TestCheckResourceAttr("scaleway_cockpit_grafana_user.main", "login", grafanaTestUsername),
 					resource.TestCheckResourceAttr("scaleway_cockpit_grafana_user.main", "role", "editor"),
 					resource.TestCheckResourceAttrSet("scaleway_cockpit_grafana_user.main", "password"),
+					resource.TestCheckResourceAttrSet("scaleway_cockpit_grafana_user.main", "grafana_url"),
 				),
 			},
 			{
@@ -106,6 +108,7 @@ func TestAccGrafanaUser_Update(t *testing.T) {
 					resource.TestCheckResourceAttr("scaleway_cockpit_grafana_user.main", "login", grafanaTestUsername),
 					resource.TestCheckResourceAttr("scaleway_cockpit_grafana_user.main", "role", "viewer"),
 					resource.TestCheckResourceAttrSet("scaleway_cockpit_grafana_user.main", "password"),
+					resource.TestCheckResourceAttrSet("scaleway_cockpit_grafana_user.main", "grafana_url"),
 				),
 			},
 			{
