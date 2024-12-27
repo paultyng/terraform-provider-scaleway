@@ -90,7 +90,7 @@ func isNamespaceDestroyed(tt *acctest.TestTools) resource.TestCheckFunc {
 				return err
 			}
 
-			_, err = api.DeleteNamespace(&registrySDK.DeleteNamespaceRequest{
+			_, err = api.WaitForNamespace(&registrySDK.WaitForNamespaceRequest{
 				NamespaceID: id,
 				Region:      region,
 			})
