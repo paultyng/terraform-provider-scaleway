@@ -14,7 +14,7 @@ require (
 	github.com/aws/smithy-go v1.22.1
 	github.com/bflad/tfproviderdocs v0.12.1
 	github.com/bflad/tfproviderlint v0.30.0
-	github.com/docker/docker v27.3.1+incompatible
+	github.com/docker/docker v27.4.1+incompatible
 	github.com/dustin/go-humanize v1.0.1
 	github.com/google/go-cmp v0.6.0
 	github.com/hashicorp/aws-sdk-go-base v1.1.0
