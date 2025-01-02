@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.28.7
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.48
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.66.2
-	github.com/aws/aws-sdk-go-v2/service/sns v1.33.7
+	github.com/aws/aws-sdk-go-v2/service/sns v1.33.8
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.37.3
 	github.com/aws/smithy-go v1.22.1
 	github.com/bflad/tfproviderdocs v0.12.1
