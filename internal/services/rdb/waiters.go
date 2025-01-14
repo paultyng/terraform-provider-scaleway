@@ -50,3 +50,17 @@ func waitForRDBReadReplica(ctx context.Context, api *rdb.API, region scw.Region,
 		RetryInterval: &retryInterval,
 	}, scw.WithContext(ctx))
 }
+
+func waitForRDBSnapshot(ctx context.Context, api *rdb.API, region scw.Region, snapshotId string, timeout time.Duration) (*rdb.Snapshot, error) {
+	retryInterval := defaultWaitRetryInterval
+	if transport.DefaultWaitRetryInterval != nil {
+		retryInterval = *transport.DefaultWaitRetryInterval
+	}
+
+	return api.WaitForSnapshot(&rdb.WaitForSnapshotRequest{
+		Region:        region,
+		Timeout:       scw.TimeDurationPtr(timeout),
+		SnapshotID:    snapshotId,
+		RetryInterval: &retryInterval,
+	}, scw.WithContext(ctx))
+}

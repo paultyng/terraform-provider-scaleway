@@ -204,6 +204,7 @@ func Provider(config *Config) plugin.ProviderFunc {
 				"scaleway_rdb_privilege":                       rdb.ResourcePrivilege(),
 				"scaleway_rdb_read_replica":                    rdb.ResourceReadReplica(),
 				"scaleway_rdb_user":                            rdb.ResourceUser(),
+				"scaleway_rdb_snapshot":                        rdb.ResourceSnapshot(),
 				"scaleway_redis_cluster":                       redis.ResourceCluster(),
 				"scaleway_registry_namespace":                  registry.ResourceNamespace(),
 				"scaleway_sdb_sql_database":                    sdb.ResourceDatabase(),
