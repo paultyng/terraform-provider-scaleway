@@ -115,7 +115,66 @@ func setCreateContainerRequest(d *schema.ResourceData, region scw.Region) (*cont
 		req.Sandbox = container.ContainerSandbox(sandbox.(string))
 	}
 
+	if scalingOption, ok := d.GetOk("scaling_option"); ok {
+		scalingOptionReq, err := expandScalingOptions(scalingOption)
+		if err != nil {
+			return nil, err
+		}
+		req.ScalingOption = scalingOptionReq
+	}
+
 	return req, nil
+}
+
+func expandScalingOptions(scalingOptionSchema interface{}) (*container.ContainerScalingOption, error) {
+	scalingOption, ok := scalingOptionSchema.(*schema.Set)
+	if !ok {
+		return &container.ContainerScalingOption{}, nil
+	}
+
+	for _, option := range scalingOption.List() {
+		rawOption, isRawOption := option.(map[string]interface{})
+		if !isRawOption {
+			continue
+		}
+
+		setFields := 0
+		cso := &container.ContainerScalingOption{}
+		if concurrentRequestThresold, ok := rawOption["concurrent_requests_threshold"].(int); ok && concurrentRequestThresold != 0 {
+			cso.ConcurrentRequestsThreshold = scw.Uint32Ptr(uint32(concurrentRequestThresold))
+			setFields++
+		}
+		if cpuUsageThreshold, ok := rawOption["cpu_usage_threshold"].(int); ok && cpuUsageThreshold != 0 {
+			cso.CPUUsageThreshold = scw.Uint32Ptr(uint32(cpuUsageThreshold))
+			setFields++
+		}
+		if memoryUsageThreshold, ok := rawOption["memory_usage_threshold"].(int); ok && memoryUsageThreshold != 0 {
+			cso.MemoryUsageThreshold = scw.Uint32Ptr(uint32(memoryUsageThreshold))
+			setFields++
+		}
+
+		if setFields > 1 {
+			return &container.ContainerScalingOption{}, errors.New("a maximum of one scaling option can be set")
+		}
+		return cso, nil
+	}
+
+	return &container.ContainerScalingOption{}, nil
+}
+
+func flattenScalingOption(scalingOption *container.ContainerScalingOption) interface{} {
+	if scalingOption == nil {
+		return nil
+	}
+
+	flattenedScalingOption := []map[string]interface{}(nil)
+	flattenedScalingOption = append(flattenedScalingOption, map[string]interface{}{
+		"concurrent_requests_threshold": types.FlattenUint32Ptr(scalingOption.ConcurrentRequestsThreshold),
+		"cpu_usage_threshold":           types.FlattenUint32Ptr(scalingOption.CPUUsageThreshold),
+		"memory_usage_threshold":        types.FlattenUint32Ptr(scalingOption.MemoryUsageThreshold),
+	})
+
+	return flattenedScalingOption
 }
 
 func expandContainerSecrets(secretsRawMap interface{}) []*container.Secret {

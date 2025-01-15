@@ -91,7 +91,12 @@ In addition to all arguments above, the following attributes are exported:
 
 - `deploy` - Boolean indicating whether the container is on a production environment.
 
-- `sandbox` - (Optional) Execution environment of the container.
+- `sandbox` - Execution environment of the container.
+
+- `scaling_option` - Configuration block used to decide when to scale up or down. Possible values:
+    - `concurrent_requests_threshold` - Scale depending on the number of concurrent requests being processed per container instance.
+    - `cpu_usage_threshold` - Scale depending on the CPU usage of a container instance.
+    - `memory_usage_threshold`- Scale depending on the memory usage of a container instance.
 
 - `status` - The container status.
 

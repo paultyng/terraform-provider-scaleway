@@ -129,6 +129,7 @@ func ResourceContainer() *schema.Resource {
 				Type:         schema.TypeInt,
 				Optional:     true,
 				Computed:     true,
+				Deprecated:   "Use scaling_option.concurrent_requests_threshold instead. This attribute will be removed.",
 				Description:  "The maximum the number of simultaneous requests your container can handle at the same time.",
 				ValidateFunc: validation.IntAtMost(containerMaxConcurrencyLimit),
 			},
@@ -169,6 +170,31 @@ func ResourceContainer() *schema.Resource {
 				Computed:         true,
 				Description:      "Execution environment of the container.",
 				ValidateDiagFunc: verify.ValidateEnum[container.ContainerSandbox](),
+			},
+			"scaling_option": {
+				Type:        schema.TypeSet,
+				Optional:    true,
+				Computed:    true,
+				Description: "Configuration used to decide when to scale up or down.",
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"concurrent_requests_threshold": {
+							Type:        schema.TypeInt,
+							Description: "Scale depending on the number of concurrent requests being processed per container instance.",
+							Optional:    true,
+						},
+						"cpu_usage_threshold": {
+							Type:        schema.TypeInt,
+							Description: "Scale depending on the CPU usage of a container instance.",
+							Optional:    true,
+						},
+						"memory_usage_threshold": {
+							Type:        schema.TypeInt,
+							Description: "Scale depending on the memory usage of a container instance.",
+							Optional:    true,
+						},
+					},
+				},
 			},
 			// computed
 			"status": {
@@ -280,6 +306,7 @@ func ResourceContainerRead(ctx context.Context, d *schema.ResourceData, m interf
 	_ = d.Set("deploy", scw.BoolPtr(*types.ExpandBoolPtr(d.Get("deploy"))))
 	_ = d.Set("http_option", co.HTTPOption)
 	_ = d.Set("sandbox", co.Sandbox)
+	_ = d.Set("scaling_option", flattenScalingOption(co.ScalingOption))
 	_ = d.Set("region", co.Region.String())
 
 	return nil
@@ -373,6 +400,16 @@ func ResourceContainerUpdate(ctx context.Context, d *schema.ResourceData, m inte
 
 	if d.HasChanges("sandbox") {
 		req.Sandbox = container.ContainerSandbox(d.Get("sandbox").(string))
+	}
+
+	if d.HasChanges("scaling_option") {
+		scalingOption := d.Get("scaling_option")
+
+		scalingOptionReq, err := expandScalingOptions(scalingOption)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+		req.ScalingOption = scalingOptionReq
 	}
 
 	imageHasChanged := d.HasChanges("registry_sha256")
