@@ -41,6 +41,12 @@ func ResourceServer() *schema.Resource {
 				Required:    true,
 				ForceNew:    true,
 			},
+			"enable_vpc": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Default:     false,
+				Description: "Whether or not to enable VPC access",
+			},
 			// Computed
 			"ip": {
 				Type:        schema.TypeString,
@@ -72,6 +78,11 @@ func ResourceServer() *schema.Resource {
 				Computed:    true,
 				Description: "The minimal date and time on which you can delete this server due to Apple licence",
 			},
+			"vpc_status": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "The VPC status of the server",
+			},
 
 			// Common
 			"zone":            zonal.Schema(),
@@ -91,6 +102,7 @@ func ResourceAppleSiliconServerCreate(ctx context.Context, d *schema.ResourceDat
 		Name:      types.ExpandOrGenerateString(d.Get("name"), "m1"),
 		Type:      d.Get("type").(string),
 		ProjectID: d.Get("project_id").(string),
+		EnableVpc: d.Get("enable_vpc").(bool),
 	}
 
 	res, err := asAPI.CreateServer(createReq, scw.WithContext(ctx))
@@ -134,6 +146,7 @@ func ResourceAppleSiliconServerRead(ctx context.Context, d *schema.ResourceData,
 	_ = d.Set("deletable_at", res.DeletableAt.Format(time.RFC3339))
 	_ = d.Set("ip", res.IP.String())
 	_ = d.Set("vnc_url", res.VncURL)
+	_ = d.Set("vpc_status", res.VpcStatus)
 
 	_ = d.Set("zone", res.Zone.String())
 	_ = d.Set("organization_id", res.OrganizationID)
@@ -155,6 +168,11 @@ func ResourceAppleSiliconServerUpdate(ctx context.Context, d *schema.ResourceDat
 
 	if d.HasChange("name") {
 		req.Name = types.ExpandStringPtr(d.Get("name"))
+	}
+
+	if d.HasChange("enable_vpc") {
+		enableVpc := d.Get("enable_vpc").(bool)
+		req.EnableVpc = &enableVpc
 	}
 
 	_, err = asAPI.UpdateServer(req, scw.WithContext(ctx))
