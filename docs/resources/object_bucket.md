@@ -141,7 +141,7 @@ If you make any change to your bucket's tags using the console, it will overwrit
     * `expose_headers` (Optional) Specifies header exposure in the response.
     * `max_age_seconds` (Optional) Specifies time in seconds that the browser can cache the response for a preflight request.
 
-* `force_destroy` - (Optional) Whether to allow the object to be deleted by removing any legal hold on any object version. Default is false. This value should be set to true only if the bucket has object lock enabled.
+* `force_destroy` - (Optional) Boolean that, when set to true, allows the deletion of all objects (including locked objects) when the bucket is destroyed. This operation is irreversible, and the objects cannot be recovered. The default is false.
 
 * `project_id` - (Defaults to [provider](../index.md#project_id) `project_id`) The ID of the project the bucket is associated with.
 
