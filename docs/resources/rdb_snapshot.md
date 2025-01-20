@@ -90,12 +90,6 @@ In addition to all arguments above, the following attributes are exported:
 
 RDB Snapshots can be imported using the `{region}/{snapshot_id}` format.
 
-### Example:
-
-```bash
-terraform import scaleway_rdb_snapshot.example fr-par/11111111-1111-1111-1111-111111111111
-```
-
 ## Limitations
 
 - Snapshots are tied to the database instance and region where they are created.
