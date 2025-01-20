@@ -70,9 +70,9 @@ The following arguments are supported:
 - `snapshot_id` - (Optional, ForceNew) The ID of an existing snapshot. This allows creating an instance from a specific snapshot ID. Conflicts with `engine`.
 - `expires_at` - (Optional) Expiration date of the snapshot in ISO 8601 format (e.g., `2025-01-31T00:00:00Z`). If not set, the snapshot will not expire automatically.
 
-### Additional Computed Attributes
+## Attributes Reference
 
-In addition to all arguments above, the following attributes are exported:g
+In addition to all arguments above, the following attributes are exported:
 
 - `id` - The unique ID of the snapshot.
 - `created_at` - The timestamp when the snapshot was created, in ISO 8601 format.
