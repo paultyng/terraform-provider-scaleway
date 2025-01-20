@@ -336,8 +336,7 @@ func ResourceRdbInstanceCreate(ctx context.Context, d *schema.ResourceData, m in
 	if err != nil {
 		return diag.FromErr(err)
 	}
-	id := ""
-
+	ID := ""
 	if regionalSnapshotID, ok := d.GetOk("snapshot_id"); ok {
 		haCluster := d.Get("is_ha_cluster").(bool)
 		nodeType := d.Get("node_type").(string)
@@ -375,7 +374,7 @@ func ResourceRdbInstanceCreate(ctx context.Context, d *schema.ResourceData, m in
 			}
 		}
 		d.SetId(regional.NewIDString(region, res.ID))
-		id = res.ID
+		ID = res.ID
 
 	} else {
 
@@ -433,13 +432,13 @@ func ResourceRdbInstanceCreate(ctx context.Context, d *schema.ResourceData, m in
 		}
 
 		d.SetId(regional.NewIDString(region, res.ID))
-		id = res.ID
+		ID = res.ID
 	}
 
 	mustUpdate := false
 	updateReq := &rdb.UpdateInstanceRequest{
 		Region:     region,
-		InstanceID: id,
+		InstanceID: ID,
 	}
 	// Configure Schedule Backup
 	// BackupScheduleFrequency and BackupScheduleRetention can only configure after instance creation
@@ -461,7 +460,7 @@ func ResourceRdbInstanceCreate(ctx context.Context, d *schema.ResourceData, m in
 		mustUpdate = true
 	}
 	if mustUpdate {
-		_, err = waitForRDBInstance(ctx, rdbAPI, region, id, d.Timeout(schema.TimeoutCreate))
+		_, err = waitForRDBInstance(ctx, rdbAPI, region, ID, d.Timeout(schema.TimeoutCreate))
 		if err != nil {
 			return diag.FromErr(err)
 		}
@@ -472,7 +471,7 @@ func ResourceRdbInstanceCreate(ctx context.Context, d *schema.ResourceData, m in
 	}
 	// Configure Instance settings
 	if settings, ok := d.GetOk("settings"); ok {
-		res, err := waitForRDBInstance(ctx, rdbAPI, region, id, d.Timeout(schema.TimeoutCreate))
+		res, err := waitForRDBInstance(ctx, rdbAPI, region, ID, d.Timeout(schema.TimeoutCreate))
 		if err != nil {
 			return diag.FromErr(err)
 		}

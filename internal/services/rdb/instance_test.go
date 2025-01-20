@@ -1383,7 +1383,7 @@ func TestAccInstance_UpdateEncryptionAtRest(t *testing.T) {
 	})
 }
 
-func TestAccRdbInstance_CompleteWorkflow(t *testing.T) {
+func TestAccInstance_CompleteWorkflow(t *testing.T) {
 	tt := acctest.NewTestTools(t)
 	defer tt.Cleanup()
 

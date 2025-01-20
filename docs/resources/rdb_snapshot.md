@@ -72,7 +72,7 @@ The following arguments are supported:
 
 ### Additional Computed Attributes
 
-In addition to the arguments above, the following attributes are exported:
+In addition to all arguments above, the following attributes are exported:
 
 - `id` - The unique ID of the snapshot.
 - `created_at` - The timestamp when the snapshot was created, in ISO 8601 format.
