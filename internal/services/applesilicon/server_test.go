@@ -13,7 +13,7 @@ import (
 )
 
 func TestAccServer_Basic(t *testing.T) {
-	t.Skip("Skipping AppleSilicon deletion before 24h")
+	//t.Skip("Skipping AppleSilicon deletion before 24h")
 	tt := acctest.NewTestTools(t)
 	defer tt.Cleanup()
 	resource.ParallelTest(t, resource.TestCase{
@@ -31,7 +31,7 @@ func TestAccServer_Basic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					isServerPresent(tt, "scaleway_apple_silicon_server.main"),
 					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "name", "test-m1"),
-					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "type", "M1-M"),
+					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "type", "M2-M"),
 					// Computed
 					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "ip"),
 					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "vnc_url"),
@@ -44,7 +44,7 @@ func TestAccServer_Basic(t *testing.T) {
 }
 
 func TestAccServer_EnableVPC(t *testing.T) {
-	t.Skip("Skipping AppleSilicon VPC not available")
+	//t.Skip("Skipping AppleSilicon VPC not available")
 	tt := acctest.NewTestTools(t)
 	defer tt.Cleanup()
 	resource.ParallelTest(t, resource.TestCase{
@@ -63,7 +63,7 @@ func TestAccServer_EnableVPC(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					isServerPresent(tt, "scaleway_apple_silicon_server.main"),
 					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "name", "test-m1"),
-					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "type", "M1-M"),
+					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "type", "M2-M"),
 					// Computed
 					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "ip"),
 					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "vnc_url"),
@@ -143,7 +143,7 @@ func isServerDestroyed(tt *acctest.TestTools) resource.TestCheckFunc {
 			}
 
 			// Unexpected api error we return it
-			if !httperrors.Is404(err) {
+			if !httperrors.Is403(err) {
 				return err
 			}
 		}
