@@ -5,6 +5,8 @@ page_title: "Scaleway: scaleway_vpc_public_gateway_dhcp"
 
 # Resource: scaleway_vpc_public_gateway_dhcp
 
+
+
 Creates and manages Scaleway VPC Public Gateway DHCP configurations.
 For more information, see [the documentation](https://www.scaleway.com/en/developers/api/public-gateway/#dhcp-c05544).
 
@@ -31,6 +33,9 @@ The following arguments are supported:
 - `renew_timer` - (Optional) After how long, in seconds, a renewal will be attempted. Must be 30s lower than `rebind_timer`. Defaults to 50m (3000s).
 - `rebind_timer` - (Optional) After how long, in seconds, a DHCP client will query for a new lease if previous renews fail. Must be 30s lower than `valid_lifetime`. Defaults to 51m (3060s).
 - `push_default_route` - (Optional) Whether the gateway should push a default route to DHCP clients or only hand out IPs. Defaults to `true`.
+
+~> **Warning**: If you need to setup a default route, it's recommended to use the [`scaleway_vpc_gateway_network`](vpc_gateway_network.md#create-a-gatewaynetwork-with-ipam-configuration) resource instead.
+
 - `push_dns_server` - (Optional) Whether the gateway should push custom DNS servers to clients. This allows for instance hostname -> IP resolution. Defaults to `true`.
 - `dns_servers_override` - (Optional) Override the DNS server list pushed to DHCP clients, instead of the gateway itself.
 - `dns_search` - (Optional) Additional DNS search paths
