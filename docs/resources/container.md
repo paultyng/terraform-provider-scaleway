@@ -161,7 +161,8 @@ Refer to the [Serverless Containers pricing](https://www.scaleway.com/en/docs/fa
 
 ## Scaling option configuration
 
-Scaling option block configuration allows you to choose which parameter will scale up/down containers. Options are number of concurrent requests, CPU or memory usage. 
+Scaling option block configuration allows you to choose which parameter will scale up/down containers.
+Options are number of concurrent requests, CPU or memory usage.
 It replaces current `max_concurrency` that has been deprecated.
 
 Example:
