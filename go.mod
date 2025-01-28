@@ -30,7 +30,7 @@ require (
 	github.com/nats-io/jwt/v2 v2.7.3
 	github.com/nats-io/nats.go v1.37.0
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.30.0.20250115101541-adcf20ac0a4e
+	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.31.0.20250128135513-ad2f1fb6c4b9
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/crypto v0.31.0
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0
