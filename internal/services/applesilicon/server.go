@@ -241,8 +241,6 @@ func ResourceAppleSiliconServerUpdate(ctx context.Context, d *schema.ResourceDat
 		return diag.FromErr(err)
 	}
 
-	privateNetworkAPI := applesilicon.NewPrivateNetworkAPI(meta.ExtractScwClient(m))
-
 	req := &applesilicon.UpdateServerRequest{
 		Zone:     zone,
 		ServerID: ID,
@@ -255,26 +253,6 @@ func ResourceAppleSiliconServerUpdate(ctx context.Context, d *schema.ResourceDat
 	if d.HasChange("enable_vpc") {
 		enableVpc := d.Get("enable_vpc").(bool)
 		req.EnableVpc = &enableVpc
-		if !enableVpc {
-			listPrivateNetworks, err := privateNetworkAPI.ListServerPrivateNetworks(&applesilicon.PrivateNetworkAPIListServerPrivateNetworksRequest{
-				Zone:     res.Zone,
-				ServerID: &res.ID,
-			})
-			if err != nil {
-				return diag.FromErr(err)
-			}
-			for _, v := range listPrivateNetworks.ServerPrivateNetworks {
-				err = privateNetworkAPI.DeleteServerPrivateNetwork(&applesilicon.PrivateNetworkAPIDeleteServerPrivateNetworkRequest{
-					Zone:             zone,
-					ServerID:         v.ServerID,
-					PrivateNetworkID: v.PrivateNetworkID,
-				})
-				if err != nil {
-					return diag.FromErr(err)
-				}
-			}
-
-		}
 	}
 
 	_, err = asAPI.UpdateServer(req, scw.WithContext(ctx))

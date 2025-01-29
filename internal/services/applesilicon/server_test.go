@@ -54,15 +54,45 @@ func TestAccServer_EnableVPC(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
+					resource "scaleway_vpc" "vpc01" {
+					  name = "TestAccScalewayBaremetalIPAM"
+					}
+					
+					resource "scaleway_vpc_private_network" "pn01" {
+					  name = "TestAccScalewayBaremetalIPAM"
+					  ipv4_subnet {
+						subnet = "172.16.64.0/22"
+					  }
+					  vpc_id = scaleway_vpc.vpc01.id
+					}
+					
+					resource "scaleway_ipam_ip" "ip01" {
+					  address = "172.16.64.7"
+					  source {
+						private_network_id = scaleway_vpc_private_network.pn01.id
+					  }
+					}
+
+					resource "scaleway_ipam_ip" "ip02" {
+					  address = "172.16.64.9"
+					  source {
+						private_network_id = scaleway_vpc_private_network.pn01.id
+					  }
+					}
+
 					resource scaleway_apple_silicon_server main {
-						name = "test-m1"
+						name = "test-m2"
 						type = "M2-M"
 						enable_vpc = true
+						private_network {
+						  id = scaleway_vpc_private_network.pn01.id
+						  ipam_ip_ids = [scaleway_ipam_ip.ip01.id]
+						}
 					}
 				`,
 				Check: resource.ComposeTestCheckFunc(
 					isServerPresent(tt, "scaleway_apple_silicon_server.main"),
-					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "name", "test-m1"),
+					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "name", "test-m2"),
 					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "type", "M2-M"),
 					// Computed
 					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "ip"),
@@ -75,14 +105,14 @@ func TestAccServer_EnableVPC(t *testing.T) {
 			{
 				Config: `
 					resource scaleway_apple_silicon_server main {
-						name = "test-m1"
+						name = "test-m2"
 						type = "M2-M"
 						enable_vpc = false
 					}
 				`,
 				Check: resource.ComposeTestCheckFunc(
 					isServerPresent(tt, "scaleway_apple_silicon_server.main"),
-					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "name", "test-m1"),
+					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "name", "test-m2"),
 					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "type", "M1-M"),
 					// Computed
 					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "ip"),
