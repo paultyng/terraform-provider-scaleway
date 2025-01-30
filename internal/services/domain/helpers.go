@@ -12,11 +12,10 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/api/std"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/meta"
-	"github.com/scaleway/terraform-provider-scaleway/v2/internal/transport"
 )
 
 const (
-	defaultWaitDomainOrderDomainRetryInterval = 10 * time.Minute
+	defaultWaitDomainsRegistrationRetryInterval = 10 * time.Minute
 )
 
 // NewDomainAPI returns a new domain API.
@@ -303,6 +302,77 @@ func ExtractDomainFromID(id string) (string, error) {
 	return parts[1], nil
 }
 
+func getStatusTasks(ctx context.Context, api *domain.RegistrarAPI, taskID string) (domain.TaskStatus, error) {
+	var page int32 = 1
+	var pageSize uint32 = 1000
+	for {
+		listTasksResponse, err := api.ListTasks(&domain.RegistrarAPIListTasksRequest{
+			Page:     &page,
+			PageSize: &pageSize,
+		}, scw.WithContext(ctx))
+
+		if err != nil {
+			return "", fmt.Errorf("error retrieving tasks: %w", err)
+		}
+
+		for _, task := range listTasksResponse.Tasks {
+			if task.ID == taskID {
+				return task.Status, nil
+			}
+		}
+
+		if len(listTasksResponse.Tasks) == 0 || uint32(len(listTasksResponse.Tasks)) < pageSize {
+			break
+		}
+
+		page++
+	}
+
+	return "", fmt.Errorf("task with ID '%s' not found", taskID)
+}
+
+func SplitDomains(input *string) []string {
+	if input == nil || strings.TrimSpace(*input) == "" {
+		return nil
+	}
+
+	domains := strings.Split(*input, ",")
+	var result []string
+
+	for _, domain := range domains {
+		domain = strings.TrimSpace(domain)
+		if domain != "" {
+			result = append(result, domain)
+		}
+	}
+
+	if len(result) == 0 {
+		return nil
+	}
+	return result
+}
+
+func ExtractDomainsFromTaskID(ctx context.Context, id string, registrarAPI *domain.RegistrarAPI) ([]string, error) {
+	parts := strings.Split(id, "/")
+	if len(parts) != 2 {
+		return nil, fmt.Errorf("invalid ID format, expected 'projectID/domainName', got: %s", id)
+	}
+	taskID := parts[1]
+
+	listTasksResponse, err := registrarAPI.ListTasks(&domain.RegistrarAPIListTasksRequest{}, scw.WithContext(ctx), scw.WithAllPages())
+	if err != nil {
+		return nil, fmt.Errorf("error retrieving tasks: %w", err)
+	}
+
+	for _, task := range listTasksResponse.Tasks {
+		if task.ID == taskID {
+			return SplitDomains(task.Domain), nil
+		}
+	}
+	return nil, fmt.Errorf("task with ID '%s' not found", taskID)
+
+}
+
 func flattenContact(contact *domain.Contact) []map[string]interface{} {
 	if contact == nil {
 		return nil
@@ -526,47 +596,6 @@ func flattenDomainRegistrationStatusTransfer(transferStatus *domain.DomainRegist
 	}
 }
 
-func waitForOrderDomain(ctx context.Context, api *domain.RegistrarAPI, domainName string, timeout time.Duration) (*domain.Domain, error) {
-	retryInterval := defaultWaitDomainOrderDomainRetryInterval
-	if transport.DefaultWaitRetryInterval != nil {
-		retryInterval = *transport.DefaultWaitRetryInterval
-	}
-	return api.WaitForOrderDomain(&domain.WaitForOrderDomainRequest{
-		Domain:        domainName,
-		Timeout:       scw.TimeDurationPtr(timeout),
-		RetryInterval: &retryInterval,
-	}, scw.WithContext(ctx))
-}
-
-func getStatusTasks(ctx context.Context, api *domain.RegistrarAPI, taskID string) (domain.TaskStatus, error) {
-	var page int32 = 1
-	var pageSize uint32 = 1000
-	for {
-		listTasksResponse, err := api.ListTasks(&domain.RegistrarAPIListTasksRequest{
-			Page:     &page,
-			PageSize: &pageSize,
-		}, scw.WithContext(ctx))
-
-		if err != nil {
-			return "", fmt.Errorf("error retrieving tasks: %w", err)
-		}
-
-		for _, task := range listTasksResponse.Tasks {
-			if task.ID == taskID {
-				return task.Status, nil
-			}
-		}
-
-		if len(listTasksResponse.Tasks) == 0 || uint32(len(listTasksResponse.Tasks)) < pageSize {
-			break
-		}
-
-		page++
-	}
-
-	return "", fmt.Errorf("task with ID '%s' not found", taskID)
-}
-
 func waitForTaskCompletion(ctx context.Context, registrarAPI *domain.RegistrarAPI, taskID string, duration int) error {
 	timeout := time.Duration(duration) * time.Second
 	return retry.RetryContext(ctx, timeout, func() *retry.RetryError {
@@ -590,6 +619,7 @@ func waitForTaskCompletion(ctx context.Context, registrarAPI *domain.RegistrarAP
 		return retry.NonRetryableError(fmt.Errorf("unexpected task status: %v", status))
 	})
 }
+
 func waitForUpdateDomainTaskCompletion(ctx context.Context, registrarAPI *domain.RegistrarAPI, domainName string, duration int) ([]*domain.Task, error) {
 	timeout := time.Duration(duration) * time.Second
 	var completedTasks []*domain.Task
