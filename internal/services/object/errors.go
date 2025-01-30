@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/retry"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
