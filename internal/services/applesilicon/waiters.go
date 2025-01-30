@@ -30,7 +30,7 @@ func waitForAppleSiliconServer(ctx context.Context, api *applesilicon.API, zone 
 	return server, err
 }
 
-func waitForAppleSiliconPrivateNetworkServer(ctx context.Context, api *applesilicon.PrivateNetworkAPI, zone scw.Zone, serverID string, timeout time.Duration) (*[]applesilicon.ServerPrivateNetwork, error) {
+func waitForAppleSiliconPrivateNetworkServer(ctx context.Context, api *applesilicon.PrivateNetworkAPI, zone scw.Zone, serverID string, timeout time.Duration) ([]*applesilicon.ServerPrivateNetwork, error) {
 	retryInterval := defaultAppleSiliconServerRetryInterval
 	if transport.DefaultWaitRetryInterval != nil {
 		retryInterval = *transport.DefaultWaitRetryInterval

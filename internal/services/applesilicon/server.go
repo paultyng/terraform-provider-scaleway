@@ -241,6 +241,11 @@ func ResourceAppleSiliconServerUpdate(ctx context.Context, d *schema.ResourceDat
 		return diag.FromErr(err)
 	}
 
+	appleSilisonPrivateNetworkAPI, zone, err := newPrivateNetworkAPIWithZone(d, m)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
 	req := &applesilicon.UpdateServerRequest{
 		Zone:     zone,
 		ServerID: ID,
@@ -255,6 +260,23 @@ func ResourceAppleSiliconServerUpdate(ctx context.Context, d *schema.ResourceDat
 		req.EnableVpc = &enableVpc
 	}
 
+	if d.HasChange("private_network") {
+		privateNetwork := d.Get("private_network")
+
+		req := &applesilicon.PrivateNetworkAPISetServerPrivateNetworksRequest{
+			Zone:                       zone,
+			ServerID:                   ID,
+			PerPrivateNetworkIpamIPIDs: expandPrivateNetworks(privateNetwork),
+		}
+
+		_, err := appleSilisonPrivateNetworkAPI.SetServerPrivateNetworks(req, scw.WithContext(ctx))
+		if err != nil {
+			return diag.FromErr(err)
+		}
+
+		_, err = waitForAppleSiliconPrivateNetworkServer(ctx, appleSilisonPrivateNetworkAPI, zone, ID, d.Timeout(schema.TimeoutCreate))
+	}
+
 	_, err = asAPI.UpdateServer(req, scw.WithContext(ctx))
 	if err != nil {
 		return diag.FromErr(err)
@@ -265,6 +287,11 @@ func ResourceAppleSiliconServerUpdate(ctx context.Context, d *schema.ResourceDat
 
 func ResourceAppleSiliconServerDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	asAPI, zone, ID, err := NewAPIWithZoneAndID(m, d.Id())
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	err = detachAllPrivateNetworkFromServer(ctx, d, m, ID)
 	if err != nil {
 		return diag.FromErr(err)
 	}
