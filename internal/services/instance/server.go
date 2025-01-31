@@ -340,28 +340,6 @@ func ResourceServer() *schema.Resource {
 					},
 				},
 			},
-			"routed_ip_enabled": {
-				Type:        schema.TypeBool,
-				Description: "If server supports routed IPs, default to true",
-				Optional:    true,
-				Computed:    true,
-				ValidateDiagFunc: func(i interface{}, path cty.Path) diag.Diagnostics {
-					if i == nil {
-						return nil
-					}
-					if !i.(bool) {
-						return diag.Diagnostics{{
-							Severity:      diag.Error,
-							Summary:       "NAT IPs are not supported anymore",
-							Detail:        "Remove explicit disabling, enable it or downgrade terraform.\nLearn more about migration: https://www.scaleway.com/en/docs/compute/instances/how-to/migrate-routed-ips/",
-							AttributePath: path,
-						}}
-					}
-
-					return nil
-				},
-				Deprecated: "Routed IP is the default configuration, it should always be true",
-			},
 			"zone":            zonal.Schema(),
 			"organization_id": account.OrganizationIDSchema(),
 			"project_id":      account.ProjectIDSchema(),
@@ -402,7 +380,6 @@ func ResourceInstanceServerCreate(ctx context.Context, d *schema.ResourceData, m
 		SecurityGroup:     types.ExpandStringPtr(zonal.ExpandID(d.Get("security_group_id")).ID),
 		DynamicIPRequired: scw.BoolPtr(d.Get("enable_dynamic_ip").(bool)),
 		Tags:              types.ExpandStrings(d.Get("tags")),
-		RoutedIPEnabled:   types.ExpandBoolPtr(types.GetBool(d, "routed_ip_enabled")),
 	}
 
 	enableIPv6, ok := d.GetOk("enable_ipv6")
@@ -627,7 +604,6 @@ func ResourceInstanceServerRead(ctx context.Context, d *schema.ResourceData, m i
 		_ = d.Set("enable_dynamic_ip", server.DynamicIPRequired)
 		_ = d.Set("organization_id", server.Organization)
 		_ = d.Set("project_id", server.Project)
-		_ = d.Set("routed_ip_enabled", server.RoutedIPEnabled) //nolint:staticcheck
 
 		// Image could be empty in an import context.
 		image := regional.ExpandID(d.Get("image").(string))
@@ -1037,13 +1013,6 @@ func ResourceInstanceServerUpdate(ctx context.Context, d *schema.ResourceData, m
 		}
 	}
 
-	if d.HasChanges("routed_ip_enabled") {
-		err := ResourceInstanceServerEnableRoutedIP(ctx, d, api.API, zone, id)
-		if err != nil {
-			return diag.FromErr(err)
-		}
-	}
-
 	if d.HasChanges("root_volume.0.sbs_iops") {
 		warnings = append(warnings, ResourceInstanceServerUpdateRootVolumeIOPS(ctx, api, zone, id, types.ExpandUint32Ptr(d.Get("root_volume.0.sbs_iops")))...)
 	}
@@ -1307,29 +1276,6 @@ func ResourceInstanceServerMigrate(ctx context.Context, d *schema.ResourceData, 
 	err = reachState(ctx, api, zone, id, beginningState)
 	if err != nil {
 		return fmt.Errorf("failed to start server after changing server type: %w", err)
-	}
-
-	return nil
-}
-
-func ResourceInstanceServerEnableRoutedIP(ctx context.Context, d *schema.ResourceData, instanceAPI *instanceSDK.API, zone scw.Zone, id string) error {
-	server, err := waitForServer(ctx, instanceAPI, zone, id, d.Timeout(schema.TimeoutUpdate))
-	if err != nil {
-		return err
-	}
-
-	_, err = instanceAPI.ServerAction(&instanceSDK.ServerActionRequest{
-		Zone:     server.Zone,
-		ServerID: server.ID,
-		Action:   "enable_routed_ip",
-	})
-	if err != nil {
-		return fmt.Errorf("failed to enable routed ip: %w", err)
-	}
-
-	_, err = waitForServer(ctx, instanceAPI, zone, id, d.Timeout(schema.TimeoutUpdate))
-	if err != nil {
-		return err
 	}
 
 	return nil

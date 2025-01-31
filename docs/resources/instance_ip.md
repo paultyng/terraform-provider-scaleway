@@ -17,10 +17,7 @@ resource "scaleway_instance_ip" "server_ip" {}
 
 The following arguments are supported:
 
-- `type` - (Defaults to `nat`) The type of the IP (`nat`, `routed_ipv4`, `routed_ipv6`), more information in [the documentation](https://www.scaleway.com/en/docs/compute/instances/api-cli/using-routed-ips/)
-
-~> **Important:** An IP can migrate from `nat` to `routed_ipv4` but cannot be converted back
-
+- `type` - The type of the IP (`routed_ipv4`, `routed_ipv6`), more information in [the documentation](https://www.scaleway.com/en/docs/compute/instances/api-cli/using-routed-ips/)
 - `zone` - (Defaults to [provider](../index.md#zone) `zone`) The [zone](../guides/regions_and_zones.md#zones) in which the IP should be reserved.
 - `project_id` - (Defaults to [provider](../index.md#project_id) `project_id`) The ID of the project the IP is associated with.
 

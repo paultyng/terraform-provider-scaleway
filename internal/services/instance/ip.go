@@ -3,7 +3,6 @@ package instance
 import (
 	"context"
 
-	"github.com/hashicorp/go-cty/cty"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	instanceSDK "github.com/scaleway/scaleway-sdk-go/api/instance/v1"
@@ -12,6 +11,7 @@ import (
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/locality/zonal"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/account"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/types"
+	"github.com/scaleway/terraform-provider-scaleway/v2/internal/verify"
 )
 
 func ResourceIP() *schema.Resource {
@@ -39,22 +39,12 @@ func ResourceIP() *schema.Resource {
 				Description: "The IP prefix",
 			},
 			"type": {
-				Type:        schema.TypeString,
-				Computed:    true,
-				Optional:    true,
-				Description: "The type of instance IP",
-				ValidateDiagFunc: func(i interface{}, path cty.Path) diag.Diagnostics {
-					if i.(string) == "nat" {
-						return diag.Diagnostics{{
-							Severity:      diag.Error,
-							Summary:       "NAT IPs are not supported anymore",
-							Detail:        "Remove explicit nat configuration, migrate to routed ips or downgrade terraform.\nLearn more about migration: https://www.scaleway.com/en/docs/compute/instances/how-to/migrate-routed-ips/",
-							AttributePath: path,
-						}}
-					}
-
-					return nil
-				},
+				Type:             schema.TypeString,
+				Computed:         true,
+				Optional:         true,
+				ForceNew:         true,
+				Description:      "The type of instance IP",
+				ValidateDiagFunc: verify.ValidateEnum[instanceSDK.IPType](),
 			},
 			"reverse": {
 				Type:        schema.TypeString,
@@ -77,23 +67,6 @@ func ResourceIP() *schema.Resource {
 			"zone":            zonal.Schema(),
 			"organization_id": account.OrganizationIDSchema(),
 			"project_id":      account.ProjectIDSchema(),
-		},
-		CustomizeDiff: func(_ context.Context, diff *schema.ResourceDiff, _ interface{}) error {
-			// The only allowed change is
-			// nat -> routed_ipv4
-			if diff.HasChange("type") {
-				before, after := diff.GetChange("type")
-				oldType := instanceSDK.IPType(before.(string))
-				newType := instanceSDK.IPType(after.(string))
-
-				if oldType == "nat" && newType == "routed_ipv4" {
-					return nil
-				}
-
-				return diff.ForceNew("type")
-			}
-
-			return nil
 		},
 	}
 }
@@ -147,10 +120,6 @@ func ResourceInstanceIPUpdate(ctx context.Context, d *schema.ResourceData, m int
 
 	if d.HasChange("tags") {
 		req.Tags = types.ExpandUpdatedStringsPtr(d.Get("tags"))
-	}
-
-	if d.HasChange("type") {
-		req.Type = instanceSDK.IPType(d.Get("type").(string))
 	}
 
 	_, err = instanceAPI.UpdateIP(req, scw.WithContext(ctx))

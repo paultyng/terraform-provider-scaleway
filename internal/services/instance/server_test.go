@@ -1461,7 +1461,6 @@ func TestAccServer_IPs(t *testing.T) {
 					}`,
 				Check: resource.ComposeTestCheckFunc(
 					arePrivateNICsPresent(tt, "scaleway_instance_server.main"),
-					resource.TestCheckResourceAttr("scaleway_instance_server.main", "routed_ip_enabled", "true"),
 					resource.TestCheckResourceAttr("scaleway_instance_server.main", "public_ips.#", "1"),
 					resource.TestCheckResourceAttrPair("scaleway_instance_server.main", "public_ips.0.id", "scaleway_instance_ip.ip1", "id"),
 				),
@@ -1485,7 +1484,6 @@ func TestAccServer_IPs(t *testing.T) {
 					}`,
 				Check: resource.ComposeTestCheckFunc(
 					arePrivateNICsPresent(tt, "scaleway_instance_server.main"),
-					resource.TestCheckResourceAttr("scaleway_instance_server.main", "routed_ip_enabled", "true"),
 					resource.TestCheckResourceAttr("scaleway_instance_server.main", "public_ips.#", "2"),
 					resource.TestCheckResourceAttrPair("scaleway_instance_server.main", "public_ips.0.id", "scaleway_instance_ip.ip1", "id"),
 					resource.TestCheckResourceAttrPair("scaleway_instance_server.main", "public_ips.1.id", "scaleway_instance_ip.ip2", "id"),
@@ -1510,7 +1508,6 @@ func TestAccServer_IPs(t *testing.T) {
 					}`,
 				Check: resource.ComposeTestCheckFunc(
 					arePrivateNICsPresent(tt, "scaleway_instance_server.main"),
-					resource.TestCheckResourceAttr("scaleway_instance_server.main", "routed_ip_enabled", "true"),
 					resource.TestCheckResourceAttr("scaleway_instance_server.main", "public_ips.#", "1"),
 					resource.TestCheckResourceAttrPair("scaleway_instance_server.main", "public_ips.0.id", "scaleway_instance_ip.ip2", "id"),
 				),
@@ -1588,7 +1585,6 @@ func TestAccServer_IPsRemoved(t *testing.T) {
 					}`,
 				Check: resource.ComposeTestCheckFunc(
 					arePrivateNICsPresent(tt, "scaleway_instance_server.main"),
-					resource.TestCheckResourceAttr("scaleway_instance_server.main", "routed_ip_enabled", "true"),
 					resource.TestCheckResourceAttr("scaleway_instance_server.main", "public_ips.#", "1"),
 					resource.TestCheckResourceAttrPair("scaleway_instance_server.main", "public_ips.0.id", "scaleway_instance_ip.main", "id"),
 				),
@@ -1608,7 +1604,6 @@ func TestAccServer_IPsRemoved(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					arePrivateNICsPresent(tt, "scaleway_instance_server.main"),
 					serverHasNoIPAssigned(tt, "scaleway_instance_server.main"),
-					resource.TestCheckResourceAttr("scaleway_instance_server.main", "routed_ip_enabled", "true"),
 					resource.TestCheckResourceAttr("scaleway_instance_server.main", "public_ips.#", "0"),
 				),
 			},
