@@ -36,6 +36,8 @@ require (
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0
 )
 
+replace github.com/scaleway/scaleway-sdk-go => /Users/jonathanremy/Desktop/scaleway-sdk-go
+
 require (
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver/v3 v3.2.0 // indirect

@@ -42,3 +42,15 @@ func waitForDNSRecordExist(ctx context.Context, domainAPI *domain.API, dnsZone, 
 		RetryInterval: scw.TimeDurationPtr(retryInterval),
 	}, scw.WithContext(ctx))
 }
+
+func waitForDomainsRegistration(ctx context.Context, api *domain.RegistrarAPI, domainName string, timeout time.Duration) (*domain.Domain, error) {
+	retryInterval := defaultWaitDomainsRegistrationRetryInterval
+	if transport.DefaultWaitRetryInterval != nil {
+		retryInterval = *transport.DefaultWaitRetryInterval
+	}
+	return api.WaitForOrderDomain(&domain.WaitForOrderDomainRequest{
+		Domain:        domainName,
+		Timeout:       scw.TimeDurationPtr(timeout),
+		RetryInterval: &retryInterval,
+	}, scw.WithContext(ctx))
+}
