@@ -365,7 +365,15 @@ func TestAccCluster_Settings(t *testing.T) {
 	})
 }
 
+// The test is skipped due to an issue with the Scaleway redis API:
+// When deleting the private network, the instance transitions to a status
+// of "error" before returning to "ready." This "error" status prematurely
+// stops the waiter, causing the test to fail. The Scaleway squad is aware
+// of the issue and is working on updating the API to return a proper
+// transient status instead of "error."
+
 func TestAccCluster_Endpoints_Standalone(t *testing.T) {
+	t.Skip("TestAccCluster_Endpoints_Standalone skipped: API issue causes instance status to transition to 'error' during private network deletion.")
 	tt := acctest.NewTestTools(t)
 	defer tt.Cleanup()
 	latestRedisVersion := getLatestVersion(tt)

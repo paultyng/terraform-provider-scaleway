@@ -1,581 +1,1083 @@
 ---
 version: 2
 interactions:
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/offers?only_options=false&order_by=price_asc&without_options=false
-      method: GET
-    response:
-      body: '{"offers":[{"available":true,"billing_operation_path":"/webhosting/backup/fr-par","id":"e500237a-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/lite/fr-par","id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/personal/fr-par","id":"d86c61a0-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/professional/fr-par","id":"de2426b4-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/ecommerce/fr-par","id":"e1c1e6c6-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]}]}'
-      headers:
-        Content-Length:
-          - "2002"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:40 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 9c638302-0995-4052-99d6-51665f9dbdbd
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/offers?only_options=false&order_by=price_asc&without_options=false
-      method: GET
-    response:
-      body: '{"offers":[{"available":true,"billing_operation_path":"/webhosting/backup/fr-par","id":"e500237a-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/lite/fr-par","id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/personal/fr-par","id":"d86c61a0-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/professional/fr-par","id":"de2426b4-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/ecommerce/fr-par","id":"e1c1e6c6-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]}]}'
-      headers:
-        Content-Length:
-          - "2002"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:41 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 698d6a9a-b8e3-43c7-a667-c86ff88d9ca8
-      status: 200 OK
-      code: 200
-  - request:
-      body: '{"offer_id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","email":"hashicorp@scaleway.com","tags":["devtools","provider","terraform"],"domain":"scaleway.com","option_ids":null}'
-      form: {}
-      headers:
-        Content-Type:
-          - application/json
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings
-      method: POST
-    response:
-      body: '{"cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2023-07-10T09:38:41.549245319Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"8e23b2a8-1f05-11ee-ad50-024264400102","offer_id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","offer_name":"lite","options":[],"organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","platform_hostname":"","platform_number":null,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","status":"delivering","tags":["devtools","provider","terraform"],"updated_at":"2023-07-10T09:38:41.549245319Z","username":"cpe0000594"}'
-      headers:
-        Content-Length:
-          - "603"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:41 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 5e5316e2-2dcd-4e93-91b6-b9213de700f7
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/8e23b2a8-1f05-11ee-ad50-024264400102
-      method: GET
-    response:
-      body: '{"cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2023-07-10T09:38:41.549245Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"8e23b2a8-1f05-11ee-ad50-024264400102","offer_id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","offer_name":"lite","options":[],"organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","platform_hostname":"pf-1010.whm.fr-par.scw.cloud","platform_number":1010,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","status":"delivering","tags":["devtools","provider","terraform"],"updated_at":"2023-07-10T09:38:41.576826Z","username":"cpe0000594"}'
-      headers:
-        Content-Length:
-          - "625"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:41 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 095f80b8-5c09-41f2-925f-f8ba6af57bde
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/8e23b2a8-1f05-11ee-ad50-024264400102
-      method: GET
-    response:
-      body: '{"cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2023-07-10T09:38:41.549245Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"8e23b2a8-1f05-11ee-ad50-024264400102","offer_id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","offer_name":"lite","options":[],"organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","platform_hostname":"pf-1010.whm.fr-par.scw.cloud","platform_number":1010,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","status":"delivering","tags":["devtools","provider","terraform"],"updated_at":"2023-07-10T09:38:41.576826Z","username":"cpe0000594"}'
-      headers:
-        Content-Length:
-          - "625"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:46 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 804a0486-09b2-4956-b68d-f74aa3effa0a
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/8e23b2a8-1f05-11ee-ad50-024264400102
-      method: GET
-    response:
-      body: '{"cpanel_urls":{"dashboard":"https://pf-1010.whm.fr-par.scw.cloud:2083","webmail":"https://pf-1010.whm.fr-par.scw.cloud:2096"},"created_at":"2023-07-10T09:38:41.549245Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"8e23b2a8-1f05-11ee-ad50-024264400102","offer_id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","offer_name":"lite","options":[],"organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","platform_hostname":"pf-1010.whm.fr-par.scw.cloud","platform_number":1010,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","status":"ready","tags":["devtools","provider","terraform","internal"],"updated_at":"2023-07-10T09:38:50.374079Z","username":"cpe0000594"}'
-      headers:
-        Content-Length:
-          - "714"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:51 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - c8202d95-98c2-4f1f-a59d-2b93f9a33ae0
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/8e23b2a8-1f05-11ee-ad50-024264400102
-      method: GET
-    response:
-      body: '{"cpanel_urls":{"dashboard":"https://pf-1010.whm.fr-par.scw.cloud:2083","webmail":"https://pf-1010.whm.fr-par.scw.cloud:2096"},"created_at":"2023-07-10T09:38:41.549245Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"8e23b2a8-1f05-11ee-ad50-024264400102","offer_id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","offer_name":"lite","options":[],"organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","platform_hostname":"pf-1010.whm.fr-par.scw.cloud","platform_number":1010,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","status":"ready","tags":["devtools","provider","terraform","internal"],"updated_at":"2023-07-10T09:38:50.374079Z","username":"cpe0000594"}'
-      headers:
-        Content-Length:
-          - "714"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:51 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 5d0d52e5-4342-4a9a-8cbd-2d9d9daf0909
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/8e23b2a8-1f05-11ee-ad50-024264400102
-      method: GET
-    response:
-      body: '{"cpanel_urls":{"dashboard":"https://pf-1010.whm.fr-par.scw.cloud:2083","webmail":"https://pf-1010.whm.fr-par.scw.cloud:2096"},"created_at":"2023-07-10T09:38:41.549245Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"8e23b2a8-1f05-11ee-ad50-024264400102","offer_id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","offer_name":"lite","options":[],"organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","platform_hostname":"pf-1010.whm.fr-par.scw.cloud","platform_number":1010,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","status":"ready","tags":["devtools","provider","terraform","internal"],"updated_at":"2023-07-10T09:38:50.374079Z","username":"cpe0000594"}'
-      headers:
-        Content-Length:
-          - "714"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:51 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 4d9abf68-a98f-4929-b929-a8a49d8d0d3b
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/offers?only_options=false&order_by=price_asc&without_options=false
-      method: GET
-    response:
-      body: '{"offers":[{"available":true,"billing_operation_path":"/webhosting/backup/fr-par","id":"e500237a-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/lite/fr-par","id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/personal/fr-par","id":"d86c61a0-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/professional/fr-par","id":"de2426b4-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/ecommerce/fr-par","id":"e1c1e6c6-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]}]}'
-      headers:
-        Content-Length:
-          - "2002"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:52 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 0ca58f1f-c988-425a-a851-8580b910f55d
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/offers?only_options=false&order_by=price_asc&without_options=false
-      method: GET
-    response:
-      body: '{"offers":[{"available":true,"billing_operation_path":"/webhosting/backup/fr-par","id":"e500237a-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/lite/fr-par","id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/personal/fr-par","id":"d86c61a0-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/professional/fr-par","id":"de2426b4-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/ecommerce/fr-par","id":"e1c1e6c6-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]}]}'
-      headers:
-        Content-Length:
-          - "2002"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:52 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 2305a73d-b0a9-4766-8a83-df254e081622
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/8e23b2a8-1f05-11ee-ad50-024264400102
-      method: GET
-    response:
-      body: '{"cpanel_urls":{"dashboard":"https://pf-1010.whm.fr-par.scw.cloud:2083","webmail":"https://pf-1010.whm.fr-par.scw.cloud:2096"},"created_at":"2023-07-10T09:38:41.549245Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"8e23b2a8-1f05-11ee-ad50-024264400102","offer_id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","offer_name":"lite","options":[],"organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","platform_hostname":"pf-1010.whm.fr-par.scw.cloud","platform_number":1010,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","status":"ready","tags":["devtools","provider","terraform","internal"],"updated_at":"2023-07-10T09:38:50.374079Z","username":"cpe0000594"}'
-      headers:
-        Content-Length:
-          - "714"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:52 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 47e3a23c-ffbe-43d9-ae1a-b5468c818b5b
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/offers?only_options=false&order_by=price_asc&without_options=false
-      method: GET
-    response:
-      body: '{"offers":[{"available":true,"billing_operation_path":"/webhosting/backup/fr-par","id":"e500237a-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/lite/fr-par","id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/personal/fr-par","id":"d86c61a0-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/professional/fr-par","id":"de2426b4-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/ecommerce/fr-par","id":"e1c1e6c6-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]}]}'
-      headers:
-        Content-Length:
-          - "2002"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:52 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 4e16f321-ae62-4558-9079-f0f820867621
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/8e23b2a8-1f05-11ee-ad50-024264400102
-      method: GET
-    response:
-      body: '{"cpanel_urls":{"dashboard":"https://pf-1010.whm.fr-par.scw.cloud:2083","webmail":"https://pf-1010.whm.fr-par.scw.cloud:2096"},"created_at":"2023-07-10T09:38:41.549245Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"8e23b2a8-1f05-11ee-ad50-024264400102","offer_id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","offer_name":"lite","options":[],"organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","platform_hostname":"pf-1010.whm.fr-par.scw.cloud","platform_number":1010,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","status":"ready","tags":["devtools","provider","terraform","internal"],"updated_at":"2023-07-10T09:38:50.374079Z","username":"cpe0000594"}'
-      headers:
-        Content-Length:
-          - "714"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:52 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 0ce5a519-8597-4639-b44e-55f96551556d
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/8e23b2a8-1f05-11ee-ad50-024264400102
-      method: DELETE
-    response:
-      body: '{"cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2023-07-10T09:38:41.549245Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"8e23b2a8-1f05-11ee-ad50-024264400102","offer_id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","offer_name":"lite","options":[],"organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","platform_hostname":"","platform_number":null,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","status":"deleting","tags":["devtools","provider","terraform","internal"],"updated_at":"2023-07-10T09:38:52.909496178Z","username":"cpe0000594"}'
-      headers:
-        Content-Length:
-          - "610"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:52 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 20a8f7a1-4dce-49a9-bdba-b2f1afb4328c
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/8e23b2a8-1f05-11ee-ad50-024264400102
-      method: GET
-    response:
-      body: '{"cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2023-07-10T09:38:41.549245Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"8e23b2a8-1f05-11ee-ad50-024264400102","offer_id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","offer_name":"lite","options":[],"organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","platform_hostname":"pf-1010.whm.fr-par.scw.cloud","platform_number":1010,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","status":"deleting","tags":["devtools","provider","terraform","internal"],"updated_at":"2023-07-10T09:38:52.909496Z","username":"cpe0000594"}'
-      headers:
-        Content-Length:
-          - "635"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:52 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 5adc84b0-5aa8-4933-8d74-9b5487e7ce04
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/8e23b2a8-1f05-11ee-ad50-024264400102
-      method: GET
-    response:
-      body: '{"cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2023-07-10T09:38:41.549245Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"8e23b2a8-1f05-11ee-ad50-024264400102","offer_id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","offer_name":"lite","options":[],"organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","platform_hostname":"pf-1010.whm.fr-par.scw.cloud","platform_number":1010,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","status":"deleting","tags":["devtools","provider","terraform","internal"],"updated_at":"2023-07-10T09:38:52.909496Z","username":"cpe0000594"}'
-      headers:
-        Content-Length:
-          - "635"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:38:58 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 7c7e5e9d-ce3f-4c0e-a4c1-1f7b53546a12
-      status: 200 OK
-      code: 200
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/8e23b2a8-1f05-11ee-ad50-024264400102
-      method: GET
-    response:
-      body: '{"message":"hosting 8e23b2a8-1f05-11ee-ad50-024264400102 not found"}'
-      headers:
-        Content-Length:
-          - "68"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:39:03 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 4ca7eb7d-5e06-4bb3-9967-1b22dcb7e69c
-      status: 404 Not Found
-      code: 404
-  - request:
-      body: ""
-      form: {}
-      headers:
-        User-Agent:
-          - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-            terraform/terraform-tests
-      url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/8e23b2a8-1f05-11ee-ad50-024264400102
-      method: GET
-    response:
-      body: '{"message":"hosting 8e23b2a8-1f05-11ee-ad50-024264400102 not found"}'
-      headers:
-        Content-Length:
-          - "68"
-        Content-Security-Policy:
-          - default-src 'none'; frame-ancestors 'none'
-        Content-Type:
-          - application/json
-        Date:
-          - Mon, 10 Jul 2023 09:39:03 GMT
-        Server:
-          - Scaleway API-Gateway
-        Strict-Transport-Security:
-          - max-age=63072000
-        X-Content-Type-Options:
-          - nosniff
-        X-Frame-Options:
-          - DENY
-        X-Request-Id:
-          - 6ec4dd0a-d036-4bd0-84f1-77f752b12d7d
-      status: 404 Not Found
-      code: 404
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/offers?only_options=false&order_by=price_asc&without_options=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 5734
+        uncompressed: false
+        body: '{"offers":[{"available":true,"billing_operation_path":"/webhosting/backup/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"e500237a-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-backup/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4931090c-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-dedicated-ip/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"b5331822-51c7-46fc-8125-6cf238189e34","price":{"currency_code":"EUR","nanos":990000000,"units":4},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"dedicated-ip","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/dedicated-ip/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"a8f6702e-6d8c-11ee-b962-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":4},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":5,"hosting_storage_quota":0,"max_addon_domains":0,"name":"dedicated-ip","option":true,"ram":0,"support_included":true,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/lite/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":-1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"max_addon_domains":1,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-lite/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":-1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"max_addon_domains":1,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/personal/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"d86c61a0-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"max_addon_domains":2,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-personal/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"3d4ead38-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"max_addon_domains":2,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-professional/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"41da9100-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"max_addon_domains":5,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/professional/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"de2426b4-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"max_addon_domains":5,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/ecommerce/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"e1c1e6c6-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"max_addon_domains":10,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-ecommerce/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4626320a-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"max_addon_domains":10,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]}]}'
+        headers:
+            Content-Length:
+                - "5734"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:21 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 5f8f2c0a-7af9-4f24-af3b-ebc4a1b60df5
+        status: 200 OK
+        code: 200
+        duration: 183.640917ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/offers?only_options=false&order_by=price_asc&without_options=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 5734
+        uncompressed: false
+        body: '{"offers":[{"available":true,"billing_operation_path":"/webhosting/backup/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"e500237a-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-backup/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4931090c-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-dedicated-ip/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"b5331822-51c7-46fc-8125-6cf238189e34","price":{"currency_code":"EUR","nanos":990000000,"units":4},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"dedicated-ip","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/dedicated-ip/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"a8f6702e-6d8c-11ee-b962-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":4},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":5,"hosting_storage_quota":0,"max_addon_domains":0,"name":"dedicated-ip","option":true,"ram":0,"support_included":true,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/lite/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":-1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"max_addon_domains":1,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-lite/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":-1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"max_addon_domains":1,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/personal/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"d86c61a0-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"max_addon_domains":2,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-personal/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"3d4ead38-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"max_addon_domains":2,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-professional/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"41da9100-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"max_addon_domains":5,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/professional/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"de2426b4-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"max_addon_domains":5,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/ecommerce/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"e1c1e6c6-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"max_addon_domains":10,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-ecommerce/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4626320a-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"max_addon_domains":10,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]}]}'
+        headers:
+            Content-Length:
+                - "5734"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:22 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - a00bb8e7-3a46-4ef0-a386-17fb6c0c31cf
+        status: 200 OK
+        code: 200
+        duration: 98.4235ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 254
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","email":"hashicorp@scaleway.com","tags":["devtools","provider","terraform"],"domain":"scaleway.com","option_ids":[],"language":"unknown_language_code"}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 741
+        uncompressed: false
+        body: '{"control_panel_name":"","cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2025-01-23T10:27:22.972325492Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"","platform_hostname":"","platform_number":null,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"delivering","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:22.972325492Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "741"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:23 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 95d9184f-7aca-45b9-879e-238fc940e203
+        status: 200 OK
+        code: 200
+        duration: 351.31ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 771
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"default","platform_hostname":"pf-001.psk.fr-par.scw.cloud","platform_number":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"delivering","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:23.107546Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "771"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:23 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 2b61f1f0-0f91-4b82-847e-5b9f6b9a2f0a
+        status: 200 OK
+        code: 200
+        duration: 96.177125ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 771
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"default","platform_hostname":"pf-001.psk.fr-par.scw.cloud","platform_number":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"delivering","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:23.107546Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "771"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:28 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - c5c45faf-ef31-4dfe-b906-eb78d0177d31
+        status: 200 OK
+        code: 200
+        duration: 110.466417ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 771
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"default","platform_hostname":"pf-001.psk.fr-par.scw.cloud","platform_number":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"delivering","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:23.107546Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "771"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:33 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - baa1a207-5cad-4838-b62c-85f2121a5fca
+        status: 200 OK
+        code: 200
+        duration: 85.364875ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 771
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"default","platform_hostname":"pf-001.psk.fr-par.scw.cloud","platform_number":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"delivering","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:23.107546Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "771"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:38 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - f4990a34-ff8e-40d4-be78-2d29eae18fda
+        status: 200 OK
+        code: 200
+        duration: 187.913041ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 771
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"default","platform_hostname":"pf-001.psk.fr-par.scw.cloud","platform_number":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"delivering","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:23.107546Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "771"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:43 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 3da78881-9588-4629-aed4-87608fa19869
+        status: 200 OK
+        code: 200
+        duration: 103.193084ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 868
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"https://pf-001.psk.fr-par.scw.cloud","webmail":"https://webmail.scaleway.com/roundcube/"},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"51.159.180.26","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"6nwnngbxzdi6p5t","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"default","platform_hostname":"pf-001.psk.fr-par.scw.cloud","platform_number":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"ready","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:45.084324Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "868"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:48 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 7158b7c7-ad6c-47e4-b6be-88920a38ce5b
+        status: 200 OK
+        code: 200
+        duration: 100.886ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 868
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"https://pf-001.psk.fr-par.scw.cloud","webmail":"https://webmail.scaleway.com/roundcube/"},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"51.159.180.26","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"6nwnngbxzdi6p5t","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"default","platform_hostname":"pf-001.psk.fr-par.scw.cloud","platform_number":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"ready","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:45.084324Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "868"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:48 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 5c65ca56-1b36-44a5-b31b-a37e2f994cad
+        status: 200 OK
+        code: 200
+        duration: 86.780042ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 868
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"https://pf-001.psk.fr-par.scw.cloud","webmail":"https://webmail.scaleway.com/roundcube/"},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"51.159.180.26","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"6nwnngbxzdi6p5t","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"default","platform_hostname":"pf-001.psk.fr-par.scw.cloud","platform_number":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"ready","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:45.084324Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "868"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:49 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 1ec7c88e-67de-4df3-8bc8-78775fa0b1aa
+        status: 200 OK
+        code: 200
+        duration: 91.7655ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/offers?only_options=false&order_by=price_asc&without_options=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 5734
+        uncompressed: false
+        body: '{"offers":[{"available":true,"billing_operation_path":"/webhosting/backup/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"e500237a-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-backup/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4931090c-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/dedicated-ip/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"a8f6702e-6d8c-11ee-b962-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":4},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":5,"hosting_storage_quota":0,"max_addon_domains":0,"name":"dedicated-ip","option":true,"ram":0,"support_included":true,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-dedicated-ip/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"b5331822-51c7-46fc-8125-6cf238189e34","price":{"currency_code":"EUR","nanos":990000000,"units":4},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"dedicated-ip","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/lite/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":-1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"max_addon_domains":1,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-lite/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":-1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"max_addon_domains":1,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-personal/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"3d4ead38-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"max_addon_domains":2,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/personal/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"d86c61a0-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"max_addon_domains":2,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/professional/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"de2426b4-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"max_addon_domains":5,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-professional/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"41da9100-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"max_addon_domains":5,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/ecommerce/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"e1c1e6c6-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"max_addon_domains":10,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-ecommerce/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4626320a-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"max_addon_domains":10,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]}]}'
+        headers:
+            Content-Length:
+                - "5734"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:49 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - b278787a-94b2-482c-94fc-2a3b24ca22b5
+        status: 200 OK
+        code: 200
+        duration: 386.296625ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/offers?only_options=false&order_by=price_asc&without_options=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 5734
+        uncompressed: false
+        body: '{"offers":[{"available":true,"billing_operation_path":"/webhosting/backup/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"e500237a-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-backup/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4931090c-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/dedicated-ip/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"a8f6702e-6d8c-11ee-b962-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":4},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":5,"hosting_storage_quota":0,"max_addon_domains":0,"name":"dedicated-ip","option":true,"ram":0,"support_included":true,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-dedicated-ip/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"b5331822-51c7-46fc-8125-6cf238189e34","price":{"currency_code":"EUR","nanos":990000000,"units":4},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"dedicated-ip","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/lite/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":-1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"max_addon_domains":1,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-lite/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":-1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"max_addon_domains":1,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-personal/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"3d4ead38-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"max_addon_domains":2,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/personal/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"d86c61a0-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"max_addon_domains":2,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/professional/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"de2426b4-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"max_addon_domains":5,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-professional/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"41da9100-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"max_addon_domains":5,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/ecommerce/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"e1c1e6c6-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"max_addon_domains":10,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-ecommerce/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4626320a-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"max_addon_domains":10,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]}]}'
+        headers:
+            Content-Length:
+                - "5734"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:50 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 3c410640-43de-42c3-a226-8abcf3bee738
+        status: 200 OK
+        code: 200
+        duration: 76.058208ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 868
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"https://pf-001.psk.fr-par.scw.cloud","webmail":"https://webmail.scaleway.com/roundcube/"},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"51.159.180.26","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"6nwnngbxzdi6p5t","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"default","platform_hostname":"pf-001.psk.fr-par.scw.cloud","platform_number":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"ready","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:45.084324Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "868"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:50 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - f7409391-c4ff-420a-ad0b-8a5635e29eca
+        status: 200 OK
+        code: 200
+        duration: 100.95825ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/offers?only_options=false&order_by=price_asc&without_options=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 5734
+        uncompressed: false
+        body: '{"offers":[{"available":true,"billing_operation_path":"/webhosting/backup/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"e500237a-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-backup/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4931090c-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":2},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"backup","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/dedicated-ip/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"a8f6702e-6d8c-11ee-b962-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":4},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":5,"hosting_storage_quota":0,"max_addon_domains":0,"name":"dedicated-ip","option":true,"ram":0,"support_included":true,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-dedicated-ip/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"b5331822-51c7-46fc-8125-6cf238189e34","price":{"currency_code":"EUR","nanos":990000000,"units":4},"product":{"databases_quota":0,"email_accounts_quota":0,"email_storage_quota":0,"hosting_storage_quota":0,"max_addon_domains":0,"name":"dedicated-ip","option":true,"ram":0,"support_included":false,"v_cpu":0},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/lite/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"f5c2ae8f-7625-4bca-b711-b44bb3d08694","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":-1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"max_addon_domains":1,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-lite/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":5},"product":{"databases_quota":-1,"email_accounts_quota":1,"email_storage_quota":5,"hosting_storage_quota":10,"max_addon_domains":1,"name":"lite","option":false,"ram":1,"support_included":true,"v_cpu":1},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-personal/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"3d4ead38-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"max_addon_domains":2,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/personal/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"d86c61a0-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":9},"product":{"databases_quota":-1,"email_accounts_quota":2,"email_storage_quota":5,"hosting_storage_quota":50,"max_addon_domains":2,"name":"personal","option":false,"ram":1,"support_included":true,"v_cpu":2},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/professional/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"de2426b4-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"max_addon_domains":5,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-professional/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"41da9100-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":18},"product":{"databases_quota":-1,"email_accounts_quota":10,"email_storage_quota":5,"hosting_storage_quota":100,"max_addon_domains":5,"name":"professional","option":false,"ram":2,"support_included":true,"v_cpu":4},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/ecommerce/fr-par","control_panel_name":"cpanel","end_of_life":false,"id":"e1c1e6c6-a9e9-11ec-b909-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"max_addon_domains":10,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]},{"available":true,"billing_operation_path":"/webhosting/plesk-ecommerce/fr-par","control_panel_name":"plesk","end_of_life":false,"id":"4626320a-8ec9-11ee-b9d1-0242ac120002","price":{"currency_code":"EUR","nanos":990000000,"units":29},"product":{"databases_quota":-1,"email_accounts_quota":25,"email_storage_quota":5,"hosting_storage_quota":250,"max_addon_domains":10,"name":"ecommerce","option":false,"ram":8,"support_included":true,"v_cpu":8},"quota_warnings":[]}]}'
+        headers:
+            Content-Length:
+                - "5734"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:50 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 28b52168-e435-4ad4-be24-940abaef3dfb
+        status: 200 OK
+        code: 200
+        duration: 68.859792ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 868
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"https://pf-001.psk.fr-par.scw.cloud","webmail":"https://webmail.scaleway.com/roundcube/"},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"51.159.180.26","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"6nwnngbxzdi6p5t","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"default","platform_hostname":"pf-001.psk.fr-par.scw.cloud","platform_number":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"ready","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:45.084324Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "868"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:51 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 3f0ddc3a-95d2-4d78-b79e-e3effd17636b
+        status: 200 OK
+        code: 200
+        duration: 95.366959ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 754
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"51.159.180.26","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"","platform_hostname":"","platform_number":null,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"deleting","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:51.505434593Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "754"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:51 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - e6b5b472-836a-4337-934c-8536188550cf
+        status: 200 OK
+        code: 200
+        duration: 148.629583ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 797
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"51.159.180.26","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"6nwnngbxzdi6p5t","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"default","platform_hostname":"pf-001.psk.fr-par.scw.cloud","platform_number":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"deleting","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:51.505434Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "797"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:51 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 7c9c1583-0252-4d7d-ab76-01b83155ad88
+        status: 200 OK
+        code: 200
+        duration: 76.676125ms
+    - id: 18
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 797
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"51.159.180.26","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"6nwnngbxzdi6p5t","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"default","platform_hostname":"pf-001.psk.fr-par.scw.cloud","platform_number":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"deleting","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:51.505434Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "797"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:27:56 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - e0ec736c-8df2-4961-8d87-f1d4f185a9b8
+        status: 200 OK
+        code: 200
+        duration: 139.354709ms
+    - id: 19
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 797
+        uncompressed: false
+        body: '{"control_panel_name":"plesk","cpanel_urls":{"dashboard":"","webmail":""},"created_at":"2025-01-23T10:27:22.972325Z","dns_status":"unknown_dns_status","domain":"scaleway.com","id":"ffc9826e-aa02-4d22-904f-f0e26a73ee2a","ipv4":"51.159.180.26","ipv6":"","offer_end_of_life":false,"offer_id":"4d5b119e-8ec9-11ee-b9d1-0242ac120002","offer_name":"lite","one_time_password":"6nwnngbxzdi6p5t","options":[],"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","platform_group":"default","platform_hostname":"pf-001.psk.fr-par.scw.cloud","platform_number":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","protected":false,"region":"fr-par","status":"deleting","tags":["devtools","provider","terraform"],"updated_at":"2025-01-23T10:27:51.505434Z","username":"cpe0002449"}'
+        headers:
+            Content-Length:
+                - "797"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:28:01 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - e79470a7-92db-4d1b-8871-2f5f28819f53
+        status: 200 OK
+        code: 200
+        duration: 96.534292ms
+    - id: 20
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 68
+        uncompressed: false
+        body: '{"message":"hosting ffc9826e-aa02-4d22-904f-f0e26a73ee2a not found"}'
+        headers:
+            Content-Length:
+                - "68"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:28:06 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - a62c497f-e89a-4e58-943a-47f022678b54
+        status: 404 Not Found
+        code: 404
+        duration: 87.156209ms
+    - id: 21
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/webhosting/v1alpha1/regions/fr-par/hostings/ffc9826e-aa02-4d22-904f-f0e26a73ee2a
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 68
+        uncompressed: false
+        body: '{"message":"hosting ffc9826e-aa02-4d22-904f-f0e26a73ee2a not found"}'
+        headers:
+            Content-Length:
+                - "68"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 23 Jan 2025 10:28:07 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-2;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 1171d4a0-428b-4419-90f9-32641b9e2008
+        status: 404 Not Found
+        code: 404
+        duration: 74.277167ms

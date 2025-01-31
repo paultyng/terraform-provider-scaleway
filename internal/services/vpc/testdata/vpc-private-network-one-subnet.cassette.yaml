@@ -1,326 +1,493 @@
 ---
 version: 2
 interactions:
-- request:
-    body: '{"name":"my vpc","project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","tags":null}'
-    form: {}
-    headers:
-      Content-Type:
-      - application/json
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/vpc/v2/regions/fr-par/vpcs
-    method: POST
-  response:
-    body: '{"created_at":"2023-08-23T14:23:02.148204Z","id":"11206c89-245d-4962-9554-4116b4bd3ee9","is_default":false,"name":"my
-      vpc","organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","private_network_count":0,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","tags":[],"updated_at":"2023-08-23T14:23:02.148204Z"}'
-    headers:
-      Content-Length:
-      - "338"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 23 Aug 2023 14:23:02 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - a0ee8047-ca01-430c-9283-db4bd9f541aa
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/vpc/v2/regions/fr-par/vpcs/11206c89-245d-4962-9554-4116b4bd3ee9
-    method: GET
-  response:
-    body: '{"created_at":"2023-08-23T14:23:02.148204Z","id":"11206c89-245d-4962-9554-4116b4bd3ee9","is_default":false,"name":"my
-      vpc","organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","private_network_count":0,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","tags":[],"updated_at":"2023-08-23T14:23:02.148204Z"}'
-    headers:
-      Content-Length:
-      - "338"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 23 Aug 2023 14:23:02 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - cc52e9a2-eb11-4d09-b789-70683e4dca47
-    status: 200 OK
-    code: 200
-- request:
-    body: '{"name":"tf-pn-elegant-murdock","project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","tags":null,"subnets":["172.16.64.0/22"],"vpc_id":"11206c89-245d-4962-9554-4116b4bd3ee9"}'
-    form: {}
-    headers:
-      Content-Type:
-      - application/json
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/vpc/v2/regions/fr-par/private-networks
-    method: POST
-  response:
-    body: '{"created_at":"2023-08-23T14:23:02.565778Z","dhcp_enabled":true,"id":"b186e87f-fbf4-4949-ab98-2f66a1b5f5d6","name":"tf-pn-elegant-murdock","organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","subnets":[{"created_at":"2023-08-23T14:23:02.565778Z","id":"d826136e-1d08-45be-8836-f7d783de0fa1","subnet":"172.16.64.0/22","updated_at":"2023-08-23T14:23:02.565778Z"},{"created_at":"2023-08-23T14:23:02.565778Z","id":"38aff6e3-aef2-4af1-8c6a-aa2bb9d1b88b","subnet":"fd46:78ab:30b8:a495::/64","updated_at":"2023-08-23T14:23:02.565778Z"}],"tags":[],"updated_at":"2023-08-23T14:23:02.565778Z","vpc_id":"11206c89-245d-4962-9554-4116b4bd3ee9"}'
-    headers:
-      Content-Length:
-      - "722"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 23 Aug 2023 14:23:04 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 8d066342-7e88-4b05-b170-0dc3c00b9ce0
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/vpc/v2/regions/fr-par/private-networks/b186e87f-fbf4-4949-ab98-2f66a1b5f5d6
-    method: GET
-  response:
-    body: '{"created_at":"2023-08-23T14:23:02.565778Z","dhcp_enabled":true,"id":"b186e87f-fbf4-4949-ab98-2f66a1b5f5d6","name":"tf-pn-elegant-murdock","organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","subnets":[{"created_at":"2023-08-23T14:23:02.565778Z","id":"d826136e-1d08-45be-8836-f7d783de0fa1","subnet":"172.16.64.0/22","updated_at":"2023-08-23T14:23:02.565778Z"},{"created_at":"2023-08-23T14:23:02.565778Z","id":"38aff6e3-aef2-4af1-8c6a-aa2bb9d1b88b","subnet":"fd46:78ab:30b8:a495::/64","updated_at":"2023-08-23T14:23:02.565778Z"}],"tags":[],"updated_at":"2023-08-23T14:23:02.565778Z","vpc_id":"11206c89-245d-4962-9554-4116b4bd3ee9"}'
-    headers:
-      Content-Length:
-      - "722"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 23 Aug 2023 14:23:04 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 83ae4e4d-b33a-4967-b422-eaa73c7d79d3
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/vpc/v2/regions/fr-par/private-networks/b186e87f-fbf4-4949-ab98-2f66a1b5f5d6
-    method: GET
-  response:
-    body: '{"created_at":"2023-08-23T14:23:02.565778Z","dhcp_enabled":true,"id":"b186e87f-fbf4-4949-ab98-2f66a1b5f5d6","name":"tf-pn-elegant-murdock","organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","subnets":[{"created_at":"2023-08-23T14:23:02.565778Z","id":"d826136e-1d08-45be-8836-f7d783de0fa1","subnet":"172.16.64.0/22","updated_at":"2023-08-23T14:23:02.565778Z"},{"created_at":"2023-08-23T14:23:02.565778Z","id":"38aff6e3-aef2-4af1-8c6a-aa2bb9d1b88b","subnet":"fd46:78ab:30b8:a495::/64","updated_at":"2023-08-23T14:23:02.565778Z"}],"tags":[],"updated_at":"2023-08-23T14:23:02.565778Z","vpc_id":"11206c89-245d-4962-9554-4116b4bd3ee9"}'
-    headers:
-      Content-Length:
-      - "722"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 23 Aug 2023 14:23:04 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 564a0584-6a0a-47fd-8b22-c1fc43d48095
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/vpc/v2/regions/fr-par/vpcs/11206c89-245d-4962-9554-4116b4bd3ee9
-    method: GET
-  response:
-    body: '{"created_at":"2023-08-23T14:23:02.148204Z","id":"11206c89-245d-4962-9554-4116b4bd3ee9","is_default":false,"name":"my
-      vpc","organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","private_network_count":1,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","tags":[],"updated_at":"2023-08-23T14:23:02.148204Z"}'
-    headers:
-      Content-Length:
-      - "338"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 23 Aug 2023 14:23:05 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - b93b3b0d-384b-4657-a65d-64e0bcd81fdc
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/vpc/v2/regions/fr-par/private-networks/b186e87f-fbf4-4949-ab98-2f66a1b5f5d6
-    method: GET
-  response:
-    body: '{"created_at":"2023-08-23T14:23:02.565778Z","dhcp_enabled":true,"id":"b186e87f-fbf4-4949-ab98-2f66a1b5f5d6","name":"tf-pn-elegant-murdock","organization_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","region":"fr-par","subnets":[{"created_at":"2023-08-23T14:23:02.565778Z","id":"d826136e-1d08-45be-8836-f7d783de0fa1","subnet":"172.16.64.0/22","updated_at":"2023-08-23T14:23:02.565778Z"},{"created_at":"2023-08-23T14:23:02.565778Z","id":"38aff6e3-aef2-4af1-8c6a-aa2bb9d1b88b","subnet":"fd46:78ab:30b8:a495::/64","updated_at":"2023-08-23T14:23:02.565778Z"}],"tags":[],"updated_at":"2023-08-23T14:23:02.565778Z","vpc_id":"11206c89-245d-4962-9554-4116b4bd3ee9"}'
-    headers:
-      Content-Length:
-      - "722"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 23 Aug 2023 14:23:05 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 6e3f7900-28e2-49ea-8db8-d096aa05f6f4
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/vpc/v2/regions/fr-par/private-networks/b186e87f-fbf4-4949-ab98-2f66a1b5f5d6
-    method: DELETE
-  response:
-    body: ""
-    headers:
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 23 Aug 2023 14:23:07 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 53be7fa5-34cb-4b87-9ecb-a05ab41b543e
-    status: 204 No Content
-    code: 204
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/vpc/v2/regions/fr-par/vpcs/11206c89-245d-4962-9554-4116b4bd3ee9
-    method: DELETE
-  response:
-    body: ""
-    headers:
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 23 Aug 2023 14:23:07 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 878ce8ed-6694-4e90-b5c3-fb13b72857ef
-    status: 204 No Content
-    code: 204
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.4; darwin; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/vpc/v2/regions/fr-par/private-networks/b186e87f-fbf4-4949-ab98-2f66a1b5f5d6
-    method: GET
-  response:
-    body: '{"message":"resource is not found","resource":"private_network","resource_id":"b186e87f-fbf4-4949-ab98-2f66a1b5f5d6","type":"not_found"}'
-    headers:
-      Content-Length:
-      - "136"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 23 Aug 2023 14:23:07 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 906492c6-42c3-4609-888b-5491c5c62220
-    status: 404 Not Found
-    code: 404
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 102
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"name":"my vpc","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"enable_routing":false}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/vpc/v2/regions/fr-par/vpcs
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 362
+        uncompressed: false
+        body: '{"created_at":"2025-01-28T10:05:20.655159Z","id":"486c6277-75b0-4093-80e2-3911ae5001b9","is_default":false,"name":"my vpc","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","private_network_count":0,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","region":"fr-par","routing_enabled":true,"tags":[],"updated_at":"2025-01-28T10:05:20.655159Z"}'
+        headers:
+            Content-Length:
+                - "362"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 28 Jan 2025 10:05:20 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 97612b71-9533-4673-8feb-758069e1692e
+        status: 200 OK
+        code: 200
+        duration: 70.250083ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/vpc/v2/regions/fr-par/vpcs/486c6277-75b0-4093-80e2-3911ae5001b9
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 352
+        uncompressed: false
+        body: '{"created_at":"2025-01-28T10:05:20.655159Z","id":"486c6277-75b0-4093-80e2-3911ae5001b9","is_default":false,"name":"my vpc","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","private_network_count":0,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","region":"fr-par","routing_enabled":true,"tags":[],"updated_at":"2025-01-28T10:05:20.655159Z"}'
+        headers:
+            Content-Length:
+                - "352"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 28 Jan 2025 10:05:20 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 60b81be8-d6bb-48fb-9eb4-bfcd314b6164
+        status: 200 OK
+        code: 200
+        duration: 36.000375ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 167
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"name":"tf-pn-goofy-kilby","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"subnets":["172.16.64.0/22"],"vpc_id":"486c6277-75b0-4093-80e2-3911ae5001b9"}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/vpc/v2/regions/fr-par/private-networks
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 1044
+        uncompressed: false
+        body: '{"created_at":"2025-01-28T10:05:20.777186Z","dhcp_enabled":true,"id":"e766cf1c-792e-4465-9074-da2f04cc4b1d","name":"tf-pn-goofy-kilby","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","region":"fr-par","subnets":[{"created_at":"2025-01-28T10:05:20.777186Z","id":"7a79c632-efe8-4d23-85b8-2a1ce8b488ae","private_network_id":"e766cf1c-792e-4465-9074-da2f04cc4b1d","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","subnet":"172.16.64.0/22","updated_at":"2025-01-28T10:05:20.777186Z","vpc_id":"486c6277-75b0-4093-80e2-3911ae5001b9"},{"created_at":"2025-01-28T10:05:20.777186Z","id":"12cb231a-783d-415b-9520-1911505346d2","private_network_id":"e766cf1c-792e-4465-9074-da2f04cc4b1d","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","subnet":"fd5f:519c:6d46:7b96::/64","updated_at":"2025-01-28T10:05:20.777186Z","vpc_id":"486c6277-75b0-4093-80e2-3911ae5001b9"}],"tags":[],"updated_at":"2025-01-28T10:05:20.777186Z","vpc_id":"486c6277-75b0-4093-80e2-3911ae5001b9"}'
+        headers:
+            Content-Length:
+                - "1044"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 28 Jan 2025 10:05:21 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - e569db4f-79f0-424a-aad3-b22db3efac24
+        status: 200 OK
+        code: 200
+        duration: 549.746584ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/vpc/v2/regions/fr-par/private-networks/e766cf1c-792e-4465-9074-da2f04cc4b1d
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 1021
+        uncompressed: false
+        body: '{"created_at":"2025-01-28T10:05:20.777186Z","dhcp_enabled":true,"id":"e766cf1c-792e-4465-9074-da2f04cc4b1d","name":"tf-pn-goofy-kilby","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","region":"fr-par","subnets":[{"created_at":"2025-01-28T10:05:20.777186Z","id":"7a79c632-efe8-4d23-85b8-2a1ce8b488ae","private_network_id":"e766cf1c-792e-4465-9074-da2f04cc4b1d","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","subnet":"172.16.64.0/22","updated_at":"2025-01-28T10:05:20.777186Z","vpc_id":"486c6277-75b0-4093-80e2-3911ae5001b9"},{"created_at":"2025-01-28T10:05:20.777186Z","id":"12cb231a-783d-415b-9520-1911505346d2","private_network_id":"e766cf1c-792e-4465-9074-da2f04cc4b1d","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","subnet":"fd5f:519c:6d46:7b96::/64","updated_at":"2025-01-28T10:05:20.777186Z","vpc_id":"486c6277-75b0-4093-80e2-3911ae5001b9"}],"tags":[],"updated_at":"2025-01-28T10:05:20.777186Z","vpc_id":"486c6277-75b0-4093-80e2-3911ae5001b9"}'
+        headers:
+            Content-Length:
+                - "1021"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 28 Jan 2025 10:05:21 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - b944c98a-e9a7-46ec-99da-0e530ade6869
+        status: 200 OK
+        code: 200
+        duration: 45.496458ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/vpc/v2/regions/fr-par/private-networks/e766cf1c-792e-4465-9074-da2f04cc4b1d
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 1021
+        uncompressed: false
+        body: '{"created_at":"2025-01-28T10:05:20.777186Z","dhcp_enabled":true,"id":"e766cf1c-792e-4465-9074-da2f04cc4b1d","name":"tf-pn-goofy-kilby","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","region":"fr-par","subnets":[{"created_at":"2025-01-28T10:05:20.777186Z","id":"7a79c632-efe8-4d23-85b8-2a1ce8b488ae","private_network_id":"e766cf1c-792e-4465-9074-da2f04cc4b1d","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","subnet":"172.16.64.0/22","updated_at":"2025-01-28T10:05:20.777186Z","vpc_id":"486c6277-75b0-4093-80e2-3911ae5001b9"},{"created_at":"2025-01-28T10:05:20.777186Z","id":"12cb231a-783d-415b-9520-1911505346d2","private_network_id":"e766cf1c-792e-4465-9074-da2f04cc4b1d","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","subnet":"fd5f:519c:6d46:7b96::/64","updated_at":"2025-01-28T10:05:20.777186Z","vpc_id":"486c6277-75b0-4093-80e2-3911ae5001b9"}],"tags":[],"updated_at":"2025-01-28T10:05:20.777186Z","vpc_id":"486c6277-75b0-4093-80e2-3911ae5001b9"}'
+        headers:
+            Content-Length:
+                - "1021"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 28 Jan 2025 10:05:21 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 53a6899e-3722-45b5-8827-0ec0e9086a2b
+        status: 200 OK
+        code: 200
+        duration: 30.611542ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/vpc/v2/regions/fr-par/vpcs/486c6277-75b0-4093-80e2-3911ae5001b9
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 362
+        uncompressed: false
+        body: '{"created_at":"2025-01-28T10:05:20.655159Z","id":"486c6277-75b0-4093-80e2-3911ae5001b9","is_default":false,"name":"my vpc","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","private_network_count":1,"project_id":"105bdce1-64c0-48ab-899d-868455867ecf","region":"fr-par","routing_enabled":true,"tags":[],"updated_at":"2025-01-28T10:05:20.655159Z"}'
+        headers:
+            Content-Length:
+                - "362"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 28 Jan 2025 10:05:22 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 2b4ea7cc-6cc6-4046-9bb3-3000b018146d
+        status: 200 OK
+        code: 200
+        duration: 27.255667ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/vpc/v2/regions/fr-par/private-networks/e766cf1c-792e-4465-9074-da2f04cc4b1d
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 1044
+        uncompressed: false
+        body: '{"created_at":"2025-01-28T10:05:20.777186Z","dhcp_enabled":true,"id":"e766cf1c-792e-4465-9074-da2f04cc4b1d","name":"tf-pn-goofy-kilby","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","region":"fr-par","subnets":[{"created_at":"2025-01-28T10:05:20.777186Z","id":"7a79c632-efe8-4d23-85b8-2a1ce8b488ae","private_network_id":"e766cf1c-792e-4465-9074-da2f04cc4b1d","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","subnet":"172.16.64.0/22","updated_at":"2025-01-28T10:05:20.777186Z","vpc_id":"486c6277-75b0-4093-80e2-3911ae5001b9"},{"created_at":"2025-01-28T10:05:20.777186Z","id":"12cb231a-783d-415b-9520-1911505346d2","private_network_id":"e766cf1c-792e-4465-9074-da2f04cc4b1d","project_id":"105bdce1-64c0-48ab-899d-868455867ecf","subnet":"fd5f:519c:6d46:7b96::/64","updated_at":"2025-01-28T10:05:20.777186Z","vpc_id":"486c6277-75b0-4093-80e2-3911ae5001b9"}],"tags":[],"updated_at":"2025-01-28T10:05:20.777186Z","vpc_id":"486c6277-75b0-4093-80e2-3911ae5001b9"}'
+        headers:
+            Content-Length:
+                - "1044"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 28 Jan 2025 10:05:22 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - f5846f9d-8626-4ca1-8232-2d3ca5cfb8a4
+        status: 200 OK
+        code: 200
+        duration: 29.97125ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/vpc/v2/regions/fr-par/private-networks/e766cf1c-792e-4465-9074-da2f04cc4b1d
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 28 Jan 2025 10:05:25 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - d7b5753a-d2cc-49cb-b892-2a0e52161726
+        status: 204 No Content
+        code: 204
+        duration: 1.881356625s
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/vpc/v2/regions/fr-par/vpcs/486c6277-75b0-4093-80e2-3911ae5001b9
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 28 Jan 2025 10:05:25 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 3703a2c8-05fe-4cca-8003-d6b8ddb7b97d
+        status: 204 No Content
+        code: 204
+        duration: 77.512334ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/vpc/v2/regions/fr-par/private-networks/e766cf1c-792e-4465-9074-da2f04cc4b1d
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 136
+        uncompressed: false
+        body: '{"message":"resource is not found","resource":"private_network","resource_id":"e766cf1c-792e-4465-9074-da2f04cc4b1d","type":"not_found"}'
+        headers:
+            Content-Length:
+                - "136"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 28 Jan 2025 10:05:25 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 57a181c7-d41c-4501-a77a-d93200d79d8e
+        status: 404 Not Found
+        code: 404
+        duration: 30.643375ms

@@ -1,809 +1,1234 @@
 ---
 version: 2
 interactions:
-- request:
-    body: '{"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","description":""}'
-    form: {}
-    headers:
-      Content-Type:
-      - application/json
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/applications
-    method: POST
-  response:
-    body: '{"created_at":"2023-07-25T13:29:39.089184Z","description":"","editable":true,"id":"13166e4c-f9e3-4d6e-a937-64c0cc9a5203","name":"tf-tests-iam-group-membership-basic","nb_api_keys":0,"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.089184Z"}'
-    headers:
-      Content-Length:
-      - "289"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:39 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 52290eab-5921-41e7-8a0f-b61f9e6a6841
-    status: 200 OK
-    code: 200
-- request:
-    body: '{"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","name":"tf-tests-iam-group-membership-basic","description":""}'
-    form: {}
-    headers:
-      Content-Type:
-      - application/json
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups
-    method: POST
-  response:
-    body: '{"application_ids":[],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "292"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:39 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - b275701d-4939-427b-bb16-8beb893ad954
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: GET
-  response:
-    body: '{"application_ids":[],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "292"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:39 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 4b7333e7-5967-4c9c-9619-4c8d6b69e4bf
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/applications/13166e4c-f9e3-4d6e-a937-64c0cc9a5203
-    method: GET
-  response:
-    body: '{"created_at":"2023-07-25T13:29:39.089184Z","description":"","editable":true,"id":"13166e4c-f9e3-4d6e-a937-64c0cc9a5203","name":"tf-tests-iam-group-membership-basic","nb_api_keys":0,"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.089184Z"}'
-    headers:
-      Content-Length:
-      - "289"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:39 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - af873f15-4c30-47b7-8fef-958158448aa1
-    status: 200 OK
-    code: 200
-- request:
-    body: '{"application_id":"13166e4c-f9e3-4d6e-a937-64c0cc9a5203"}'
-    form: {}
-    headers:
-      Content-Type:
-      - application/json
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0/add-member
-    method: POST
-  response:
-    body: '{"application_ids":["13166e4c-f9e3-4d6e-a937-64c0cc9a5203"],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "330"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:39 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 899c0dbd-a1be-4801-aa76-7d2b63b5060a
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: GET
-  response:
-    body: '{"application_ids":["13166e4c-f9e3-4d6e-a937-64c0cc9a5203"],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "330"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:39 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 9bb63a30-b435-40af-8685-165ce72624c0
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: GET
-  response:
-    body: '{"application_ids":["13166e4c-f9e3-4d6e-a937-64c0cc9a5203"],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "330"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:40 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 45897528-ae45-460a-8634-6ad2ff7ad888
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/applications/13166e4c-f9e3-4d6e-a937-64c0cc9a5203
-    method: GET
-  response:
-    body: '{"created_at":"2023-07-25T13:29:39.089184Z","description":"","editable":true,"id":"13166e4c-f9e3-4d6e-a937-64c0cc9a5203","name":"tf-tests-iam-group-membership-basic","nb_api_keys":0,"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.089184Z"}'
-    headers:
-      Content-Length:
-      - "289"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:40 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 8cfeb3d4-9fee-4711-9e40-4303134f1444
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: GET
-  response:
-    body: '{"application_ids":["13166e4c-f9e3-4d6e-a937-64c0cc9a5203"],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "330"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:40 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - f33d7645-dab2-4d32-9e8d-859539dea60f
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: GET
-  response:
-    body: '{"application_ids":["13166e4c-f9e3-4d6e-a937-64c0cc9a5203"],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "330"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:40 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 23b5df13-396e-4c07-b80c-9ebe6d4657c7
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: GET
-  response:
-    body: '{"application_ids":["13166e4c-f9e3-4d6e-a937-64c0cc9a5203"],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "330"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:41 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 960e449f-2f8f-40f5-9138-5a7f967f669b
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/applications/13166e4c-f9e3-4d6e-a937-64c0cc9a5203
-    method: GET
-  response:
-    body: '{"created_at":"2023-07-25T13:29:39.089184Z","description":"","editable":true,"id":"13166e4c-f9e3-4d6e-a937-64c0cc9a5203","name":"tf-tests-iam-group-membership-basic","nb_api_keys":0,"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.089184Z"}'
-    headers:
-      Content-Length:
-      - "289"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:42 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - eba58fd2-afa9-4434-abd5-75ce7f4eaefc
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: GET
-  response:
-    body: '{"application_ids":["13166e4c-f9e3-4d6e-a937-64c0cc9a5203"],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "330"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:42 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 4fe5e7a2-793c-4a0e-9f2e-5a587d7eb199
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: GET
-  response:
-    body: '{"application_ids":["13166e4c-f9e3-4d6e-a937-64c0cc9a5203"],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "330"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:42 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 1f383444-b58f-42bf-a059-f196e66c6da7
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: GET
-  response:
-    body: '{"application_ids":["13166e4c-f9e3-4d6e-a937-64c0cc9a5203"],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "330"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:42 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 99b19707-39f9-40dc-b265-537f4f5d2698
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/applications/13166e4c-f9e3-4d6e-a937-64c0cc9a5203
-    method: GET
-  response:
-    body: '{"created_at":"2023-07-25T13:29:39.089184Z","description":"","editable":true,"id":"13166e4c-f9e3-4d6e-a937-64c0cc9a5203","name":"tf-tests-iam-group-membership-basic","nb_api_keys":0,"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.089184Z"}'
-    headers:
-      Content-Length:
-      - "289"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:43 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 57762250-5d7c-4276-b73f-642fdc18e6c9
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: GET
-  response:
-    body: '{"application_ids":["13166e4c-f9e3-4d6e-a937-64c0cc9a5203"],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "330"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:43 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 77981e0a-3431-4b6d-94d9-df8f0da8aed9
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: GET
-  response:
-    body: '{"application_ids":["13166e4c-f9e3-4d6e-a937-64c0cc9a5203"],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "330"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:43 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 9fcc37ba-c55e-464a-9df1-795812477003
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: GET
-  response:
-    body: '{"application_ids":["13166e4c-f9e3-4d6e-a937-64c0cc9a5203"],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "330"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:43 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - fe3637d3-bd3b-4d79-97c0-c6a745ffb25d
-    status: 200 OK
-    code: 200
-- request:
-    body: '{"application_id":"13166e4c-f9e3-4d6e-a937-64c0cc9a5203"}'
-    form: {}
-    headers:
-      Content-Type:
-      - application/json
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0/remove-member
-    method: POST
-  response:
-    body: '{"application_ids":[],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "292"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:44 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 2979490d-7e49-4dfb-861f-790d0119a5c7
-    status: 200 OK
-    code: 200
-- request:
-    body: '{"application_id":"13166e4c-f9e3-4d6e-a937-64c0cc9a5203"}'
-    form: {}
-    headers:
-      Content-Type:
-      - application/json
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0/remove-member
-    method: POST
-  response:
-    body: '{"application_ids":[],"created_at":"2023-07-25T13:29:39.060201Z","description":"","id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","updated_at":"2023-07-25T13:29:39.060201Z","user_ids":[]}'
-    headers:
-      Content-Length:
-      - "292"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:44 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - da2ab821-2fa1-4153-9653-befb1f9ef8af
-    status: 200 OK
-    code: 200
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/applications/13166e4c-f9e3-4d6e-a937-64c0cc9a5203
-    method: DELETE
-  response:
-    body: ""
-    headers:
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:44 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 3f0a5092-a3da-44ec-b94c-32b2d1b8d84b
-    status: 204 No Content
-    code: 204
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: DELETE
-  response:
-    body: ""
-    headers:
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:44 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 4e9dbcdb-8cc5-4821-a9b7-32cc8f287ba4
-    status: 204 No Content
-    code: 204
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/groups/a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0
-    method: GET
-  response:
-    body: '{"message":"resource is not found","resource":"iam_group","resource_id":"a22f0b51-79d3-43b7-8fc2-4bc3c03c3ad0","type":"not_found"}'
-    headers:
-      Content-Length:
-      - "130"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:44 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - a0245051-28f2-4532-bc6f-5a1100ccc0f4
-    status: 404 Not Found
-    code: 404
-- request:
-    body: ""
-    form: {}
-    headers:
-      User-Agent:
-      - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.20.1; linux; amd64) terraform-provider/develop
-        terraform/terraform-tests
-    url: https://api.scaleway.com/iam/v1alpha1/applications/13166e4c-f9e3-4d6e-a937-64c0cc9a5203
-    method: GET
-  response:
-    body: '{"message":"resource is not found","resource":"iam_application","resource_id":"13166e4c-f9e3-4d6e-a937-64c0cc9a5203","type":"not_found"}'
-    headers:
-      Content-Length:
-      - "136"
-      Content-Security-Policy:
-      - default-src 'none'; frame-ancestors 'none'
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 25 Jul 2023 13:29:44 GMT
-      Server:
-      - Scaleway API-Gateway
-      Strict-Transport-Security:
-      - max-age=63072000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Request-Id:
-      - 79f9e7b7-392f-4d0b-88ff-e7a537f1cecb
-    status: 404 Not Found
-    code: 404
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 130
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","name":"tf-tests-iam-group-membership-basic","description":"","tags":[]}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 355
+        uncompressed: false
+        body: '{"application_ids":[],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "355"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:53 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - ce55e8cf-ac6e-4687-87bd-3389ed008838
+        status: 200 OK
+        code: 200
+        duration: 115.815459ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 130
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","description":"","tags":[]}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/applications
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 335
+        uncompressed: false
+        body: '{"created_at":"2025-01-22T15:32:53.545236Z","deletable":true,"description":"","editable":true,"id":"e221e151-1b7b-435d-a521-4ad287aaa223","managed":false,"name":"tf-tests-iam-group-membership-basic","nb_api_keys":0,"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.545236Z"}'
+        headers:
+            Content-Length:
+                - "335"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:53 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 9a297451-5ef7-4734-a4d3-fa5c93753ec2
+        status: 200 OK
+        code: 200
+        duration: 141.448333ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 355
+        uncompressed: false
+        body: '{"application_ids":[],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "355"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:53 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 19399c66-ffc4-4523-aa55-acbe150dedea
+        status: 200 OK
+        code: 200
+        duration: 89.106083ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/applications/e221e151-1b7b-435d-a521-4ad287aaa223
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 335
+        uncompressed: false
+        body: '{"created_at":"2025-01-22T15:32:53.545236Z","deletable":true,"description":"","editable":true,"id":"e221e151-1b7b-435d-a521-4ad287aaa223","managed":false,"name":"tf-tests-iam-group-membership-basic","nb_api_keys":0,"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.545236Z"}'
+        headers:
+            Content-Length:
+                - "335"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:53 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 58f20151-0012-4230-b082-715dee7df98c
+        status: 200 OK
+        code: 200
+        duration: 91.0445ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 57
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"application_id":"e221e151-1b7b-435d-a521-4ad287aaa223"}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4/add-member
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 393
+        uncompressed: false
+        body: '{"application_ids":["e221e151-1b7b-435d-a521-4ad287aaa223"],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "393"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:53 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 087dab25-ed5d-468a-a24a-d5f5014ab66f
+        status: 200 OK
+        code: 200
+        duration: 207.825208ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 393
+        uncompressed: false
+        body: '{"application_ids":["e221e151-1b7b-435d-a521-4ad287aaa223"],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "393"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:53 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - f288f839-af05-40b2-8675-fa4eb686a4bb
+        status: 200 OK
+        code: 200
+        duration: 112.145375ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 393
+        uncompressed: false
+        body: '{"application_ids":["e221e151-1b7b-435d-a521-4ad287aaa223"],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "393"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:54 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - ca17c2e9-2fcb-48e1-a7b4-34116828758c
+        status: 200 OK
+        code: 200
+        duration: 107.304ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/applications/e221e151-1b7b-435d-a521-4ad287aaa223
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 335
+        uncompressed: false
+        body: '{"created_at":"2025-01-22T15:32:53.545236Z","deletable":true,"description":"","editable":true,"id":"e221e151-1b7b-435d-a521-4ad287aaa223","managed":false,"name":"tf-tests-iam-group-membership-basic","nb_api_keys":0,"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.545236Z"}'
+        headers:
+            Content-Length:
+                - "335"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:55 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 15f767da-ff72-4678-a477-47fdfd2f2d67
+        status: 200 OK
+        code: 200
+        duration: 108.517833ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 393
+        uncompressed: false
+        body: '{"application_ids":["e221e151-1b7b-435d-a521-4ad287aaa223"],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "393"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:55 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - bc3d4f1f-d964-460d-bffd-545e68cf1bc5
+        status: 200 OK
+        code: 200
+        duration: 130.226375ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 393
+        uncompressed: false
+        body: '{"application_ids":["e221e151-1b7b-435d-a521-4ad287aaa223"],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "393"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:55 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 94f9713a-0368-4444-a953-d0e9eee3672b
+        status: 200 OK
+        code: 200
+        duration: 100.367125ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 393
+        uncompressed: false
+        body: '{"application_ids":["e221e151-1b7b-435d-a521-4ad287aaa223"],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "393"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:57 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 8d7e9381-1eb1-4b4d-adeb-65af19252752
+        status: 200 OK
+        code: 200
+        duration: 189.404125ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/applications/e221e151-1b7b-435d-a521-4ad287aaa223
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 335
+        uncompressed: false
+        body: '{"created_at":"2025-01-22T15:32:53.545236Z","deletable":true,"description":"","editable":true,"id":"e221e151-1b7b-435d-a521-4ad287aaa223","managed":false,"name":"tf-tests-iam-group-membership-basic","nb_api_keys":0,"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.545236Z"}'
+        headers:
+            Content-Length:
+                - "335"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:57 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - d47d9cb6-af0e-49ce-a219-53abbd7488f1
+        status: 200 OK
+        code: 200
+        duration: 84.053833ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 393
+        uncompressed: false
+        body: '{"application_ids":["e221e151-1b7b-435d-a521-4ad287aaa223"],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "393"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:57 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 21b19de3-8f17-4a84-b857-f3902a19e026
+        status: 200 OK
+        code: 200
+        duration: 105.415125ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 393
+        uncompressed: false
+        body: '{"application_ids":["e221e151-1b7b-435d-a521-4ad287aaa223"],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "393"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:57 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 3bde072d-b12f-4d14-8177-d5ab4815c094
+        status: 200 OK
+        code: 200
+        duration: 105.733542ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 393
+        uncompressed: false
+        body: '{"application_ids":["e221e151-1b7b-435d-a521-4ad287aaa223"],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "393"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:57 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 8a63ef88-df63-41a0-b0c7-8e388875bad5
+        status: 200 OK
+        code: 200
+        duration: 107.845333ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 393
+        uncompressed: false
+        body: '{"application_ids":["e221e151-1b7b-435d-a521-4ad287aaa223"],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "393"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:59 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 2a4dc253-1a66-45e9-bac6-5a64e388fa83
+        status: 200 OK
+        code: 200
+        duration: 105.401542ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/applications/e221e151-1b7b-435d-a521-4ad287aaa223
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 335
+        uncompressed: false
+        body: '{"created_at":"2025-01-22T15:32:53.545236Z","deletable":true,"description":"","editable":true,"id":"e221e151-1b7b-435d-a521-4ad287aaa223","managed":false,"name":"tf-tests-iam-group-membership-basic","nb_api_keys":0,"organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.545236Z"}'
+        headers:
+            Content-Length:
+                - "335"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:59 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - b82ad2e9-a7fc-4009-b128-3e897b9a4718
+        status: 200 OK
+        code: 200
+        duration: 113.54875ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 393
+        uncompressed: false
+        body: '{"application_ids":["e221e151-1b7b-435d-a521-4ad287aaa223"],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "393"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:59 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 8878d137-2abd-4db0-b1cb-36d004f148bf
+        status: 200 OK
+        code: 200
+        duration: 88.829875ms
+    - id: 18
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 393
+        uncompressed: false
+        body: '{"application_ids":["e221e151-1b7b-435d-a521-4ad287aaa223"],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "393"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:32:59 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 65d15a38-7e7c-4aea-a294-14ad90ead34e
+        status: 200 OK
+        code: 200
+        duration: 95.787ms
+    - id: 19
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 57
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"application_id":"e221e151-1b7b-435d-a521-4ad287aaa223"}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4/remove-member
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 355
+        uncompressed: false
+        body: '{"application_ids":[],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "355"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:33:01 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 921d29c9-3bcb-4912-b1a6-ef2c74516da1
+        status: 200 OK
+        code: 200
+        duration: 160.557875ms
+    - id: 20
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 57
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"application_id":"e221e151-1b7b-435d-a521-4ad287aaa223"}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4/remove-member
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 355
+        uncompressed: false
+        body: '{"application_ids":[],"created_at":"2025-01-22T15:32:53.516238Z","deletable":true,"description":"","editable":true,"id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","managed":false,"name":"tf-tests-iam-group-membership-basic","organization_id":"105bdce1-64c0-48ab-899d-868455867ecf","tags":[],"updated_at":"2025-01-22T15:32:53.516238Z","user_ids":[]}'
+        headers:
+            Content-Length:
+                - "355"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:33:01 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - af92d4e2-636c-45ef-981f-60db443591b8
+        status: 200 OK
+        code: 200
+        duration: 178.519791ms
+    - id: 21
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/applications/e221e151-1b7b-435d-a521-4ad287aaa223
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:33:01 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - a4901224-96b6-4b69-9365-a5b4d9711c10
+        status: 204 No Content
+        code: 204
+        duration: 91.077292ms
+    - id: 22
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:33:01 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - b223cf87-05fd-499c-9f59-cee920fa232b
+        status: 204 No Content
+        code: 204
+        duration: 95.692708ms
+    - id: 23
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/groups/e468b7f0-9549-4b81-86b3-78f7bcd405b4
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 126
+        uncompressed: false
+        body: '{"message":"resource is not found","resource":"group","resource_id":"e468b7f0-9549-4b81-86b3-78f7bcd405b4","type":"not_found"}'
+        headers:
+            Content-Length:
+                - "126"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:33:01 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - f4beacab-60ab-4f0e-9008-01504678ed43
+        status: 404 Not Found
+        code: 404
+        duration: 23.279459ms
+    - id: 24
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.3; darwin; arm64) terraform-provider/develop terraform/terraform-tests
+        url: https://api.scaleway.com/iam/v1alpha1/applications/e221e151-1b7b-435d-a521-4ad287aaa223
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 132
+        uncompressed: false
+        body: '{"message":"resource is not found","resource":"application","resource_id":"e221e151-1b7b-435d-a521-4ad287aaa223","type":"not_found"}'
+        headers:
+            Content-Length:
+                - "132"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 22 Jan 2025 15:33:01 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge01)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 51a705b7-47de-494c-9270-ff858bb2711e
+        status: 404 Not Found
+        code: 404
+        duration: 28.279542ms
