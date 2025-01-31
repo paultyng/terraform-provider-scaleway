@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 2
       - uses: actions/setup-go@v5
         with:
-          go-version: '1.22'
+          go-version: '1.23'
       - name: Run coverage
         run: go test -v -timeout=2h -coverprofile=coverage.out -covermode=count ./...
         env:

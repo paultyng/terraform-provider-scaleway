@@ -1,8 +1,8 @@
 module tftemplate
 
-go 1.22
+go 1.23
 
-toolchain go1.22.2
+toolchain go1.23.2
 
 require github.com/AlecAivazis/survey/v2 v2.3.7
 
