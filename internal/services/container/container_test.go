@@ -400,6 +400,95 @@ func TestAccContainer_Sandbox(t *testing.T) {
 	})
 }
 
+func TestAccContainer_ScalingOption(t *testing.T) {
+	tt := acctest.NewTestTools(t)
+	defer tt.Cleanup()
+	resource.ParallelTest(t, resource.TestCase{
+		PreCheck:          func() { acctest.PreCheck(t) },
+		ProviderFactories: tt.ProviderFactories,
+		CheckDestroy:      isContainerDestroyed(tt),
+		Steps: []resource.TestStep{
+			{
+				Config: `
+					resource scaleway_container_namespace main {}
+
+					resource scaleway_container main {
+						namespace_id = scaleway_container_namespace.main.id
+						deploy = false
+					}
+				`,
+				Check: resource.ComposeTestCheckFunc(
+					isContainerPresent(tt, "scaleway_container.main"),
+					// Check default option returned by the API when you don't specify the scaling_option block.
+					resource.TestCheckResourceAttr("scaleway_container.main", "scaling_option.#", "1"),
+					resource.TestCheckResourceAttr("scaleway_container.main", "scaling_option.0.concurrent_requests_threshold", "50"),
+				),
+			},
+			{
+				Config: `
+					resource scaleway_container_namespace main {}
+		
+					resource scaleway_container main {
+						namespace_id = scaleway_container_namespace.main.id
+						deploy = false
+
+						scaling_option {
+							concurrent_requests_threshold = 15
+						}
+					}
+				`,
+				Check: resource.ComposeTestCheckFunc(
+					isContainerPresent(tt, "scaleway_container.main"),
+					resource.TestCheckResourceAttr("scaleway_container.main", "scaling_option.#", "1"),
+					resource.TestCheckResourceAttr("scaleway_container.main", "scaling_option.0.concurrent_requests_threshold", "15"),
+				),
+			},
+			{
+				Config: `
+					resource scaleway_container_namespace main {}
+		
+					resource scaleway_container main {
+						namespace_id = scaleway_container_namespace.main.id
+						deploy = false
+
+						min_scale = 1
+
+						scaling_option {
+							cpu_usage_threshold = 72
+						}
+					}
+				`,
+				Check: resource.ComposeTestCheckFunc(
+					isContainerPresent(tt, "scaleway_container.main"),
+					resource.TestCheckResourceAttr("scaleway_container.main", "scaling_option.#", "1"),
+					resource.TestCheckResourceAttr("scaleway_container.main", "scaling_option.0.cpu_usage_threshold", "72"),
+				),
+			},
+
+			{
+				Config: `
+					resource scaleway_container_namespace main {}
+		
+					resource scaleway_container main {
+						namespace_id = scaleway_container_namespace.main.id
+						deploy = false
+
+						min_scale = 1
+
+						scaling_option {
+							memory_usage_threshold = 66
+						}
+					}
+				`,
+				Check: resource.ComposeTestCheckFunc(
+					isContainerPresent(tt, "scaleway_container.main"),
+					resource.TestCheckResourceAttr("scaleway_container.main", "scaling_option.0.memory_usage_threshold", "66"),
+				),
+			},
+		},
+	})
+}
+
 func isContainerPresent(tt *acctest.TestTools, n string) resource.TestCheckFunc {
 	return func(state *terraform.State) error {
 		rs, ok := state.RootModule().Resources[n]
