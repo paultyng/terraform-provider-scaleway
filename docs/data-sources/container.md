@@ -91,7 +91,13 @@ In addition to all arguments above, the following attributes are exported:
 
 - `deploy` - Boolean indicating whether the container is on a production environment.
 
-- `sandbox` - (Optional) Execution environment of the container.
+- `sandbox` - Execution environment of the container.
+
+- `heath_check` - Health check configuration block of the container.
+    - `http` - HTTP health check configuration.
+        - `path` - Path to use for the HTTP health check.
+    - `failure_threshold` - Number of consecutive health check failures before considering the container unhealthy.
+    - `interval`- Period between health checks (in seconds).
 
 - `status` - The container status.
 

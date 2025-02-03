@@ -84,6 +84,12 @@ The following arguments are supported:
 
 - `sandbox` - (Optional) Execution environment of the container.
 
+- `heath_check` - (Optional) Health check configuration block of the container.
+    - `http` - HTTP health check configuration.
+        - `path` - Path to use for the HTTP health check.    
+    - `failure_threshold` - Number of consecutive health check failures before considering the container unhealthy.
+    - `interval`- Period between health checks (in seconds).
+
 - `port` - (Optional) The port to expose the container.
 
 - `deploy` - (Optional) Boolean indicating whether the container is in a production environment.
@@ -153,3 +159,33 @@ The `memory_limit` (in MB) must correspond with the right amount of vCPU. Refer 
 
 ~>**Important:** Make sure to select the right resources, as you will be billed based on compute usage over time and the number of Containers executions.
 Refer to the [Serverless Containers pricing](https://www.scaleway.com/en/docs/faq/serverless-containers/#prices) for more information.
+
+## Health check configuration
+
+Custom health checks can be configured on the container. 
+
+It's possible to specify the HTTP path that the probe will listen to and the number of failures before considering the container as unhealthy. 
+During a deployment, if a newly created container fails to pass the health check, the deployment is aborted. 
+As a result, lowering this value can help to reduce the time it takes to detect a failed deployment. 
+The period between health checks is also configurable.
+
+Example:
+
+```terraform
+resource scaleway_container main {
+    name = "my-container-02"
+    namespace_id = scaleway_container_namespace.main.id
+
+    health_check {
+        http {
+            path = "/ping"
+        }
+        failure_threshold = 40
+        interval = "3s"
+    }
+}
+```
+
+~>**Important:** Another probe type can be set to TCP with the API, but currently the SDK has not been updated with this parameter.
+This is why the only probe that can be used here is the HTTP probe.
+Refer to the [API Reference](https://www.scaleway.com/en/developers/api/serverless-containers/#path-containers-create-a-new-container) for more information.

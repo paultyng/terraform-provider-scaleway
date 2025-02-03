@@ -400,6 +400,60 @@ func TestAccContainer_Sandbox(t *testing.T) {
 	})
 }
 
+func TestAccContainer_HealthCheck(t *testing.T) {
+	tt := acctest.NewTestTools(t)
+	defer tt.Cleanup()
+	resource.ParallelTest(t, resource.TestCase{
+		PreCheck:          func() { acctest.PreCheck(t) },
+		ProviderFactories: tt.ProviderFactories,
+		CheckDestroy:      isContainerDestroyed(tt),
+		Steps: []resource.TestStep{
+			{
+				Config: `
+					resource scaleway_container_namespace main {}
+
+					resource scaleway_container main {
+						namespace_id = scaleway_container_namespace.main.id
+						deploy = false
+					}
+				`,
+				Check: resource.ComposeTestCheckFunc(
+					isContainerPresent(tt, "scaleway_container.main"),
+					// Check default option returned by the API when you don't specify the health_check block.
+					resource.TestCheckResourceAttr("scaleway_container.main", "health_check.#", "1"),
+					resource.TestCheckResourceAttr("scaleway_container.main", "health_check.0.failure_threshold", "30"),
+					resource.TestCheckResourceAttr("scaleway_container.main", "health_check.0.interval", "10s"),
+				),
+			},
+			{
+				Config: `
+					resource scaleway_container_namespace main {}
+
+					resource scaleway_container main {
+						namespace_id = scaleway_container_namespace.main.id
+						deploy = false
+
+						health_check {
+							http {
+								path = "/test"
+							}
+							failure_threshold = 40
+							interval = "12s"
+						}
+					}
+				`,
+				Check: resource.ComposeTestCheckFunc(
+					isContainerPresent(tt, "scaleway_container.main"),
+					resource.TestCheckResourceAttr("scaleway_container.main", "health_check.#", "1"),
+					resource.TestCheckResourceAttr("scaleway_container.main", "health_check.0.http.0.path", "/test"),
+					resource.TestCheckResourceAttr("scaleway_container.main", "health_check.0.failure_threshold", "40"),
+					resource.TestCheckResourceAttr("scaleway_container.main", "health_check.0.interval", "12s"),
+				),
+			},
+		},
+	})
+}
+
 func isContainerPresent(tt *acctest.TestTools, n string) resource.TestCheckFunc {
 	return func(state *terraform.State) error {
 		rs, ok := state.RootModule().Resources[n]

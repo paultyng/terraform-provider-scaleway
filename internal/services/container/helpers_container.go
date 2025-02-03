@@ -115,7 +115,105 @@ func setCreateContainerRequest(d *schema.ResourceData, region scw.Region) (*cont
 		req.Sandbox = container.ContainerSandbox(sandbox.(string))
 	}
 
+	if healthCheck, ok := d.GetOk("health_check"); ok {
+		healthCheckReq, errExpandHealthCheck := expandHealthCheck(healthCheck)
+		if errExpandHealthCheck != nil {
+			return nil, errExpandHealthCheck
+		}
+		req.HealthCheck = healthCheckReq
+	}
+
 	return req, nil
+}
+
+func expandHealthCheck(healthCheckSchema interface{}) (*container.ContainerHealthCheckSpec, error) {
+	healthCheck, ok := healthCheckSchema.(*schema.Set)
+	if !ok {
+		return &container.ContainerHealthCheckSpec{}, nil
+	}
+
+	for _, option := range healthCheck.List() {
+		rawOption, isRawOption := option.(map[string]interface{})
+		if !isRawOption {
+			continue
+		}
+
+		healthCheckSpec := &container.ContainerHealthCheckSpec{}
+		if http, ok := rawOption["http"].(*schema.Set); ok {
+			healthCheckSpec.HTTP = expendHealthCheckHTTP(http)
+		}
+
+		// Failure threshold is a required field and will be checked by TF.
+		healthCheckSpec.FailureThreshold = uint32(rawOption["failure_threshold"].(int))
+
+		if interval, ok := rawOption["interval"]; ok {
+			duration, err := types.ExpandDuration(interval)
+			if err != nil {
+				return nil, err
+			}
+			healthCheckSpec.Interval = scw.NewDurationFromTimeDuration(*duration)
+		}
+
+		return healthCheckSpec, nil
+	}
+
+	return &container.ContainerHealthCheckSpec{}, nil
+}
+
+func expendHealthCheckHTTP(healthCheckHTTPSchema interface{}) *container.ContainerHealthCheckSpecHTTPProbe {
+	healthCheckHTTP, ok := healthCheckHTTPSchema.(*schema.Set)
+	if !ok {
+		return &container.ContainerHealthCheckSpecHTTPProbe{}
+	}
+
+	for _, option := range healthCheckHTTP.List() {
+		rawOption, isRawOption := option.(map[string]interface{})
+		if !isRawOption {
+			continue
+		}
+
+		httpProbe := &container.ContainerHealthCheckSpecHTTPProbe{}
+		if path, ok := rawOption["path"].(string); ok {
+			httpProbe.Path = path
+		}
+
+		return httpProbe
+	}
+
+	return &container.ContainerHealthCheckSpecHTTPProbe{}
+}
+
+func flattenHealthCheck(healthCheck *container.ContainerHealthCheckSpec) interface{} {
+	if healthCheck == nil {
+		return nil
+	}
+
+	var interval *time.Duration
+	if healthCheck.Interval != nil {
+		interval = healthCheck.Interval.ToTimeDuration()
+	}
+
+	flattenedHealthCheck := []map[string]interface{}(nil)
+	flattenedHealthCheck = append(flattenedHealthCheck, map[string]interface{}{
+		"http":              flattenHealthCheckHTTP(healthCheck.HTTP),
+		"failure_threshold": types.FlattenUint32Ptr(&healthCheck.FailureThreshold),
+		"interval":          types.FlattenDuration(interval),
+	})
+
+	return flattenedHealthCheck
+}
+
+func flattenHealthCheckHTTP(healthCheckHTTP *container.ContainerHealthCheckSpecHTTPProbe) interface{} {
+	if healthCheckHTTP == nil {
+		return nil
+	}
+
+	flattenedHealthCheckHTTP := []map[string]interface{}(nil)
+	flattenedHealthCheckHTTP = append(flattenedHealthCheckHTTP, map[string]interface{}{
+		"path": types.FlattenStringPtr(&healthCheckHTTP.Path),
+	})
+
+	return flattenedHealthCheckHTTP
 }
 
 func expandContainerSecrets(secretsRawMap interface{}) []*container.Secret {
