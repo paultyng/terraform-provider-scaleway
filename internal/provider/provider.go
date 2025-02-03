@@ -20,6 +20,7 @@ import (
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/cockpit"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/container"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/domain"
+	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/edgeservices"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/flexibleip"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/function"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/iam"
@@ -137,6 +138,11 @@ func Provider(config *Config) plugin.ProviderFunc {
 				"scaleway_container_trigger":                   container.ResourceTrigger(),
 				"scaleway_domain_record":                       domain.ResourceRecord(),
 				"scaleway_domain_zone":                         domain.ResourceZone(),
+				"scaleway_edge_services_backend_stage":         edgeservices.ResourceBackendStage(),
+				"scaleway_edge_services_cache_stage":           edgeservices.ResourceCacheStage(),
+				"scaleway_edge_services_dns_stage":             edgeservices.ResourceDNSStage(),
+				"scaleway_edge_services_pipeline":              edgeservices.ResourcePipeline(),
+				"scaleway_edge_services_tls_stage":             edgeservices.ResourceTLSStage(),
 				"scaleway_flexible_ip":                         flexibleip.ResourceIP(),
 				"scaleway_flexible_ip_mac_address":             flexibleip.ResourceMACAddress(),
 				"scaleway_function":                            function.ResourceFunction(),
