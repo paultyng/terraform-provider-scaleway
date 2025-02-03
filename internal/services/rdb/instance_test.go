@@ -1383,6 +1383,103 @@ func TestAccInstance_UpdateEncryptionAtRest(t *testing.T) {
 	})
 }
 
+func TestAccInstance_CompleteWorkflow(t *testing.T) {
+	tt := acctest.NewTestTools(t)
+	defer tt.Cleanup()
+
+	latestEngineVersion := rdbchecks.GetLatestEngineVersion(tt, postgreSQLEngineName)
+
+	resource.ParallelTest(t, resource.TestCase{
+		PreCheck:          func() { acctest.PreCheck(t) },
+		ProviderFactories: tt.ProviderFactories,
+		CheckDestroy:      IsSnapshotDestroyed(tt),
+		Steps: []resource.TestStep{
+			// Step 1: Create an instance and a snapshot
+			{
+				Config: fmt.Sprintf(`
+					resource "scaleway_rdb_instance" "main" {
+						name           = "test-rdb-instance"
+						node_type      = "db-dev-s"
+						engine         = %q
+						is_ha_cluster  = false
+						disable_backup = true
+						user_name      = "my_initial_user"
+						password       = "thiZ_is_v&ry_s3cret"
+						tags           = ["terraform-test", "scaleway_rdb_instance"]
+						volume_type    = "bssd"
+						volume_size_in_gb = 10
+					}
+
+					resource "scaleway_rdb_snapshot" "test" {
+						name        = "test-snapshot"
+						instance_id = scaleway_rdb_instance.main.id
+						depends_on  = [scaleway_rdb_instance.main]
+					}
+
+					resource "scaleway_rdb_instance" "from_snapshot" {
+						name           = "test-instance-from-snapshot"
+						node_type      = "db-dev-s"
+						is_ha_cluster  = false
+						disable_backup = true
+						snapshot_id    = scaleway_rdb_snapshot.test.id
+						volume_type    = "bssd"
+						tags           = ["terraform-test", "restored_instance"]
+						depends_on     = [scaleway_rdb_snapshot.test]
+					}
+				`, latestEngineVersion),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("scaleway_rdb_instance.from_snapshot", "name", "test-instance-from-snapshot"),
+					resource.TestCheckResourceAttr("scaleway_rdb_instance.from_snapshot", "user_name", "my_initial_user"),
+					resource.TestCheckResourceAttr("scaleway_rdb_instance.from_snapshot", "tags.0", "terraform-test"),
+					resource.TestCheckResourceAttr("scaleway_rdb_instance.from_snapshot", "tags.1", "restored_instance"),
+				),
+			},
+			// Step 2: Update the instance created from the snapshot
+			{
+				Config: fmt.Sprintf(`
+					resource "scaleway_rdb_instance" "main" {
+						name           = "test-rdb-instance"
+						node_type      = "db-dev-s"
+						engine         = %q
+						is_ha_cluster  = false
+						disable_backup = true
+						user_name      = "my_initial_user"
+						password       = "thiZ_is_v&ry_s3cret"
+						tags           = ["terraform-test", "scaleway_rdb_instance"]
+						volume_type    = "bssd"
+						volume_size_in_gb = 10
+					}
+
+					resource "scaleway_rdb_snapshot" "test" {
+						name        = "test-snapshot"
+						instance_id = scaleway_rdb_instance.main.id
+						depends_on  = [scaleway_rdb_instance.main]
+					}
+
+					resource "scaleway_rdb_instance" "from_snapshot" {
+						name           = "test-instance-from-snapshot-updated"
+						node_type      = "db-dev-s"
+						is_ha_cluster  = false
+						disable_backup = true
+						snapshot_id    = scaleway_rdb_snapshot.test.id
+						volume_type    = "bssd"
+						user_name      = "updated_user"
+						password       = "thiZ_is_v&ry_s3cret2"
+						tags           = ["terraform-test", "updated_instance"]
+						depends_on     = [scaleway_rdb_snapshot.test]
+					}
+				`, latestEngineVersion),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("scaleway_rdb_instance.from_snapshot", "name", "test-instance-from-snapshot-updated"),
+					resource.TestCheckResourceAttr("scaleway_rdb_instance.from_snapshot", "user_name", "updated_user"),
+					resource.TestCheckResourceAttr("scaleway_rdb_instance.from_snapshot", "tags.0", "terraform-test"),
+					resource.TestCheckResourceAttr("scaleway_rdb_instance.from_snapshot", "tags.1", "updated_instance"),
+				),
+			},
+		},
+	})
+}
+
 func isInstancePresent(tt *acctest.TestTools, n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[n]
