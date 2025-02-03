@@ -18,6 +18,7 @@ import (
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/locality/regional"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/locality/zonal"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/services/account"
+	rdbtestfuncs "github.com/scaleway/terraform-provider-scaleway/v2/internal/services/rdb/testfuncs"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/types"
 	"github.com/scaleway/terraform-provider-scaleway/v2/internal/verify"
 )
@@ -554,8 +555,13 @@ func ResourceRdbInstanceUpdate(ctx context.Context, d *schema.ResourceData, m in
 	}
 
 	////////////////////
-	// Upgrade instance
+	// migrate instance
 	////////////////////
+
+	//if d.HasChange("engine") {
+	//
+	//}
+
 	upgradeInstanceRequests := []rdb.UpgradeInstanceRequest(nil)
 
 	rdbInstance, err := rdbAPI.GetInstance(&rdb.GetInstanceRequest{
@@ -568,6 +574,22 @@ func ResourceRdbInstanceUpdate(ctx context.Context, d *schema.ResourceData, m in
 	diskIsFull := rdbInstance.Status == rdb.InstanceStatusDiskFull
 	volType := rdb.VolumeType(d.Get("volume_type").(string))
 
+	if d.HasChange("engine") {
+
+		lastEngine, err := ExtractEngineVersion(rdbInstance.Engine)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+		newEngine, err := ExtractEngineVersion(d.Get("engine").(string))
+		if newEngine <= lastEngine {
+			return diag.FromErr(errors.New("volume_size_in_gb must be a multiple of 5"))
+		}
+		engine := rdbAPI.FetchLatestEngineVersion()
+
+	}
+	////////////////////
+	// Upgrade instance
+	////////////////////
 	// Volume type and size
 	if d.HasChanges("volume_type", "volume_size_in_gb") {
 		switch volType {

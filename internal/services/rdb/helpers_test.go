@@ -31,3 +31,39 @@ func TestPrivilegeV1SchemaUpgradeFunc(t *testing.T) {
 		t.Fatalf("\n\nexpected:\n\n%#v\n\ngot:\n\n%#v\n\n", v1Schema, actual)
 	}
 }
+
+func TestExtractEngineVersion(t *testing.T) {
+	tests := []struct {
+		engine         string
+		expected       int
+		expectingError bool
+	}{
+		{"postgresql-15", 15, false},
+		{"mysql-8.0", 8, false},
+		{"redis-6", 6, false},
+		{"mariadb-10.5", 10, false}, // Only extracts the major version
+		{"invalid-engine", 0, true}, // No version to extract
+		{"", 0, true},               // Empty string case
+		{"mongodb-3.6", 3, false},   // Extracts only the major version
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.engine, func(t *testing.T) {
+			result, err := rdb.ExtractEngineVersion(tt.engine)
+
+			if tt.expectingError {
+				if err == nil {
+					t.Errorf("expected an error for engine %q, but got none", tt.engine)
+				}
+			} else {
+				if err != nil {
+					t.Errorf("did not expect an error for engine %q, but got: %s", tt.engine, err)
+				}
+
+				if result != tt.expected {
+					t.Errorf("expected version %d for engine %q, but got %d", tt.expected, tt.engine, result)
+				}
+			}
+		})
+	}
+}

@@ -3,6 +3,9 @@ package rdb
 import (
 	"context"
 	"errors"
+	"fmt"
+	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -99,4 +102,20 @@ func getIPConfigUpdate(d *schema.ResourceData, ipFieldName string) (ipamConfig *
 		staticConfig = types.ExpandStringPtr(staticConfigI)
 	}
 	return ipamConfig, staticConfig
+}
+
+func ExtractEngineVersion(engine string) (int, error) {
+	re := regexp.MustCompile(`[-](\d+)`)
+	matches := re.FindStringSubmatch(engine)
+
+	if len(matches) < 2 {
+		return 0, fmt.Errorf("no version found in: %s", engine)
+	}
+
+	version, err := strconv.Atoi(matches[1])
+	if err != nil {
+		return 0, fmt.Errorf("failed to convert version to integer: %w", err)
+	}
+
+	return version, nil
 }
