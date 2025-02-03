@@ -13,7 +13,7 @@ import (
 )
 
 func TestAccServer_Basic(t *testing.T) {
-	t.Skip("Skipping AppleSilicon test as this kind of server can't be deleted before 24h")
+	//t.Skip("Skipping AppleSilicon deletion before 24h")
 	tt := acctest.NewTestTools(t)
 	defer tt.Cleanup()
 	resource.ParallelTest(t, resource.TestCase{
@@ -24,19 +24,99 @@ func TestAccServer_Basic(t *testing.T) {
 			{
 				Config: `
 					resource scaleway_apple_silicon_server main {
-						name = "test-m1"
-						type = "M1-M"
+						name = "test-m2"
+						type = "M2-M"
 					}
 				`,
 				Check: resource.ComposeTestCheckFunc(
 					isServerPresent(tt, "scaleway_apple_silicon_server.main"),
-					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "name", "test-m1"),
-					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "type", "M1-M"),
+					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "name", "test-m2"),
+					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "type", "M2-M"),
 					// Computed
 					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "ip"),
 					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "vnc_url"),
 					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "created_at"),
 					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "deletable_at"),
+				),
+			},
+		},
+	})
+}
+
+func TestAccServer_EnableVPC(t *testing.T) {
+	//t.Skip("Skipping AppleSilicon VPC not available")
+	tt := acctest.NewTestTools(t)
+	defer tt.Cleanup()
+	resource.ParallelTest(t, resource.TestCase{
+		PreCheck:          func() { acctest.PreCheck(t) },
+		ProviderFactories: tt.ProviderFactories,
+		CheckDestroy:      isServerDestroyed(tt),
+		Steps: []resource.TestStep{
+			{
+				Config: `
+					resource "scaleway_vpc" "vpc01" {
+					  name = "TestAccServer_EnableVPC"
+					}
+					
+					resource "scaleway_vpc_private_network" "pn01" {
+					  name = "TestAccServer_EnableVPC"
+					  ipv4_subnet {
+						subnet = "172.16.64.0/22"
+					  }
+					  vpc_id = scaleway_vpc.vpc01.id
+					}
+					
+					resource "scaleway_ipam_ip" "ip01" {
+					  address = "172.16.64.7"
+					  source {
+						private_network_id = scaleway_vpc_private_network.pn01.id
+					  }
+					}
+
+					resource "scaleway_ipam_ip" "ip02" {
+					  address = "172.16.64.9"
+					  source {
+						private_network_id = scaleway_vpc_private_network.pn01.id
+					  }
+					}
+
+					resource scaleway_apple_silicon_server main {
+						name = "test-m2"
+						type = "M2-M"
+						enable_vpc = true
+					}
+				`,
+				Check: resource.ComposeTestCheckFunc(
+					isServerPresent(tt, "scaleway_apple_silicon_server.main"),
+					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "name", "test-m2"),
+					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "type", "M2-M"),
+					// Computed
+					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "ip"),
+					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "vnc_url"),
+					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "created_at"),
+					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "deletable_at"),
+					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "vpc_status", "vpc_enabled"),
+				),
+			},
+			{
+				Config: `
+					resource scaleway_apple_silicon_server main {
+						name = "test-m2"
+						type = "M2-M"
+						enable_vpc = false
+					}
+				`,
+				Check: resource.ComposeTestCheckFunc(
+					isServerPresent(tt, "scaleway_apple_silicon_server.main"),
+					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "name", "test-m2"),
+					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "type", "M2-M"),
+					// Computed
+					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "ip"),
+					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "vnc_url"),
+					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "created_at"),
+					resource.TestCheckResourceAttrSet("scaleway_apple_silicon_server.main", "deletable_at"),
+					resource.TestCheckResourceAttr("scaleway_apple_silicon_server.main", "vpc_status", "vpc_updating"),
+					resource.TestCheckNoResourceAttr("scaleway_apple_silicon_server.main", "vpc_id"),
 				),
 			},
 		},
@@ -90,7 +170,7 @@ func isServerDestroyed(tt *acctest.TestTools) resource.TestCheckFunc {
 			}
 
 			// Unexpected api error we return it
-			if !httperrors.Is404(err) {
+			if !httperrors.Is403(err) {
 				return err
 			}
 		}

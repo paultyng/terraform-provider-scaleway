@@ -34,6 +34,7 @@ The following arguments are supported:
 
 - `project_id` - (Defaults to [provider](../index.md#project_id) `project_id`) The ID of the project the server is
   associated with.
+- `enable_vpc` - (Optional, Default: false): Enables the VPC option when set to true.
 
 ## Attributes Reference
 
@@ -50,6 +51,7 @@ In addition to all arguments above, the following attributes are exported:
 - `updated_at` - The date and time of the last update of the Apple Silicon server.
 - `deleted_at` - The minimal date and time on which you can delete this server due to Apple licence.
 - `organization_id` - The organization ID the server is associated with.
+- `vpc_status` - The current status of the VPC option.
 
 ## Import
 
